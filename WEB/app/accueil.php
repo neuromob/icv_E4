@@ -1,7 +1,11 @@
 <?php
+include "../php/sessionIsStarted.php";
 include '../class/user.class.php';
-$user = $_SESSION['userObject'];
-$user->confirm_Member();
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
+$user = unserialize((base64_decode($_SESSION['userObject'])));
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -21,7 +25,7 @@ $user->confirm_Member();
 
   <body>
     <ul class="topNav">
-      <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $user->currentUserNom ."</p>"; ?></li>
+      <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:70px'>Bonjour ". $user->getNom() ."</p>"; ?></li>
       <li><a href="../php/logout.php">Déconnexion</a></li>
       <li><input type="text" placeholder="Trouver un nouveau trajet"></li>
     </ul>

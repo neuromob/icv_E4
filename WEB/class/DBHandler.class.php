@@ -3,10 +3,10 @@ class DBHandler {
     private $pdo;
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
 
-    private $database = 'covoiturage_Temporaire';
-    private $serverName = '192.168.5.60';
-    private $login = 'admin';
-    private $password = 'toor';
+    private $database = 'covoiturage';
+    private $serverName = 'localhost';
+    private $login = 'root';
+    private $password = '';
     private $port = '3306';
 
 
@@ -24,14 +24,23 @@ class DBHandler {
     }
     
     public function verify_User_and_Pass($user, $pass) {
+        $rows = array();
         $stmt = $this->pdo->prepare("SELECT * FROM Utilisateur WHERE email = ? AND motDePasse = ?");
         $stmt -> bindParam(1, $user);
         $password = sha1($pass.$this->randomSalt);
         $stmt -> bindParam(2, $password);
         $stmt -> execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($row['email'] == $user){
-            return $row;
+        $userData = array();
+        $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+        // if($rows != null || $rows != 0) {
+        //     foreach($rows as $row) {
+        //         $userData[] = $row;
+        //     }
+        //     var_dump($userData);
+        // }
+        
+        if($rows['email'] == $user){
+            return $rows;
         }
         else {
             return null;

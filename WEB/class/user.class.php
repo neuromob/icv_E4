@@ -10,18 +10,22 @@ class User {
     private $currentUserPrenom;
     private $currentUserEmail;
     private $currentUserMotDePasse;
+    private $currentUserPays;
+    private $currentUserVille;
+    private $currentUserCodePostal;
 
-    public function __construct($row){
-        while($row) {
-            $this->currentUserId = $row['id'];
-            $this->currentUserNom = $row['nom'];
-            $this->currentUserPrenom = $row['prenom'];
-            $this->currentUserEmail = $row['email'];
-            $this->currentUserMotDePasse = $row['motDePasse'];
-        }
+    public function __construct($result){
+        $this->currentUserId = $result["id"];
+        $this->currentUserNom = $result["nom"];
+        $this->currentUserPrenom = $result["prenom"];
+        $this->currentUserEmail = $result["email"];
+        $this->currentUserMotDePasse = $result["motDePasse"];
+        $this->currentUserPays = $result["pays"];
+        $this->currentUserVille = $result["ville"];
+        $this->currentUserCodePostal = $result["code_postal"];
         
     }
-    function log_User_Out() {
+    public function log_User_Out() {
         if(isset($_SESSION['status'])) {
             unset($_SESSION['status']);
             unset($_SESSION['email']);
@@ -31,14 +35,36 @@ class User {
         }
     }
     
-    function confirm_Member() {
-        session_start();
-        if($_SESSION['status'] !='autorise') header("location: ../login.php");
+    public function confirm_Member() {
+        if(isset($_SESSION['userObject'])) return header("location: ../index.php");
     }
     
     public function getInfo($result){
         $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
-
+    public function getId() {
+        return $this->currentUserId;        
+    }
+    public function getNom() {
+        return $this->currentUserNom;
+    }
+    public function getPrenom() {
+        return $this->currentUserPrenom;
+    }
+    public function getEmail() {
+        return $this->currentUserEmail;
+    }
+    public function getMDP() {
+        return $this->currentUserMotDePasse;
+    }
+    public function getPays() {
+        return $this->currentUserPays;
+    }
+    public function getVille() {
+        return $this->currentUserVille;
+    }
+    public function getCP() {
+        return $this->currentUserCodePostal;
+    }
 }

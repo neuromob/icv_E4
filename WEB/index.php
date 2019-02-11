@@ -42,12 +42,17 @@ if(isset($_POST['connexion'])) {
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
 
             $dbh = new DBHandler();
-            $row = $dbh->verify_User_and_Pass($Email,$MotDePasse);
-            if(isset($row)) {
+            $userData = $dbh->verify_User_and_Pass($Email,$MotDePasse);
+            if(isset($userData)) {
               echo "<div id='success_MSG'>Vous êtes à présent connecté !</div>";
-              $_SESSION['userObject'] = new User($row);
+              $user = new User($userData);
+              $user_serlizer = base64_encode(serialize($user));
+              $_SESSION["userObject"] = $user_serlizer;
+              $_SESSION["authentified"] = true;
+              
               header('Location: app/accueil.php');
           } else {
+              $_SESSION["authentified"] = null;
               echo "<div id='error_MSG'>Le pseudo ou le mot de passe est incorrect, le compte n'a pas été trouvé.</div>";
           }
             
