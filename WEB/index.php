@@ -42,10 +42,10 @@ if(isset($_POST['connexion'])) {
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
 
             $dbh = new DBHandler();
-            $userData = $dbh->verify_User_and_Pass($Email,$MotDePasse);
-            if(isset($userData)) {
+            $userVerified = $dbh->verify_User_and_Pass($Email,$MotDePasse);
+            if(isset($userVerified)) {
               echo "<div id='success_MSG'>Vous êtes à présent connecté !</div>";
-              $user = new User($userData);
+              $user = new User($userVerified);
               $user_serlizer = base64_encode(serialize($user));
               $_SESSION["userObject"] = $user_serlizer;
               $_SESSION["authentified"] = true;

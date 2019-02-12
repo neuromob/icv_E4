@@ -1,12 +1,14 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 class DBHandler {
     private $pdo;
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
 
     private $database = 'covoiturage';
-    private $serverName = 'localhost';
-    private $login = 'root';
-    private $password = '';
+    private $serverName = '192.168.5.60';
+    private $login = 'admin';
+    private $password = 'toor';
     private $port = '3306';
 
 
@@ -30,21 +32,43 @@ class DBHandler {
         $password = sha1($pass.$this->randomSalt);
         $stmt -> bindParam(2, $password);
         $stmt -> execute();
-        $userData = array();
         $rows = $stmt->fetch(PDO::FETCH_ASSOC);
-        // if($rows != null || $rows != 0) {
-        //     foreach($rows as $row) {
-        //         $userData[] = $row;
-        //     }
-        //     var_dump($userData);
-        // }
         
         if($rows['email'] == $user){
-            return $rows;
+            $idVerified = $rows["id"];
+            $userData = $this->getAllInfo($idVerified);
+            return $userData;
         }
         else {
             return null;
         }
+    }
+
+    public function update_User($newUserData, $id){
+        $sql = "UPDATE Utilisateur 
+                SET nom = ?, prenom = ?, email = ?
+                WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> bindParam(4, $id);
+        for($i=0;$i<4;$i++) {
+            $stmt -> bindParam(1, $newUserData[$i]);
+            $stmt -> bindParam(2, $newUserData[$i]);
+            $stmt -> bindParam(3, $newUserData[$i]);
+        }
+        var_dump($stmt);
+        $stmt -> execute();
+    }
+    
+    public function getAllInfo($id) {
+        $sql = "SELECT Utilisateur.id,Utilisateur.nom,Utilisateur.prenom,Utilisateur.email,Utilisateur.motDePasse,Adresse.numeroRue,Adresse.nomRue,Adresse.codePostal,Adresse.ville,Voiture.marque,Voiture.modele,Voiture.place,Voiture.couleur FROM Utilisateur
+                INNER JOIN Adresse ON Utilisateur.adresse = Adresse.id
+                INNER JOIN Voiture ON Utilisateur.voiture = Voiture.id
+                WHERE Utilisateur.id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt -> bindParam(1, $id);
+        $stmt -> execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $userData;
     }
 
     public function get_DB(){

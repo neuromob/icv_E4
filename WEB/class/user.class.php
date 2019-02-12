@@ -4,15 +4,19 @@ include "currentUser.class.php";
 
 class User {
     
-    
     private $currentUserId;
     private $currentUserNom;
     private $currentUserPrenom;
     private $currentUserEmail;
     private $currentUserMotDePasse;
-    private $currentUserPays;
+    private $currentUserNumRue;
+    private $currentUserNomRue;
     private $currentUserVille;
     private $currentUserCodePostal;
+    private $currentUserMarque;
+    private $currentUserModele;
+    private $currentUserNbPlace;
+    private $currentUserCouleur;
 
     public function __construct($result){
         $this->currentUserId = $result["id"];
@@ -20,10 +24,14 @@ class User {
         $this->currentUserPrenom = $result["prenom"];
         $this->currentUserEmail = $result["email"];
         $this->currentUserMotDePasse = $result["motDePasse"];
-        $this->currentUserPays = $result["pays"];
+        $this->currentUserNumRue = $result["numeroRue"];
+        $this->currentUserNomRue = $result["nomRue"];
         $this->currentUserVille = $result["ville"];
-        $this->currentUserCodePostal = $result["code_postal"];
-        
+        $this->currentUserCodePostal = $result["codePostal"];
+        $this->currentUserMarque = $result["marque"];
+        $this->currentUserModele = $result["modele"];
+        $this->currentUserNbPlace = $result["place"];
+        $this->currentUserCouleur = $result["couleur"];        
     }
     public function log_User_Out() {
         if(isset($_SESSION['status'])) {
@@ -58,13 +66,28 @@ class User {
     public function getMDP() {
         return $this->currentUserMotDePasse;
     }
-    public function getPays() {
-        return $this->currentUserPays;
-    }
     public function getVille() {
         return $this->currentUserVille;
     }
+    public function getNomRue() {
+        return $this->currentUserNomRue;
+    }
+    public function getNumRue() {
+        return $this->currentUserNumRue;
+    }
     public function getCP() {
         return $this->currentUserCodePostal;
+    }
+    public function getMarque() {
+        return $this->currentUserMarque;
+    }
+    public function getModele() {
+        return $this->currentUserModele;
+    }
+    public function getNbPLace() {
+        return $this->currentUserNbPlace;
+    }
+    public function getCouleur() {
+        return $this->currentUserCouleur;
     }
 }

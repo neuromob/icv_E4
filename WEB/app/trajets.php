@@ -1,9 +1,11 @@
 <?php
 include "../php/sessionIsStarted.php";
+include '../class/user.class.php';
 if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-}
+    { 
+        session_start(); 
+    } 
+$user = unserialize((base64_decode($_SESSION['userObject'])));
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -20,7 +22,7 @@ if(!isset($_SESSION))
 
 <body>
   <ul class="topNav">
-    <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $_SESSION['name']."</p>"; ?></li>
+    <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $user->getNom() ."</p>"; ?></li>
     <li><a href="../php/logout.php">Déconnexion</a></li>
     <li><input type="text" placeholder="Trouver un trajet"></li>
   </ul>
