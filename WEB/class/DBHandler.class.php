@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors',1);
 class DBHandler {
     private $pdo;
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
@@ -46,16 +44,18 @@ class DBHandler {
 
     public function update_User($newUserData, $id){
         $sql = "UPDATE Utilisateur 
-                SET nom = ?, prenom = ?, email = ?
+                SET nom = ?, prenom = ?, email = ?, motDePasse = ?
                 WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
-        $stmt -> bindParam(4, $id);
-        for($i=0;$i<4;$i++) {
-            $stmt -> bindParam(1, $newUserData[$i]);
-            $stmt -> bindParam(2, $newUserData[$i]);
-            $stmt -> bindParam(3, $newUserData[$i]);
-        }
-        var_dump($stmt);
+        var_dump($newUserData);
+        
+        $stmt -> bindParam(1, $newUserData[0]);
+        $stmt -> bindParam(2, $newUserData[1]);
+        $stmt -> bindParam(3, $newUserData[2]);
+        $passwordHashed = sha1($newUserData[3].$this->randomSalt);
+        $stmt -> bindParam(4, $passwordHashed);
+
+        $stmt -> bindParam(5, $id);
         $stmt -> execute();
     }
     

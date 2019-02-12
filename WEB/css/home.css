@@ -292,14 +292,14 @@ li.active a span{
 }
 .list-group .collapse{
 	border: solid 1px black;
-	width: 100%;
+	width: 97.4%;
 	margin-top: -1px;
 	background-color: #f6f6f6;
 	padding: 12px;
 	text-align: center;
 	cursor: pointer;
 	outline: none;
-	margin-left: 40px;
+	margin-left: 50px;
 	transition: .5s cubic-bezier(.8, .5, .2, 1.4);
 }
 .open .list-group .collapse{

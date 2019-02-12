@@ -99,7 +99,8 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           
           echo "<form method='POST' name='changeUserData' action='parametres.php?'>";
           echo "<table>";
-          echo "<tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value='".$user->getNom()."'/></td></tr>
+          echo "<thead><tr><th>Mon profil</th></tr></thead>
+          <tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value='".$user->getNom()."'/></td></tr>
           <tr><th>Prénom</th><td><input type='text' name='prenom' style='width:100%' value='". $user->getPrenom() ."'/></td></tr>
           <tr><th>E-mail</th><td><input type='text' name='email' style='width:100%' value='". $user->getEmail() ."'/></td></tr>
           <tr><th>Mot de passe</th><td><input type='text' name='mdp' style='width:100%' value=''/></td></tr>
