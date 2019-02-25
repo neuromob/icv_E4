@@ -12,13 +12,42 @@ body {
 .marginLeft{
     margin-left: 250px;
 }
+/* .my-profil a {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    text-decoration: none;
+    color: initial;
+    cursor: pointer;
+    padding: 0 16px;
+    border: 1px solid #c5c5c5;
+    border-top-color: #c5c5c5;
+    border-bottom-color: #bcbcbc;
+    background-color: #fafafa;
+    background-image: -webkit-linear-gradient(top, #fafafa 2%, #efefef 98%);
+    background-image: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
+    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+}
+.my-profil a:focus {
+    border-color: #2188ff;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,.075), 0 0 0 0.2em rgba(3,102,214,.3);
+    outline: none;
+}
+
+.my-profil a:hover {
+    background-color: #ececec;
+    background-image: -webkit-linear-gradient(top, #ececec 2%, #ececec 98%);
+    background-image: linear-gradient(to bottom,#ececec 2%, #ececec 98%);
+} */
+
 table {
     width:100%;
 }
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
-    margin-top: 1em;
+    margin-top: 2em;
 }
 th, td {
     padding: 11px;
@@ -33,8 +62,14 @@ table tr:nth-child(even) {
 table tr:nth-child(odd) {
     background-color: #fff;
 }
-
+.my-profil a {
+    padding: 7px !important;
+}
 button {
+    margin-top: 10px;
+}
+button, .my-profil a {
+    text-decoration: none;
     text-align: center;
     white-space: nowrap;
     outline: none;
@@ -55,12 +90,12 @@ button {
     -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
-button:hover{
+button:hover, .my-profil a:hover{
     background-color: #ececec;
     background-image: -webkit-linear-gradient(top, #ececec 2%, #ececec 98%);
     background-image: linear-gradient(to bottom,#ececec 2%, #ececec 98%);
 }
-button:focus{
+button:focus , .my-profil a:focus{
     border-color: #2188ff;
     box-shadow: inset 0 1px 2px rgba(27,31,35,.075), 0 0 0 0.2em rgba(3,102,214,.3);
     outline: none;

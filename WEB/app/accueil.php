@@ -5,7 +5,10 @@ if(!isset($_SESSION))
     { 
         session_start(); 
     } 
+
+$dbh = new DBHandler();
 $user = unserialize((base64_decode($_SESSION['userObject'])));
+
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -78,6 +81,10 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
     </div>
     <div class="main">
       <div class="list-group">
+        <?php
+          $listTrip = $dbh->getListTrip();
+          var_dump($listTrip);
+        ?>
         <button class="collapse">Paris - Bordeaux</button>
         <div class="content">
           <ul>

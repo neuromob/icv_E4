@@ -5,8 +5,9 @@ if(!isset($_SESSION))
     
 }
 if(!isset($_SESSION['authentified'])){
+    echo "error";
     session_destroy();
     header('Location: ../index.php');
-}
+} 
 
 ?>

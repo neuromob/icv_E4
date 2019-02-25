@@ -51,6 +51,10 @@ class User {
         $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
+    public function getAllInfo(){
+        $allInfo = array($this->currentUserId,$this->currentUserNom,$this->currentUserPrenom,$this->currentUserEmail,$this->currentUserEmail,$this->currentUserMotDePasse,$this->currentUserNumRue,$this->currentUserNomRue,$this->currentUserVille,$this->currentUserCodePostal,$this->currentUserMarque,$this->currentUserModele,$this->currentUserNbPlace,$this->currentUserCouleur);
+        return $allInfo;
+    }
     public function getId() {
         return $this->currentUserId;        
     }

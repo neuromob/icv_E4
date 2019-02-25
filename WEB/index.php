@@ -40,7 +40,7 @@ if(isset($_POST['connexion'])) {
         } else {
             $Email = htmlentities($_POST['email'], ENT_QUOTES, "ISO-8859-1"); 
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
-
+            echo sha1("in".$randomSalt);
             $dbh = new DBHandler();
             $userVerified = $dbh->verify_User_and_Pass($Email,$MotDePasse);
             if(isset($userVerified)) {

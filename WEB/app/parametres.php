@@ -1,11 +1,33 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 include "../php/sessionIsStarted.php";
 include '../class/user.class.php';
-if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
+$dbh = new DBHandler();
 $user = unserialize((base64_decode($_SESSION['userObject'])));
+
+if(!isset($_SESSION)) 
+  { 
+      session_start();
+  }
+if(isset($_POST) && !empty($_POST["email"])){
+  $newUserData = array();
+  
+  foreach($_POST as $key => $value){
+    $newUserData[$key] = $value;
+  }
+  $oldPassIsCorrect = $dbh->update_User($newUserData, $user->getId(), $user->getMDP());
+  if($oldPassIsCorrect) {
+    header("Location: parametres.php?");
+  } else {
+    header("Location: parametres.php?modifyMode=1&oldPassIsIncorrect=1");
+  }
+  $user = $dbh->refreshUser($user->getId());
+  $user_serlizer = base64_encode(serialize($user));
+  $_SESSION['userObject'] = $user_serlizer;
+  $user = unserialize((base64_decode($_SESSION['userObject'])));
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -76,12 +98,12 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
   </div>
   <div class="main">
     <div class="my-profil">
-      <?php
-        $dbh = new DBHandler();
+       <?php
         if(!isset($_GET["modifyMode"])){
           echo "<a type='button' href='parametres.php?modifyMode=1'>Saisir / Modifier informations</a>";
           echo "<table>";
-          echo "<tr><th>Nom</th><td>". $user->getNom() ."</td></tr>
+          echo "<thead><tr><th colspan='2'>Mon profil</th></tr></thead>
+          <tr><th>Nom</th><td>". $user->getNom() ."</td></tr>
           <tr><th>Prénom</th><td>". $user->getPrenom() ."</td></tr>
           <tr><th>E-mail</th><td>". $user->getEmail() ."</td></tr>
           <tr><th>Mot de passe</th><td>*************</td></tr>
@@ -96,40 +118,34 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           
           echo "</table>";
         } else {
-          
+          if(isset($_GET["oldPassIsIncorrect"])) {
+            echo "Votre ancien mot de passe est incorrect. Il doit être correct pour pouvoir modifier votre mot de passe sinon laissez les champs vides.";
+          }
+          echo "<a type='button' href='parametres.php?'>Annuler la modification</a>";
           echo "<form method='POST' name='changeUserData' action='parametres.php?'>";
           echo "<table>";
-          echo "<thead><tr><th>Mon profil</th></tr></thead>
-          <tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value='".$user->getNom()."'/></td></tr>
-          <tr><th>Prénom</th><td><input type='text' name='prenom' style='width:100%' value='". $user->getPrenom() ."'/></td></tr>
-          <tr><th>E-mail</th><td><input type='text' name='email' style='width:100%' value='". $user->getEmail() ."'/></td></tr>
+          echo "<thead><tr><th colspan='2'>Mon profil</th></tr></thead>
+          <tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value='".$user->getNom()."'required/></td></tr>
+          <tr><th>Prénom</th><td><input type='text' name='prenom' style='width:100%' value='". $user->getPrenom() ."'required/></td></tr>
+          <tr><th>E-mail</th><td><input type='text' name='email' style='width:100%' value='". $user->getEmail() ."'required/></td></tr>
+          <tr><th>Ancien mot de passe</th><td><input type='text' name='oldMdp' style='width:100%' value=''/></td></tr>
           <tr><th>Mot de passe</th><td><input type='text' name='mdp' style='width:100%' value=''/></td></tr>
-          <tr><th>Numéro</th><td><input type='text' name='numRue' style='width:100%' value='". $user->getNumRue() ."'/></td></tr>
-          <tr><th>Nom rue</th><td><input type='text' name='nomRue' style='width:100%' value='". $user->getNomRue() ."'/></td></tr>
-          <tr><th>Ville</th><td><input type='text' name='ville' style='width:100%' value='". $user->getVille() ."'/></td></tr>
-          <tr><th>Code postal</th><td><input type='text' name='codePostal' style='width:100%' value='". $user->getCP() ."'/></td></tr>
-          <tr><th>Marque</th><td><input type='text' name='marque' style='width:100%' value='". $user->getMarque() ."'/></td></tr>
-          <tr><th>Modèle</th><td><input type='text' name='modele' style='width:100%' value='". $user->getModele() ."'/></td></tr>
-          <tr><th>Nombre de place</th><td><input type='text' name='nbPLace' style='width:100%' value='". $user->getNbPLace() ."'/></td></tr>
-          <tr><th>Couleur véhicule</th><td><input type='text' name='couleur' style='width:100%' value='". $user->getCouleur() ."'/></td></tr>";
+          <tr><th>Numéro</th><td><input type='text' name='numRue' style='width:100%' value='". $user->getNumRue() ."'required/></td></tr>
+          <tr><th>Nom rue</th><td><input type='text' name='nomRue' style='width:100%' value='". $user->getNomRue() ."'required/></td></tr>
+          <tr><th>Ville</th><td><input type='text' name='ville' style='width:100%' value='". $user->getVille() ."'required/></td></tr>
+          <tr><th>Code postal</th><td><input type='text' name='codePostal' style='width:100%' value='". $user->getCP() ."'required/></td></tr>
+          <tr><th>Marque</th><td><input type='text' name='marque' style='width:100%' value='". $user->getMarque() ."'required/></td></tr>
+          <tr><th>Modèle</th><td><input type='text' name='modele' style='width:100%' value='". $user->getModele() ."'required/></td></tr>
+          <tr><th>Nombre de place</th><td><input type='text' name='nbPLace' style='width:100%' value='". $user->getNbPLace() ."'required/></td></tr>
+          <tr><th>Couleur véhicule</th><td><input type='text' name='couleur' style='width:100%' value='". $user->getCouleur() ."'required/></td></tr>";
           echo "</table>";
           echo "<button type='submit' value='OK'> Valider</button>";
           echo "</form>";
         }
         
-        if(isset($_POST)){
-          $newUserData = array();
-          
-          foreach($_POST as $value){
-            $newUserData[] = $value;
-          }
-          $dbh->update_User($newUserData, $user->getId());
-        } else {
-          echo "nopost";
-        }
-
       ?>
   </div>
+
   
     <script  src="../js/index.js"></script>
 
