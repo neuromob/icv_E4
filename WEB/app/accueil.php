@@ -85,32 +85,44 @@ $listTrip = $dbh->getListTrip();
     </div>
     <div class="main">
       <div class="box shadow">
-        <h1>Profil</h1>
-        <h2>Veuillez choisir un lieu de départ</h2>
-        <p>Cliquez sur un emplacement sur la carte pour sélectionner votre lieu de départ. Faites glisser le marqueur pour changer d'emplacement</p>
-        
-        <!--map div-->
-        <div id="map"></div>
-        
-        <!--our form-->
-        <h2>Chosen Location</h2>
-        <form method="post">
-            <input type="text" id="lat" readonly="yes"><br>
-            <input type="text" id="lng" readonly="yes">
-        </form>
-        
-        <script type="text/javascript" src="../js/map.js"></script>
-        <label>Lieu d'arrivée</label>
-        <select type="text" name="lieuDépart" value="Lieu d'arrivée'">
-          <option value="">--Veuillez choisir un lieu d'arrivée--</option>
-          <option value="avignon">Avignon</option>
-          <option value="pertuis">Pertuis</option>
-        </select>
-
-        
+        <div class="header-box">
+          <h1>Profil</h1>
+        </div>
+        <div class="content-box">
+          <div id="lieu_Depart">
+            <h2>Veuillez choisir un lieu de départ</h2>
+            <p>Cliquez sur un emplacement sur la carte pour sélectionner votre lieu de départ. Faites glisser le marqueur pour changer d'emplacement</p>
+            
+            <!--map div-->
+            <div id="map"></div>
+            
+            <!--our form-->
+            <form method="post" style="margin-top:5px">
+                <label>Latitude</label>
+                <input type="text" id="lat" class="input-box" readonly="yes"><br>
+                <label>Longitude</label>
+                <input type="text" id="lng" class="input-box" readonly="yes">
+            </form>
+            
+            <script type="text/javascript" src="../js/map.js"></script>
+          </div>
+          <div id="separator"></div>
+          <div id="lieu_Arrivee">
+            <h2>Veuillez choisir un lieu d'arrivée</h2>
+            <label>Lieu d'arrivée</label>
+            <select type="text" name="lieuDépart" class="input-box" value="Lieu d'arrivée'">
+              <option value="">--Veuillez choisir un lieu d'arrivée--</option>
+              <option value="avignon">Avignon</option>
+              <option value="pertuis">Pertuis</option>
+            </select>
+          </div>
+        </div>
       </div>
       <div class="box shadow">
-        <h1>Liste des trajets disponibles</h1>
+        <div class="header-box">
+          <h1>Liste des trajets disponibles</h1>
+        </div>
+        
         <div class="list-group">
         <?php
         for($i=0;$i<count($listTrip);$i++) {
