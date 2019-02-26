@@ -102,7 +102,7 @@ if(isset($_POST) && !empty($_POST["email"])){
         if(!isset($_GET["modifyMode"])){
           echo "<a type='button' href='parametres.php?modifyMode=1'>Saisir / Modifier informations</a>";
           echo "<table>";
-          echo "<thead><tr><th colspan='2'>Mon profil</th></tr></thead>
+          echo "<thead><tr><th colspan='2'>Mes informations personnelles</th></tr></thead>
           <tr><th>Nom</th><td>". $user->getNom() ."</td></tr>
           <tr><th>Prénom</th><td>". $user->getPrenom() ."</td></tr>
           <tr><th>E-mail</th><td>". $user->getEmail() ."</td></tr>
@@ -124,7 +124,7 @@ if(isset($_POST) && !empty($_POST["email"])){
           echo "<a type='button' href='parametres.php?'>Annuler la modification</a>";
           echo "<form method='POST' name='changeUserData' action='parametres.php?'>";
           echo "<table>";
-          echo "<thead><tr><th colspan='2'>Mon profil</th></tr></thead>
+          echo "<thead><tr><th colspan='2'>Mes informations personnelles</th></tr></thead>
           <tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value='".$user->getNom()."'required/></td></tr>
           <tr><th>Prénom</th><td><input type='text' name='prenom' style='width:100%' value='". $user->getPrenom() ."'required/></td></tr>
           <tr><th>E-mail</th><td><input type='text' name='email' style='width:100%' value='". $user->getEmail() ."'required/></td></tr>

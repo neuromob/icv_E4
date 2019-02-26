@@ -156,66 +156,25 @@ class DBHandler {
     public function getListTrip(){
         
         error_log("db->getListTrip: start ! ");
-        
-        $result = null;
-        
-        $sql = "SELECT T.id, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.ville as villeDepart, La.ville as villeArrivee FROM Trajet T
+                
+        $sql = "SELECT T.id, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart, La.lieu as villeArrivee, U.nom as nom, U.prenom as prenom, V.marque as marque, V.modele as modele, V.couleur as couleur, V.place as place 
+                FROM Trajet T
                 INNER JOIN Lieu Ld ON T.lieuDepart = Ld.id
                 INNER JOIN Lieu La ON T.lieuArrivee = La.id
-                INNER JOIN Reservation R ON T.id = R.trajet
+                INNER JOIN Utilisateur U ON T.idConducteur = U.id
+                INNER JOIN Voiture V ON U.voiture = V.id
                 WHERE T.status = 'ACTIF'
-                AND T.placeDisponible NOT LIKE 0
-                ORDER BY T.id ASC"; 
+                AND T.placeDisponible > (SELECT count(*) FROM Reservation R WHERE R.trajet = T.id AND R.status = 'ACTIF')
+                ORDER BY T.id ASC";
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         
         if($stmt->rowCount() > 0){
             
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
         }
-        else{
-            
-            $result['response'] = "KO";
-            
-        }
-        
-        $this->closeConnection();
-        
-        return $result;
-        
-    }
-    // Fonction récupération d'information concernant un trajet
-    public function getTripInfos($idUser, $idTrip){
-        
-        error_log("db->getMyProfil: start ! ");
-        error_log("db->getMyProfil: idUser= ".$idUser);			
-
-        $result = null;
-        
-        $sql = "SELECT T.id, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, L.lieu as lieuDepart, L2.lieu as lieuArrivee
-        FROM `Trajet` T
-        INNER JOIN Lieu L ON T.lieuDepart = L.id
-        INNER JOIN Lieu L2 ON T.lieuArrivee = L2.id
-        WHERE T.id = :idTrip";
-        
-        try{
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':idTrip', $idTrip, PDO::PARAM_INT);
-            $stmt->execute();
-        }
-        catch(SQLException $e) {				
-            error_log("SQL ERROR : ".$e->getMessage());				
-        }
-        
-        if($stmt->rowCount() > 0){				
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);				
-        }
-        else {			
-            $result['response'] = "KO";	
-        }
-        error_log(print_r($result,true));				
         
         $this->closeConnection();
         

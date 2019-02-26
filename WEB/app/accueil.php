@@ -9,6 +9,8 @@ if(!isset($_SESSION))
 $dbh = new DBHandler();
 $user = unserialize((base64_decode($_SESSION['userObject'])));
 
+$listTrip = $dbh->getListTrip();
+
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -18,12 +20,14 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
     <meta name="viewport" content="width=device-width" />
     <title>ICV | Accueil</title>
 
-
-    
+    <style type="text/css">
+          #map{ width:700px; height: 500px; }
+        </style>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/home.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApoxRTKTHp7APEAuxXKxthbgCYnl5JH7E"></script>
   </head>
 
   <body>
@@ -80,100 +84,52 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       </ul>
     </div>
     <div class="main">
-      <div class="list-group">
+      <div class="box shadow">
+        <h1>Profil</h1>
+        <h2>Veuillez choisir un lieu de départ</h2>
+        <p>Cliquez sur un emplacement sur la carte pour sélectionner votre lieu de départ. Faites glisser le marqueur pour changer d'emplacement</p>
+        
+        <!--map div-->
+        <div id="map"></div>
+        
+        <!--our form-->
+        <h2>Chosen Location</h2>
+        <form method="post">
+            <input type="text" id="lat" readonly="yes"><br>
+            <input type="text" id="lng" readonly="yes">
+        </form>
+        
+        <script type="text/javascript" src="../js/map.js"></script>
+        <label>Lieu d'arrivée</label>
+        <select type="text" name="lieuDépart" value="Lieu d'arrivée'">
+          <option value="">--Veuillez choisir un lieu d'arrivée--</option>
+          <option value="avignon">Avignon</option>
+          <option value="pertuis">Pertuis</option>
+        </select>
+
+        
+      </div>
+      <div class="box shadow">
+        <h1>Liste des trajets disponibles</h1>
+        <div class="list-group">
         <?php
-          $listTrip = $dbh->getListTrip();
-          var_dump($listTrip);
+        for($i=0;$i<count($listTrip);$i++) {
+          echo "<button class='collapse'>". $listTrip[$i]['villeDepart'] . " - ". $listTrip[$i]['villeArrivee'] ."</button>";
+          echo "<div class='content'><ul>";
+          echo "<li>Nom de l'élève : ". $listTrip[$i]["nom"]." ".$listTrip[$i]["prenom"]."</li>";
+          echo "<li>Date : ". $listTrip[$i]["dateParcours"] ."</li>";
+          echo "<li>Heure de départ : ". $listTrip[$i]["heureDepart"] ."</li>";
+          echo "<li>Heure d'arrivée : ". $listTrip[$i]["heureArrivee"] ."</li>";
+          echo "<li>Marque : ". $listTrip[$i]["marque"] ."</li>";
+          echo "<li>Modèle : ". $listTrip[$i]["modele"] ."</li>";
+          echo "<li>Couleur : ". $listTrip[$i]["couleur"] ."</li>";
+          echo "<li>Nombre de place : ". $listTrip[$i]["place"] ."</li>";
+          echo "<li>Nombre de place restante : ". $listTrip[$i]["placeDisponible"] ."</li>";
+          echo "</ul></div>";
+          
+        }
+        
         ?>
-        <button class="collapse">Paris - Bordeaux</button>
-        <div class="content">
-          <ul>
-            <li>Nom de l'élève : Alexandre Jean</li>
-            <li>Véhicule : Lamborghini Aventador</li>
-            <li>Couleur du véhicule : Rouge</li>
-            <li>Date et heure de départ : 29/01/2019 - 15h35</li>
-            <li>Date et heure d'arrivée : 29/01/2019 - 17h MAAAXXX</li>
-            <li>Lieu de RDV : [Magasin "Au hasard"] 40 av Clichy, 75018 PARIS</li>
-            <li>Lieu de dépôt : [Mairie de Bordeaux] Place Pey Berland, 33000 Bordeaux</li>
-            <li>Nombre de place : 4</li>
-            <li>Nombre de place restante : 2</li>
-            <li>Commentaire : "Wallah le paris - bordeaux on le fait en 2h !"</li>
-          </ul>
-        </div>
-        <button class="collapse">Marseille - Pertuis</button>
-        <div class="content">
-            <ul>
-                <li>Nom de l'élève : Alexandre Jean</li>
-            <li>Véhicule : Lamborghini Aventador</li>
-            <li>Couleur du véhicule : Rouge</li>
-            <li>Date et heure de départ : 29/01/2019 - 15h35</li>
-            <li>Date et heure d'arrivée : 29/01/2019 - 17h MAAAXXX</li>
-            <li>Lieu de RDV : [Magasin "Au hasard"] 40 av Clichy, 75018 PARIS</li>
-            <li>Lieu de dépôt : [Mairie de Bordeaux] Place Pey Berland, 33000 Bordeaux</li>
-            <li>Nombre de place : 4</li>
-            <li>Nombre de place restante : 2</li>
-            <li>Commentaire : "Wallah le paris - bordeaux on le fait en 2h !"</li>
-              </ul>
-        </div>
-        <button class="collapse">Avignon - Pertuis</button>
-        <div class="content">
-            <ul>
-              <li>Nom de l'élève : Alexandre Jean</li>
-              <li>Véhicule : Lamborghini Aventador</li>
-              <li>Couleur du véhicule : Rouge</li>
-              <li>Date et heure de départ : 29/01/2019 - 15h35</li>
-              <li>Date et heure d'arrivée : 29/01/2019 - 17h MAAAXXX</li>
-              <li>Lieu de RDV : [Magasin "Au hasard"] 40 av Clichy, 75018 PARIS</li>
-              <li>Lieu de dépôt : [Mairie de Bordeaux] Place Pey Berland, 33000 Bordeaux</li>
-              <li>Nombre de place : 4</li>
-              <li>Nombre de place restante : 2</li>
-              <li>Commentaire : "Wallah le paris - bordeaux on le fait en 2h !"</li>
-            </ul>
-        </div>
-        <button class="collapse">Manosque - Pertuis</button>
-        <div class="content">
-            <ul>
-              <li>Nom de l'élève : Alexandre Jean</li>
-              <li>Véhicule : Lamborghini Aventador</li>
-              <li>Couleur du véhicule : Rouge</li>
-              <li>Date et heure de départ : 29/01/2019 - 15h35</li>
-              <li>Date et heure d'arrivée : 29/01/2019 - 17h MAAAXXX</li>
-              <li>Lieu de RDV : [Magasin "Au hasard"] 40 av Clichy, 75018 PARIS</li>
-              <li>Lieu de dépôt : [Mairie de Bordeaux] Place Pey Berland, 33000 Bordeaux</li>
-              <li>Nombre de place : 4</li>
-              <li>Nombre de place restante : 2</li>
-              <li>Commentaire : "Wallah le paris - bordeaux on le fait en 2h !"</li>
-            </ul>
-        </div>
-        <button class="collapse">Marseille - Avignon</button>
-        <div class="content">
-            <ul>
-              <li>Nom de l'élève : Alexandre Jean</li>
-              <li>Véhicule : Lamborghini Aventador</li>
-              <li>Couleur du véhicule : Rouge</li>
-              <li>Date et heure de départ : 29/01/2019 - 15h35</li>
-              <li>Date et heure d'arrivée : 29/01/2019 - 17h MAAAXXX</li>
-              <li>Lieu de RDV : [Magasin "Au hasard"] 40 av Clichy, 75018 PARIS</li>
-              <li>Lieu de dépôt : [Mairie de Bordeaux] Place Pey Berland, 33000 Bordeaux</li>
-              <li>Nombre de place : 4</li>
-              <li>Nombre de place restante : 2</li>
-              <li>Commentaire : "Wallah le paris - bordeaux on le fait en 2h !"</li>
-            </ul>
-        </div>
-        <button class="collapse">Venasque - Aix-en-Provence</button>
-        <div class="content">
-            <ul>
-              <li>Nom de l'élève : Alexandre Jean</li>
-              <li>Véhicule : Lamborghini Aventador</li>
-              <li>Couleur du véhicule : Rouge</li>
-              <li>Date et heure de départ : 29/01/2019 - 15h35</li>
-              <li>Date et heure d'arrivée : 29/01/2019 - 17h MAAAXXX</li>
-              <li>Lieu de RDV : [Magasin "Au hasard"] 40 av Clichy, 75018 PARIS</li>
-              <li>Lieu de dépôt : [Mairie de Bordeaux] Place Pey Berland, 33000 Bordeaux</li>
-              <li>Nombre de place : 4</li>
-              <li>Nombre de place restante : 2</li>
-              <li>Commentaire : "Wallah le paris - bordeaux on le fait en 2h !"</li>
-            </ul>
         </div>
       </div>
     </div>

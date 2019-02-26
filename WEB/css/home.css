@@ -9,6 +9,20 @@ body{
 .marginLeft{
 	margin-left: 250px;
 }
+.box{
+	width: 70%;
+	height: auto;
+	background: #fff;
+	margin: 40px auto;
+}
+.shadow {
+	-webkit-box-shadow: 0 10px 6px -6px #777;
+	-moz-box-shadow: 0 10px 6px -6px #777;
+			 box-shadow: 0 10px 6px -6px #777;
+	border: solid 1px #777;
+	padding: 10px;
+	 
+}
 .input-box {
     width: 280px;
     background-color: #fff;
@@ -292,14 +306,13 @@ li.active a span{
 }
 .list-group .collapse{
 	border: solid 1px black;
-	width: 97.4%;
+	width: 100%;
 	margin-top: -1px;
 	background-color: #f6f6f6;
 	padding: 12px;
 	text-align: center;
 	cursor: pointer;
 	outline: none;
-	margin-left: 50px;
 	transition: .5s cubic-bezier(.8, .5, .2, 1.4);
 }
 .open .list-group .collapse{
@@ -317,7 +330,6 @@ li.active a span{
 }
 .content {
 	padding: 0 18px;
-	margin-left: 40px;
 	width: 100%;
 	max-height: 0;
 	overflow: hidden;
