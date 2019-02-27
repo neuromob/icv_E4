@@ -335,9 +335,10 @@ li.active a span{
 
 .list-group .active, .collapse:hover{
 	border: 1px solid #153439;
-	margin-top: -1px; /* Prevent double borders */
-	background-color: grey;
+	margin-top: -1px;
+	background-color: #153439;
 	padding: 12px;
+	color: white;
 	
 }
 .content {

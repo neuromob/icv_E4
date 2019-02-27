@@ -4,10 +4,10 @@ class DBHandler {
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
 
     private $database = 'covoiturage';
-    /* CFA
-    private $serverName = '192.168.5.60';*/
-    /* HOME */
-    private $serverName = 'localhost';
+    /* CFA*/
+    private $serverName = '192.168.5.60';
+    /* HOME 
+    private $serverName = 'localhost';*/
     private $login = 'admin';
     private $password = 'toor';
     private $port = '3306';
