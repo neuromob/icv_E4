@@ -4,10 +4,10 @@ class DBHandler {
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
 
     private $database = 'covoiturage';
-    /* CFA*/
-    private $serverName = '192.168.5.60';
-    /* HOME 
-    private $serverName = 'localhost';*/
+    /* CFA
+    private $serverName = '192.168.5.60';*/
+    /* HOME */
+    private $serverName = 'localhost';
     private $login = 'admin';
     private $password = 'toor';
     private $port = '3306';
@@ -19,7 +19,8 @@ class DBHandler {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         }   catch(PDOException $e) {
-            print "Connexion à la base de donnée impossible  : " .$e->getMessage() . "";
+            echo "<div id='error_Bdd_MSG'>Connexion à la base de donnée impossible.</div>";
+            print $e->getMessage();
             die();
             }
         $this->pdo = $conn;

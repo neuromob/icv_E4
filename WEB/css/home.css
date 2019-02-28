@@ -284,6 +284,30 @@ body.marginLeft .bvn_Message{
 	margin-left: 15px;
 	width	: 100%;
 }
+/*Button group*/
+.btn-group button {
+  background-color: #4CAF50; 
+  border: 1px solid green; 
+  color: white;
+  padding: 10px 24px; 
+  cursor: pointer; 
+  float: left;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none;
+}
+
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
+/*FIN Button group*/
 i.fa {
 	font-size: 25px;
 	padding: 9px;

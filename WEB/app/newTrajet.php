@@ -48,7 +48,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       <li>
         <a href="trajets.php">
           <i class="fa fa-car" aria-hidden="true"></i>
-          <span>Mes trajets</span>
+          <span>Trajets publiés</span>
         </a>
       </li>
       <li class="active">
@@ -74,8 +74,22 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
         </li>
     </ul>
   </div>
-  
-  
+  <div class="main">
+    <div class="box shadow">
+      <div class="header-box">
+        <h1>Trajets publiés</h1>
+      </div>
+      <div class="content-box">
+        <div class="btn-group">
+          <button>Apple</button>
+          <button>Samsung</button>
+          <button>Sony</button>
+        </div>
+      </div>
+    </div>
+    <!--./box-->
+  </div>
+  <!--./main-->
 
     <script  src="../js/index.js"></script>
 

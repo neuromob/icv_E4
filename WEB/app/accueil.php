@@ -58,7 +58,7 @@ $listTrip = $dbh->getListTrip();
         <li>
           <a href="trajets.php">
             <i class="fa fa-car" aria-hidden="true"></i>
-            <span>Mes trajets</span>
+            <span>Trajets publiés</span>
           </a>
         </li>
         <li>

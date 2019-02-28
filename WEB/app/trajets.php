@@ -49,7 +49,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       <li class="active">
         <a href="trajets.php">
           <i class="fa fa-car" aria-hidden="true"></i>
-          <span>Mes trajets</span>
+          <span>Trajets publiés</span>
         </a>
       </li>
       <li>
