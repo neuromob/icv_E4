@@ -1,3 +1,14 @@
+$(function() {
+
+  $(".btn").on("click", function() {
+    //hide all sections
+    $(".content-section").hide();
+    //show the section depending on which button was clicked
+    $("#" + $(this).attr("data-section")).show();
+  });
+
+});
+
 var coll = document.getElementsByClassName("collapse");
 var i;
         

@@ -77,13 +77,25 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
   <div class="main">
     <div class="box shadow">
       <div class="header-box">
-        <h1>Trajets publiés</h1>
+        <h1 class="title">Trajets publiés</h1>
       </div>
       <div class="content-box">
         <div class="btn-group">
-          <button>Apple</button>
-          <button>Samsung</button>
-          <button>Sony</button>
+          <button type="button" data-section="section1" class="btn">Trajets à venir</button>
+          <button type="button" data-section="section2" class="btn">Trajets passés</button>
+          <button type="button" data-section="section3" class="btn">Trajets archivés</button>
+        </div>
+        <div class="content-section" id="section1">
+          <h1>Trajets à venir</h1>
+          <p>Vous n'avez aucun trajets à venir</p>
+        </div>
+        <div class="content-section" id="section2">
+          <h1>Trajets passés</h1>
+          <p>Vous n'avez aucun trajets passés</p>
+        </div>
+        <div class="content-section" id="section3">
+          <h1>Archives</h1>
+          <p></p>
         </div>
       </div>
     </div>

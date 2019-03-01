@@ -125,8 +125,8 @@ font-size: 17px;
 	margin-left: 11px;
 	margin-top: 51px;
 }
-h1{
-  color:#fff;
+.title{
+	color:#fff;
 	margin-left: auto;
   margin-right: auto;
   display:table;
@@ -283,6 +283,9 @@ body.marginLeft .bvn_Message{
 	color	: black; 
 	margin-left: 15px;
 	width	: 100%;
+}
+.content-section {
+  display: none;
 }
 /*Button group*/
 .btn-group button {

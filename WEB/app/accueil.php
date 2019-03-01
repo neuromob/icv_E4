@@ -86,7 +86,7 @@ $listTrip = $dbh->getListTrip();
     <div class="main">
       <div class="box shadow">
         <div class="header-box">
-          <h1>Profil</h1>
+          <h1 class="title">Profil</h1>
         </div>
         <div class="content-box">
           <div id="lieu_Depart">
@@ -120,7 +120,7 @@ $listTrip = $dbh->getListTrip();
       </div>
       <div class="box shadow">
         <div class="header-box">
-          <h1>Liste des trajets disponibles</h1>
+          <h1 class="title">Liste des trajets disponibles</h1>
         </div>
         
         <div class="list-group">
