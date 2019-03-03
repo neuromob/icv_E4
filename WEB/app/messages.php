@@ -17,7 +17,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/home.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 
 <body>
@@ -45,17 +45,16 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <span>Liste des trajets</span>
         </a>
       </li>
-      
+      <li>
+        <a href="newTrajet.php">
+          <i class="fa fa-map-pin" aria-hidden="true"></i>
+          <span>Proposer un trajet</span>
+        </a>
+      </li>
       <li>
         <a href="trajets.php">
           <i class="fa fa-car" aria-hidden="true"></i>
           <span>Trajets publiés</span>
-        </a>
-      </li>
-      <li>
-        <a href="newTrajet.php">
-          <i class="fa fa-map-pin" aria-hidden="true"></i>
-          <span>Créer un nouveau trajet</span>
         </a>
       </li>
       <li>
@@ -71,8 +70,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <i class="fa fa-envelope" aria-hidden="true"></i>
           <span>Mes messages</span>
         </a>
-          
-        </li>
+      </li>
     </ul>
   </div>
   

@@ -1,10 +1,29 @@
-$(function() {
 
-  $(".btn").on("click", function() {
+$(document).ready(function(){
+
+  console.log($(".select-inscription").val());
+
+});
+
+
+$(function() {
+  
+  $("#select-inscription").change(function() {
+    var valueOfSelect = $(this).val();
+    if (valueOfSelect == "inscription-oui") {
+      $("#btn-complete-profil").show();
+    } else {
+      $("#btn-complete-profil").hide();
+    }
+  });
+  $(".button-content").on("click", function() {
     //hide all sections
     $(".content-section").hide();
     //show the section depending on which button was clicked
     $("#" + $(this).attr("data-section")).show();
+
+    $(".button-content").removeClass("button-active");
+    $(this).addClass("button-active");
   });
 
 });
@@ -40,6 +59,7 @@ document.querySelector(".hamburger").onclick = function () {
   
     
 }
+
 
 
 

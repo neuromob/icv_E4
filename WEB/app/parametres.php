@@ -39,7 +39,7 @@ if(isset($_POST) && !empty($_POST["email"])){
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/parametre.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 
 <body>
@@ -66,17 +66,16 @@ if(isset($_POST) && !empty($_POST["email"])){
           <span>Liste des trajets</span>
         </a>
       </li>
-      
+      <li>
+        <a href="newTrajet.php">
+          <i class="fa fa-map-pin" aria-hidden="true"></i>
+          <span>Proposer un trajet</span>
+        </a>
+      </li>
       <li>
         <a href="trajets.php">
           <i class="fa fa-car" aria-hidden="true"></i>
           <span>Trajets publiés</span>
-        </a>
-      </li>
-      <li>
-        <a href="newTrajet.php">
-          <i class="fa fa-map-pin" aria-hidden="true"></i>
-          <span>Créer un nouveau trajet</span>
         </a>
       </li>
       <li class="active">

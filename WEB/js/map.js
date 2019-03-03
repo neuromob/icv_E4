@@ -1,60 +1,87 @@
-//map.js
 
-//Set up some of our variables.
-var map; //Will contain map object.
-var marker = false; ////Has the user plotted their location marker? 
+
+var map; //variable objet map
+var marker; //variable objet marker
         
-//Function called to initialize / create the map.
-//This is called when the page has loaded.
+//Fonction appelée pour initialiser / créer la carte.
+//Ceci est appelé lorsque la page est chargée.
 function initMap() {
 
-    //The center location of our map.
     var centerOfMap = new google.maps.LatLng(43.94781243695963, 4.80991138078582);
-
-    //Map options.
+    //Options de la map.
     var options = {
-      center: centerOfMap, //Set center.
-      zoom: 7 //The zoom value.
+      center: centerOfMap,
+      zoom: 7
     };
 
-    //Create the map object.
+    //Créer l'objet de la carte.
     map = new google.maps.Map(document.getElementById('map'), options);
-
-    //Listen for any clicks on the map.
+	//on crée l'objet marker
+	initMarker(centerOfMap);
+    //Listen pour tout clic sur la carte.
     google.maps.event.addListener(map, 'click', function(event) {                
-        //Get the location that the user clicked.
+        //Obtenir l'emplacement sur lequel l'utilisateur a cliqué.
         var clickedLocation = event.latLng;
-        //If the marker hasn't been added.
-        if(marker === false){
-            //Create the marker.
-            marker = new google.maps.Marker({
-                position: clickedLocation,
-                map: map,
-                draggable: true //make it draggable
-            });
-            //Listen for drag events!
-            google.maps.event.addListener(marker, 'dragend', function(event){
-                markerLocation();
-            });
-        } else{
-            //Marker has already been added, so just change its location.
-            marker.setPosition(clickedLocation);
-        }
-        //Get the marker's location.
+        //Si le marqueur n'a pas été ajouté.
+        marker.setPosition(clickedLocation);
+        map.setCenter(clickedLocation);
+
+        //Get la position du marqueur.
         markerLocation();
     });
 }
-        
-//This function will get the marker's current location and then add the lat/long
-//values to our textfields so that we can save the location.
+ 
+function initMarker(centerOfMap){
+	marker = new google.maps.Marker({
+        position: centerOfMap,
+        map: map,
+        draggable: true 
+    });
+    //Listen les événements de glisser-déposer !
+    google.maps.event.addListener(marker, 'dragend', function(event){
+        markerLocation();
+    });
+}
+ 
+//Cette fonction permet d'obtenir l'emplacement actuel du marqueur, puis convertit la position lat/lng en addresse à l'aide la
+//fonction convertLngLat
 function markerLocation(){
     //Get location.
     var currentLocation = marker.getPosition();
-    //Add lat and lng values to a field that we can save.
-    document.getElementById('lat').value = currentLocation.lat(); //latitude
-    document.getElementById('lng').value = currentLocation.lng(); //longitude
+    
+    //Convertit location -> adresse string
+    convertLngLat(currentLocation.lat(),currentLocation.lng());
+}
+function convertLngLat(markerLatitude, markerLongitude){
+    var geocoder  = new google.maps.Geocoder();             // Créer objet geocoder
+    var location  = new google.maps.LatLng(markerLatitude, markerLongitude);    // transformer les coordonnées en un objet      
+    geocoder.geocode({'latLng': location}, function (results, status) {
+        if(status == google.maps.GeocoderStatus.OK) {
+        var add=results[0].formatted_address;         // si adresse trouvée, passer à la fonction de traitement
+        console.log("add : "+add);
+        document.getElementById('adresse-marker').value = add;
+        }
+    });
+}
+
+function convertAddress() {
+    var geocoder;
+    //var jqueryAddress = $("address").val();
+	var address = document.getElementById("adresse-marker").value;
+	geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        console.log(results[0].geometry.location);
+        console.log(marker);
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(12);
+        marker.setPosition(results[0].geometry.location);
+      }
+      else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
 }
         
-        
-//Load the map when the page has finished loading.
+//Charger la carte une fois le chargement de la page terminé.
 google.maps.event.addDomListener(window, 'load', initMap);

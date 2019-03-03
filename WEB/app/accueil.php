@@ -20,21 +20,20 @@ $listTrip = $dbh->getListTrip();
     <meta name="viewport" content="width=device-width" />
     <title>ICV | Accueil</title>
 
-    <style type="text/css">
-          #map{ width:700px; height: 500px; }
-        </style>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/home.css">
+    <link rel="shortcut icon" href="../flavicon.ico" type="image/x-icon">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApoxRTKTHp7APEAuxXKxthbgCYnl5JH7E"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
   </head>
-
+    <!-- AIzaSyApoxRTKTHp7APEAuxXKxthbgCYnl5JH7E -->
   <body>
     <ul class="topNav">
       <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:70px'>Bonjour ". $user->getNom() ."</p>"; ?></li>
       <li><a href="../php/logout.php">Déconnexion</a></li>
       <li><input type="text" placeholder="Trouver un nouveau trajet"></li>
+      
+      
     </ul>
       
     <div class="leftMenu">
@@ -54,17 +53,16 @@ $listTrip = $dbh->getListTrip();
             <span>Liste des trajets</span>
           </a>
         </li>
-        
+        <li>
+          <a href="newTrajet.php">
+            <i class="fa fa-map-pin" aria-hidden="true"></i>
+            <span>Proposer un trajet</span>
+          </a>
+        </li>
         <li>
           <a href="trajets.php">
             <i class="fa fa-car" aria-hidden="true"></i>
             <span>Trajets publiés</span>
-          </a>
-        </li>
-        <li>
-          <a href="newTrajet.php">
-            <i class="fa fa-map-pin" aria-hidden="true"></i>
-            <span>Créer un nouveau trajet</span>
           </a>
         </li>
         <li>
@@ -89,33 +87,26 @@ $listTrip = $dbh->getListTrip();
           <h1 class="title">Profil</h1>
         </div>
         <div class="content-box">
-          <div id="lieu_Depart">
-            <h2>Veuillez choisir un lieu de départ</h2>
-            <p>Cliquez sur un emplacement sur la carte pour sélectionner votre lieu de départ. Faites glisser le marqueur pour changer d'emplacement</p>
-            
-            <!--map div-->
-            <div id="map"></div>
-            
-            <!--our form-->
-            <form method="post" style="margin-top:5px">
-                <label>Latitude</label>
-                <input type="text" id="lat" class="input-box" readonly="yes"><br>
-                <label>Longitude</label>
-                <input type="text" id="lng" class="input-box" readonly="yes">
-            </form>
-            
-            <script type="text/javascript" src="../js/map.js"></script>
+        <a href="#" style="float:right;margin-top: -7px;" onclick="window.location.href='parametres.php'">Modifier mon profil</a>
+          <div class="grid-info">
+            <?php 
+              echo "<p class='p-info-profil'><img class='img-icon-profil' src='https://img.icons8.com/android/24/000000/user.png'> ". $user->getNom() ." ".$user->getPrenom()."</p>";
+              echo "<p class='p-info-profil'><img class='img-icon-profil' src='https://img.icons8.com/android/24/000000/secured-letter.png'> ". $user->getEmail() ."</p>";
+              echo "<p class='p-info-profil'><img class='img-icon-home-profil' src='https://img.icons8.com/android/24/000000/home.png'> ". $user->getVille() ."</p>";
+            ?>
           </div>
-          <div id="separator"></div>
-          <div id="lieu_Arrivee">
-            <h2>Veuillez choisir un lieu d'arrivée</h2>
-            <label>Lieu d'arrivée</label>
-            <select type="text" name="lieuDépart" class="input-box" value="Lieu d'arrivée'">
-              <option value="">--Veuillez choisir un lieu d'arrivée--</option>
-              <option value="avignon">Avignon</option>
-              <option value="pertuis">Pertuis</option>
+          <label>S'inscrire :</label>
+          <div class="button-input">
+            <select type="text" id="select-inscription" name="type-inscription" class="input-box" required>
+              <option value="inscription-oui">Oui</option>
+              <option value="inscription-non">Non</option>
             </select>
+            <button type="button" id="btn-complete-profil" class="btn button-valide" onclick="window.location.href='completeProfile.php'">Compléter son profil</button>
           </div>
+          
+          
+          
+         
         </div>
       </div>
       <div class="box shadow">

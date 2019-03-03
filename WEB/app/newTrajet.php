@@ -17,7 +17,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/home.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 
 <body>
@@ -44,17 +44,16 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <span>Liste des trajets</span>
         </a>
       </li>
-      
+      <li class="active">
+        <a href="newTrajet.php">
+          <i class="fa fa-map-pin" aria-hidden="true"></i>
+          <span>Proposer un trajet</span>
+        </a>
+      </li>
       <li>
         <a href="trajets.php">
           <i class="fa fa-car" aria-hidden="true"></i>
           <span>Trajets publiés</span>
-        </a>
-      </li>
-      <li class="active">
-        <a href="newTrajet.php">
-          <i class="fa fa-map-pin" aria-hidden="true"></i>
-          <span>Créer un nouveau trajet</span>
         </a>
       </li>
       <li>
@@ -75,33 +74,10 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
     </ul>
   </div>
   <div class="main">
-    <div class="box shadow">
-      <div class="header-box">
-        <h1 class="title">Trajets publiés</h1>
-      </div>
-      <div class="content-box">
-        <div class="btn-group">
-          <button type="button" data-section="section1" class="btn">Trajets à venir</button>
-          <button type="button" data-section="section2" class="btn">Trajets passés</button>
-          <button type="button" data-section="section3" class="btn">Trajets archivés</button>
-        </div>
-        <div class="content-section" id="section1">
-          <h1>Trajets à venir</h1>
-          <p>Vous n'avez aucun trajets à venir</p>
-        </div>
-        <div class="content-section" id="section2">
-          <h1>Trajets passés</h1>
-          <p>Vous n'avez aucun trajets passés</p>
-        </div>
-        <div class="content-section" id="section3">
-          <h1>Archives</h1>
-          <p></p>
-        </div>
+      <div class="box shadow">
+        
       </div>
     </div>
-    <!--./box-->
-  </div>
-  <!--./main-->
 
     <script  src="../js/index.js"></script>
 
