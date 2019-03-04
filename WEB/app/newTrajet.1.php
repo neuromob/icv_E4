@@ -14,10 +14,19 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width" />
   <title>ICV | Accueil</title>
+  <style type="text/css">
+        #maprecap {    
+            width: 92%;
+            height: 350px;
+            margin-top: 10px;
+        }
+        </style>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/home.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4wS9TPSIExN2MI6WvJMk8-o6CqXEeTC4&language=en&libraries=places"></script>
+
 </head>
 
 <body>
@@ -84,7 +93,71 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               <h2>Récapitulatif</h2>
             </div>
             <div id="recap">
+              <?php 
+              // echo '<pre>';
+              // print_r($_POST);
+              // echo '</pre>';
+
+              echo "<br>";
+              if(isset($_POST["lieuDepart_predefini"])){
+                echo "Lieu départ : ". $_POST["lieuDepart_predefini"];
+              } else {
+                echo "Lieu départ : ". $_POST["lieuDepart_map"];
+              }
               
+              echo "<br>";
+              if(isset($_POST["parSemaine"])){
+                echo "Période : Par semaines";
+                echo "<br>";
+                if(isset($_POST["lundi"])){
+                  echo "Lundi\t";
+                }
+                if(isset($_POST["mardi"])){
+                  echo "Mardi\t";
+                }
+                if(isset($_POST["mercredi"])){
+                  echo "Mercredi\t";
+                }
+                if(isset($_POST["jeudi"])){
+                  echo "Jeudi\t";
+                }
+                if(isset($_POST["vendredi"])){
+                  echo "Vendredi\t";
+                }
+                echo "<br>";
+                echo "Heure aller : ".$_POST["semaine-heure-aller"]." h ".$_POST["semaine-minute-aller"]."";
+                echo "<br>";
+                if($_POST["cb-aller-retour"] == "on") {
+                  echo "Heure retour : ".$_POST["semaine-heure-retour"]." h ".$_POST["semaine-minute-retour"]."";
+                }
+              } else {
+                echo "Période : Par dates";
+                echo "<br>";
+                echo "Date aller : ".$_POST["jour-aller"];
+                echo "<br>";
+                echo "Heure aller : ".$_POST["heure-aller"]." h ".$_POST["minute-aller"]."";
+                echo "<br>";
+                if($_POST["cb-aller-retour"] == "on") {
+                  echo "Date retour : ".$_POST["trip-retour"];
+                  echo "<br>";
+                  echo "Heure retour : ".$_POST["semaine-heure-retour"]." h ".$_POST["semaine-minute-retour"]."";
+                }
+
+              }
+              echo "<br>";
+              echo "Lieu arrivée : ". $_POST["lieuArrivee"];
+              echo "<br>";
+              if($_POST["cb-aller-retour"] == "on"){
+                echo "Aller-retour.";
+              } else {
+                echo "Aller simple.";
+              }
+              echo "<br>";
+              echo "Véhicule : ". $_POST["vehicule"];
+              echo "<br>";
+              echo "Nombre de places proposés : ". $_POST["nbPlaces"];
+              echo "<br>";
+              ?>
             </div>
           </fieldset>
         </div>

@@ -117,7 +117,7 @@ $listTrip = $dbh->getListTrip();
         <div class="list-group">
         <?php
         for($i=0;$i<count($listTrip);$i++) {
-          echo "<button class='collapse'>". $listTrip[$i]['villeDepart'] . " &#x2794; ". $listTrip[$i]['villeArrivee'] ."<span style='text-align:right'>Hello</span></button>";
+          echo "<button class='collapse'>". $listTrip[$i]['villeDepart'] . " &#x2794; ". $listTrip[$i]['villeArrivee'] ."<br>".$listTrip[$i]["heureDepart"]." &#x2794; ". $listTrip[$i]["heureArrivee"] ."</button>";
           echo "<div class='content'><ul>";
           echo "<li>Nom de l'élève : ". $listTrip[$i]["nom"]." ".$listTrip[$i]["prenom"]."</li>";
           echo "<li>Date : ". $listTrip[$i]["dateParcours"] ."</li>";

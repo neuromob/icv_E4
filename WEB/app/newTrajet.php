@@ -87,91 +87,132 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <h1 class="title">Publier une annonce</h1>
         </div>
         <div class="content-box">
-        <fieldset class="fieldset-block-itineraire">
-                <div class="header-fieldset">
-                    <h2>Itinéraire</h2>
+          <form action="newTrajet.1.php" method="post">
+            <fieldset class="fieldset-block-itineraire">
+              <div class="header-fieldset">
+                  <h2>Itinéraire</h2>
+              </div>
+              <div id="lieu_Depart">
+                <h2 class="title-itineraire">Veuillez choisir un lieu de départ</h2>
+                <p class="description-help">Cliquez sur la carte pour sélectionner votre lieu de départ. Faites glisser le marqueur pour changer d'emplacement.</p>
+                
+                <!--map div-->
+                <div id="map"></div>
+                
+                <!--our form-->
+                    <label>Lieu de départ : </label>
+                    <p class="description-help">Rechercher votre addresse de départ dans la barre ci-dessous ou sélectionner un lieu prédéfini.</p>
+                    <div class="button-input">
+                        <input type="textbox" name="lieuDepart_map" id="adresse-marker">
+                        <button type="button" class="btn button-valide" onclick="convertAddress()">Confirmer</button>
+                    </div>
+                    <div class="lieu-depart-cfa">
+                        <label style="margin-top: 17px;">Ou </label>
+                        <input type="checkbox" id="predefini_checkbox"/>
+                        <select type="text" name="lieuDepart_predefini" class="input-box" id="lieuDepart_predefini" disabled>
+                            <option value="default">--Veuillez choisir un lieu prédéfini--</option>
+                            <option value="Site d'Avignon">Site d'Avignon</option>
+                            <option value="Site de Pertuis">Site de Pertuis</option>
+                        </select>
+                    </div>
+                    <div id="lieu_Arrivee">
+                      <h2 class="title-itineraire">Veuillez choisir un lieu d'arrivée</h2>
+                      <label>Lieu d'arrivée</label>
+                      <select type="text" name="lieuArrivee" class="input-box"value="Lieu d'arrivée'" required>
+                          <option value="">--Veuillez choisir un lieu d'arrivée--</option>
+                          <option value="Site d'Avignon">Site d'Avignon</option>
+                          <option value="Site de Pertuis">Site de Pertuis</option>
+                      </select>
+                    </div>
                 </div>
-                <div id="lieu_Depart">
-                    <h2 class="title-itineraire">Veuillez choisir un lieu de départ</h2>
-                    <p class="description-help">Cliquez sur la carte pour sélectionner votre lieu de départ. Faites glisser le marqueur pour changer d'emplacement.</p>
-                    
-                    <!--map div-->
-                    <div id="map"></div>
-                    
-                    <!--our form-->
-                    <form method="post" style="margin-top:15px">
-                        <label>Lieu de départ : </label>
-                        <p class="description-help">Rechercher votre addresse de départ dans la barre ci-dessous ou sélectionner un lieu prédéfini.</p>
-                        <div class="button-input">
-                            <input type="textbox" id="adresse-marker" required>
-                            <button type="button" class="btn button-valide" onclick="convertAddress()">Confirmer</button>
-                        </div>
-                        <div class="lieu-depart-cfa">
-                            <label style="margin-top: 17px;">Ou </label>
-                            <select type="text" name="lieuDépart" class="input-box"value="Lieu d'arrivée'" required>
-                                <option value="">--Veuillez choisir un lieu prédéfini--</option>
-                                <option value="avignon">Site d'Avignon</option>
-                                <option value="pertuis">Site de Pertuis</option>
-                            </select>
-                        </div>
-                        <div id="lieu_Arrivee">
-                          <h2 class="title-itineraire">Veuillez choisir un lieu d'arrivée</h2>
-                          <label>Lieu d'arrivée</label>
-                          <select type="text" name="lieuDépart" class="input-box"value="Lieu d'arrivée'" required>
-                              <option value="">--Veuillez choisir un lieu d'arrivée--</option>
-                              <option value="avignon">Site d'Avignon</option>
-                              <option value="pertuis">Site de Pertuis</option>
-                          </select>
-                        </div>
-                      </form>
-                    </fieldset>
-                    <fieldset class="fieldset-block-itineraire">
-                      <div id="newtrajet-fieldset" class="header-fieldset">
-                          <h2>Date et horaire</h2>
-                          <label for="cb-aller-retour"><input type="checkbox" id="cb-aller-retour" name="cb-aller-retour" value="1" checked/>Aller-retour</label>
-                      </div>
-                      <div id="date-horaire">
-                        <label>Récurrence : </label>
-                          <div id="jour-semaine">
-                              <div id="jour-lundi" class="item-jour">
-                                  <input type="checkbox" id="lundi" name="scales">
-                                  <label for="lundi">Lundi</label>
-                              </div>
-                              <div id="jour-mardi" class="item-jour">
-                                  <input type="checkbox" id="mardi" name="scales">
-                                  <label for="mardi">Mardi</label>
-                              </div>
-                              <div id="jour-mercredi" class="item-jour">
-                                  <input type="checkbox" id="mercredi" name="scales">
-                                  <label for="mercredi">Mercredi</label>
-                              </div>
-                              <div id="jour-jeudi" class="item-jour">
-                                  <input type="checkbox" id="jeudi" name="scales">
-                                  <label for="jeudi">Jeudi</label>
-                              </div>
-                              <div id="jour-vendredi" class="item-jour">
-                                  <input type="checkbox" id="vendredi" name="scales">
-                                  <label for="vendredi">Vendredi</label>
-                              </div>
+              </fieldset>
+              <fieldset class="fieldset-block-itineraire">
+                <div id="newtrajet-fieldset" class="header-fieldset">
+                    <h2>Date et horaire</h2>
+                    <label for="cb-aller-retour"><input type="checkbox" id="cb-aller-retour" name="cb-aller-retour" checked/>Aller-retour</label>
+                </div>
+                <div class="content-box">
+                  <div class="btn-group">
+                    <button type="button" data-section="semaine_alternance" class="button-content button-active">Semaine alternance<input type="checkbox" class="checkbox-type-date" name="parSemaine" checked/></button>
+                    <button type="button" data-section="date_precise" class="button-content">Date précise<input type="checkbox" class="checkbox-type-date" name="parDate"/></button>
+                  </div>
+                  <div class="content-section default-content" id="semaine_alternance">
+                    <div id="date-horaire">
+                      <label>Jours de covoiturage : </label>
+                      <div id="jour-semaine">
+                          <div id="jour-lundi" class="item-jour">
+                              <input type="checkbox" id="lundi" name="lundi">
+                              <label for="lundi">Lundi</label>
+                          </div>
+                          <div id="jour-mardi" class="item-jour">
+                              <input type="checkbox" id="mardi" name="mardi">
+                              <label for="mardi">Mardi</label>
+                          </div>
+                          <div id="jour-mercredi" class="item-jour">
+                              <input type="checkbox" id="mercredi" name="mercredi">
+                              <label for="mercredi">Mercredi</label>
+                          </div>
+                          <div id="jour-jeudi" class="item-jour">
+                              <input type="checkbox" id="jeudi" name="jeudi">
+                              <label for="jeudi">Jeudi</label>
+                          </div>
+                          <div id="jour-vendredi" class="item-jour">
+                              <input type="checkbox" id="vendredi" name="vendredi">
+                              <label for="vendredi">Vendredi</label>
                           </div>
                       </div>
-                      <div id="heure-newtrajet-aller">
-                        <label for="heure-depart">Date de l'aller :</label>
-                        <div class="grid-horaire">
-                          <input type="date" id="date-aller" name="trip-aller"
-                          value="2018-07-22"
-                          min="2018-01-01" max="2018-12-31">
-                          <select type="text">
-                            <option value="0">00</option>
-                            <option value="1">01</option>
-                            <option value="2">02</option>
-                            <option value="3">03</option>
-                            <option value="4">04</option>
-                            <option value="5">05</option>
-                            <option value="6">06</option>
-                            <option value="7">07</option>
-                            <option value="8">08</option>
-                            <option value="9">09</option>
+                      <label for="heure-depart">Heure de départ de l'aller :</label>
+                      <div class="grid-semaine-horaire">
+                        <select type="text" name="semaine-heure-aller">
+                          <option value="0">00</option>
+                          <option value="1">01</option>
+                          <option value="2">02</option>
+                          <option value="3">03</option>
+                          <option value="4">04</option>
+                          <option value="5">05</option>
+                          <option value="6">06</option>
+                          <option value="7">07</option>
+                          <option value="8">08</option>
+                          <option value="9">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                        </select>
+                        <p>h</p>
+                        <select type="text" name="semaine-minute-aller">
+                          <option value="0">00</option>
+                          <option value="1">10</option>
+                          <option value="2">20</option>
+                          <option value="3">30</option>
+                          <option value="4">40</option>
+                          <option value="5">50</option>
+                        </select>
+                      </div>
+                      <div id="heure-semaine-retour">
+                        <label for="heure-depart">Heure de départ du retour :</label>
+                        <div class="grid-semaine-horaire">
+                          <select type="text" name="semaine-heure-retour">
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
                             <option value="10">10</option>
                             <option value="11">11</option>
                             <option value="12">12</option>
@@ -188,7 +229,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                             <option value="23">23</option>
                           </select>
                           <p>h</p>
-                          <select type="text">
+                          <select type="text" name="semaine-minute-retour">
                             <option value="0">00</option>
                             <option value="1">10</option>
                             <option value="2">20</option>
@@ -198,69 +239,119 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                           </select>
                         </div>
                       </div>
-                      <div id="heure-newtrajet-retour">
-                        <label for="heure-depart">Date du retour :</label>
-                        <div class="grid-horaire">
-                          <input type="date" id="date-aller" name="trip-aller"
-                            value="<?php date('Y-m-d'); ?>"
-                            min="<?php echo date('Y-m-d'); ?>" max="2018-12-31">
-                          <select type="text">
-                            <option value="0">00</option>
-                            <option value="1">01</option>
-                            <option value="2">02</option>
-                            <option value="3">03</option>
-                            <option value="4">04</option>
-                            <option value="5">05</option>
-                            <option value="6">06</option>
-                            <option value="7">07</option>
-                            <option value="8">08</option>
-                            <option value="9">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                          </select>
-                          <p>h</p>
-                          <select type="text">
-                            <option value="0">00</option>
-                            <option value="1">10</option>
-                            <option value="2">20</option>
-                            <option value="3">30</option>
-                            <option value="4">40</option>
-                            <option value="5">50</option>
-                          </select>
-                        </div>
+                    </div>
+                  </div>
+                  <div class="content-section" id="date_precise">
+                    <div id="heure-newtrajet-aller">
+                      <label for="heure-depart">Date de l'aller :</label>
+                      <div class="grid-horaire">
+                        <input type="date" id="date-aller" name="jour-aller"
+                          min="<?php echo date('Y-m-d'); ?>" >
+                        <select type="text" name="heure-aller">
+                          <option value="0">00</option>
+                          <option value="1">01</option>
+                          <option value="2">02</option>
+                          <option value="3">03</option>
+                          <option value="4">04</option>
+                          <option value="5">05</option>
+                          <option value="6">06</option>
+                          <option value="7">07</option>
+                          <option value="8">08</option>
+                          <option value="9">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                        </select>
+                        <p>h</p>
+                        <select type="text" name="minute-aller">
+                          <option value="0">00</option>
+                          <option value="1">10</option>
+                          <option value="2">20</option>
+                          <option value="3">30</option>
+                          <option value="4">40</option>
+                          <option value="5">50</option>
+                        </select>
                       </div>
-                    <script type="text/javascript" src="../js/map.js"></script>
+                    </div>
+                    <div id="heure-newtrajet-retour">
+                      <label for="heure-depart">Date du retour :</label>
+                      <div class="grid-horaire">
+                        <input type="date" id="date-aller" name="trip-retour"
+                          min="<?php echo date('Y-m-d'); ?>" >
+                        <select type="text" name="heure-retour">
+                          <option value="0">00</option>
+                          <option value="1">01</option>
+                          <option value="2">02</option>
+                          <option value="3">03</option>
+                          <option value="4">04</option>
+                          <option value="5">05</option>
+                          <option value="6">06</option>
+                          <option value="7">07</option>
+                          <option value="8">08</option>
+                          <option value="9">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                        </select>
+                        <p>h</p>
+                        <select type="text" name="minute-retour">
+                          <option value="0">00</option>
+                          <option value="1">10</option>
+                          <option value="2">20</option>
+                          <option value="3">30</option>
+                          <option value="4">40</option>
+                          <option value="5">50</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </fieldset>
-            <fieldset class="fieldset-block-itineraire">
-              <div id="newtrajet-fieldset" class="header-fieldset">
-                  <h2>Véhicule</h2>
-              </div>
-              <div id="vehicule">
-                <label>Véhicule : </label>
-                <select type="text">
-                  <option value="">--Veuillez choisir votre véhicule--</option>
-                  <option value="megane">Renault Megane</option>
-                  <option value="clio">Renault Clio</option>
-                  <option value="c3">Citroën</option>
-                </select>
-                <label>Nombre de places proposées : </label>
-                <input type="number" max="5" min="1" value="3"/>
-              </div>
-            </fieldset>
-            <button type="button" style="width:100%" onclick="window.location.href='newTrajet.1.php'" class="btn button-valide">Suivant</button>
+                
+                <script type="text/javascript" src="../js/map.js"></script>
+              </fieldset>
+              <fieldset class="fieldset-block-itineraire">
+                <div id="newtrajet-fieldset" class="header-fieldset">
+                    <h2>Véhicule</h2>
+                </div>
+                <div id="vehicule">
+                  <label>Véhicule : </label>
+                  <select type="text"  name="vehicule" required>
+                    <option value="default">--Veuillez choisir votre véhicule--</option>
+                    <?php 
+                      $voiture = $user->getMarque();
+                      $modele= $user->getModele();
+                      $gov = htmlspecialchars($voiture. " " . $modele);
+                      echo '<option value="' .$gov. '">'.$user->getMarque()." ".$user->getModele().'</option>';
+                    ?>
+                  </select>
+                  <label>Nombre de places proposées : </label>
+                  <input type="number" max="5" min="1" value="3" name="nbPlaces" required/>
+                </div>
+              </fieldset>
+            <button type="submit" style="width:100%" class="btn button-valide">Suivant</button>
+          </form>
         </div>
         
       </div>

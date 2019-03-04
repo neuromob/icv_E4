@@ -1,35 +1,42 @@
 <?php
 class DBHandler {
-    private $pdo;
+    
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
 
-    private $database = 'covoiturage';
     /* CFA
     private $serverName = '192.168.5.60';*/
     /* HOME */
-    private $serverName = 'localhost';
+    private $host = 'localhost';
+    private $database = 'covoiturage_final';
     private $login = 'admin';
     private $password = 'toor';
     private $port = '3306';
+    public $conn;
 
 
     public function __construct() {
-    try{        
-        $conn = new PDO("mysql:host=$this->serverName;port=$this->port;dbname=$this->database", $this->login, $this->password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-        }   catch(PDOException $e) {
-            echo "<div id='error_Bdd_MSG'>Connexion à la base de donnée impossible.</div>";
-            print $e->getMessage();
-            die();
-            }
-        $this->pdo = $conn;
-        
+
+        $this->getConnection();
     }
     
+   // get the database connection
+    public function getConnection(){
+
+        $this->conn = null;
+
+        try{
+            $this->conn = new PDO("mysql:host=$this->host;port=$this->port;dbname=$this->database", $this->login, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+        }catch(PDOException $exception){
+            error_log("Connection error: " . $exception->getMessage());
+        }
+
+        return $this->conn;
+    }
     public function verify_User_and_Pass($user, $pass) {
         $rows = array();
-        $stmt = $this->pdo->prepare("SELECT * FROM Utilisateur WHERE email = ? AND motDePasse = ?");
+        $stmt = $this->conn->prepare("SELECT * FROM Utilisateur WHERE email = ? AND motDePasse = ?");
         $stmt -> bindParam(1, $user, PDO::PARAM_STR);
         $password = sha1($pass.$this->randomSalt);
         $stmt -> bindParam(2, $password, PDO::PARAM_STR);
@@ -54,7 +61,7 @@ class DBHandler {
         $sql = "UPDATE Utilisateur 
                 SET nom = ?, prenom = ?, email = ?, motDePasse = ?
                 WHERE id = ?";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         
         $stmt -> bindParam(1, $newUserData["nom"], PDO::PARAM_STR);
         $stmt -> bindParam(2, $newUserData["prenom"], PDO::PARAM_STR);
@@ -77,6 +84,39 @@ class DBHandler {
         return true;
     }
     
+    // Fo,ction de récupération des information du véhicule de l'user s'il en a un
+		public function getVehicle($data){
+			
+			error_log("db->getVehicle: start ! ");
+			
+			$idUser = $data['idUser'];
+			
+			$result = null;
+			
+			$sql = "SELECT V.id, V.marque, V.modele, V.place, V.couleur FROM `Voiture` V
+			INNER JOIN `Utilisateur` U ON U.voiture = V.id
+			WHERE U.id = :idUser;"; 
+			
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				
+				$result = $stmt->fetchObject();
+				
+			}
+			else{
+				
+				$result['response'] = "KO";
+				
+			}
+			
+			$this->closeConnection();
+			
+			return $result;
+			
+		}	
     // Fonction de modification d'information véhicule depuis les paramètres
 		public function updateCar($data, $idUser){
 
@@ -88,7 +128,7 @@ class DBHandler {
 			$sql = "UPDATE `Voiture` V INNER JOIN `Utilisateur` U ON V.id = U.voiture SET V.modele = :modele, V.marque = :marque, V.place = :place, V.couleur = :couleur WHERE U.id = :idUser;";
 
 			try{
-				$stmt = $this->pdo->prepare($sql);
+				$stmt = $this->conn->prepare($sql);
 				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
 				$stmt->bindParam(':marque', $marque, PDO::PARAM_STR);
 				$stmt->bindParam(':modele', $modele, PDO::PARAM_STR);
@@ -115,7 +155,7 @@ class DBHandler {
 			$sql = "UPDATE `Adresse` A INNER JOIN `Utilisateur` U ON A.id = U.adresse SET A.numeroRue = :numeroRue, A.nomRue = :nomRue, A.ville = :ville, A.codePostal = :codePostal WHERE U.id = :idUser;";
 
 			try{
-				$stmt = $this->pdo->prepare($sql);
+				$stmt = $this->conn->prepare($sql);
 				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
 				$stmt->bindParam(':numeroRue', $numeroRue, PDO::PARAM_STR);
 				$stmt->bindParam(':nomRue', $nomRue, PDO::PARAM_STR);
@@ -136,7 +176,7 @@ class DBHandler {
                 INNER JOIN Adresse ON Utilisateur.adresse = Adresse.id
                 INNER JOIN Voiture ON Utilisateur.voiture = Voiture.id
                 WHERE Utilisateur.id = ?";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt -> bindParam(1, $id);
         $stmt -> execute();
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -145,14 +185,14 @@ class DBHandler {
 
     public function get_DB(){
         if ($this->pdo instanceof PDO) {
-            return $this->pdo;
+            return $this->conn;
         }
     }
 
 // Fermeture de connection
     public function closeConnection(){
         
-        return $this->pdo=null;
+        return $this->conn=null;
         
     }
 
@@ -171,7 +211,7 @@ class DBHandler {
                 AND T.placeDisponible > (SELECT count(*) FROM Reservation R WHERE R.trajet = T.id AND R.status = 'ACTIF')
                 ORDER BY T.id ASC";
         
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         
         if($stmt->rowCount() > 0){

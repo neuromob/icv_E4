@@ -17,18 +17,30 @@ function initMap() {
     //Créer l'objet de la carte.
     map = new google.maps.Map(document.getElementById('map'), options);
 	//on crée l'objet marker
-	initMarker(centerOfMap);
-    //Listen pour tout clic sur la carte.
+    initMarker(centerOfMap);
     google.maps.event.addListener(map, 'click', function(event) {                
         //Obtenir l'emplacement sur lequel l'utilisateur a cliqué.
         var clickedLocation = event.latLng;
         //Si le marqueur n'a pas été ajouté.
-        marker.setPosition(clickedLocation);
-        map.setCenter(clickedLocation);
-
+        if(marker === false){
+            //Créer le marqueur.
+            marker = new google.maps.Marker({
+                position: clickedLocation,
+                map: map,
+                draggable: true 
+            });
+            //Listen les événements de glisser-déposer !
+            google.maps.event.addListener(marker, 'dragend', function(event){
+                markerLocation();
+            });
+        } else{
+            //Le marqueur a déjà été ajouté, alors change simplement son emplacement.
+            marker.setPosition(clickedLocation);
+        }
         //Get la position du marqueur.
         markerLocation();
     });
+    
 }
  
 function initMarker(centerOfMap){

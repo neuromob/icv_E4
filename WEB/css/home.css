@@ -22,7 +22,7 @@ body{
 	box-sizing: border-box;
 	display: inline-block;
 }
-input[type="text"], input[type="textbox"], input[type="date"], input[type="time"] {
+input[type="text"], input[type="textbox"], input[type="date"], input[type="time"], input[type="number"] {
   padding: 8px;
 	border-radius: 3px;
 	border: 1px solid #DDD;
@@ -41,7 +41,10 @@ select[type="text"]{
 	width: 100%;
 	height: 35px;
 }
-input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus, input[type="time"]:focus, select[type="text"]:focus {
+input[type="text"]:disabled, input[type="textbox"]:disabled, input[type="date"]:disabled, input[type="time"]:disabled,input[type="number"]:disabled, select[type="text"]:disabled {
+	background-color: rgb(235, 235, 228);
+}
+input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus, input[type="time"]:focus,input[type="number"]:focus, select[type="text"]:focus {
   /* border: 1px solid #9b9b9b;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2); */
 	border-color: #2188ff;
@@ -55,7 +58,7 @@ input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus,
 }
 .lieu-depart-cfa{
 	display: grid;
-	grid-template-columns: 30px auto;
+	grid-template-columns: 30px 30px auto;
 	grid-template-rows: auto;
 	margin: -3px 0 5px;
 }
@@ -68,10 +71,13 @@ input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus,
   margin-right: 0px;
   min-width: 100px;
 }
+#predefini_checkbox {
+	margin-top: 19px;
+}
 #jour-semaine{
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	margin-top: 5px;
+	margin: 5px 0 10px;
 }
 .item-jour{
 	display: block;
@@ -488,9 +494,36 @@ body.marginLeft .bvn_Message{
 #heure-newtrajet-aller {
 	margin-top: 5px;
 }
-#date-horaire {
-	margin-bottom: 15px;
+
+#date_precise {
+	display: none;
+	border: solid 1px #ddd;
+	padding: 18px;
+	margin: 10px 0 15px;
+	background: white;
 }
+#vehicule{
+	border: solid 1px #ddd;
+	padding: 18px;
+	margin: 10px 0 15px;
+	background: white;
+}
+#date-horaire {
+	border: solid 1px #ddd;
+	padding: 18px;
+	margin: 10px 0 15px;
+	background: white;
+}
+.grid-semaine-horaire {
+	display: grid;
+	grid-template-columns: min-content min-content min-content;
+	grid-gap: 50px;
+	padding: 5px;
+}
+.grid-semaine-horaire > select[type="text"] {
+	width: auto;
+}
+
 .grid-horaire{
 	display: grid;
 	grid-template-columns: 320px min-content min-content min-content;

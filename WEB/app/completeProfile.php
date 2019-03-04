@@ -129,11 +129,12 @@ $listTrip = $dbh->getListTrip();
                         </div>
                         <div class="lieu-depart-cfa">
                             <label style="margin-top: 17px;">Ou </label>
-                            <select type="text" name="lieuDépart" class="input-box"value="Lieu d'arrivée'" required>
-                                <option value="">--Veuillez choisir un lieu prédéfini--</option>
-                                <option value="avignon">Site d'Avignon</option>
-                                <option value="pertuis">Site de Pertuis</option>
-                            </select>
+                            <input type="checkbox" id="predefini_checkbox"/>
+                        <select type="text" name="lieuDepart_predefini" class="input-box" id="lieuDepart_predefini" disabled>
+                            <option value="default">--Veuillez choisir un lieu prédéfini--</option>
+                            <option value="avignon">Site d'Avignon</option>
+                            <option value="pertuis">Site de Pertuis</option>
+                        </select>
                         </div>
                         <label for="heure-depart">Heure de départ :</label>
                         <input type="time" name="heure-depart" min="8:00" max="19:00" required/>

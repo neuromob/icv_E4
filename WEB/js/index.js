@@ -1,8 +1,6 @@
 
 $(document).ready(function(){
-
-  console.log($(".select-inscription").val());
-
+  
 });
 
 
@@ -11,8 +9,10 @@ $(function() {
   $('#cb-aller-retour').click(function() {
     if($('#cb-aller-retour').is(':checked')==true){
       $('#heure-newtrajet-retour').show();
+      $('#heure-semaine-retour').show();
     } else {
       $('#heure-newtrajet-retour').hide();
+      $('#heure-semaine-retour').hide();
     }
   });
   $("#select-inscription").change(function() {
@@ -31,8 +31,24 @@ $(function() {
 
     $(".button-content").removeClass("button-active");
     $(this).addClass("button-active");
-  });
 
+    $(".checkbox-type-date").prop('checked', false);
+    $(this).children().prop('checked', true);
+    
+  });
+  $('#predefini_checkbox').change(function() {
+    if ($('#predefini_checkbox').is(':checked')){
+      $("#lieuDepart_predefini").prop('disabled', false);
+      $("#adresse-marker").val('');
+      $("#adresse-marker").prop('disabled', true);
+    } else {
+      $("#lieuDepart_predefini").prop('disabled', true);
+      $("#lieuDepart_predefini").val('default');
+      $("#adresse-marker").prop('disabled', false);
+      
+    }
+  });
+ 
 });
 
 var coll = document.getElementsByClassName("collapse");
