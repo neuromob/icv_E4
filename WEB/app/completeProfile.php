@@ -177,16 +177,17 @@ $listTrip = $dbh->getListTrip();
                 </div>
                 <div id="info-itineraire">
                     <label for="select-aller-retour">Aller-retour :</label>
+                    <p class="description-help">Si vous choissisez l'option aller-retour cela signifie que vous souhaitez repartir avec le covoitureur le soir pour qu'il vous laisse au lieu de départ.</p>
                     <div class="button-input">
                         <select type="text" id="select-aller-retour" name="select-aller-retour" class="input-box" required>
                         <option value="inscription-oui">Aller-retour</option>
-                        <option value="inscription-non">Aller seulement</option>
+                        <option value="inscription-non">Aller simple</option>
                         </select>
                     </div>
                 </div>
             </fieldset>
             <button type="button" id="ajouter-itineraire"></button>
-            <button type="button" class="btn button-valide" onclick="window.location.href='#'">Valider</button>
+            <button type="button" style="width: 100%" class="btn button-valide" onclick="window.location.href='#'">Valider</button>
         </div>
       </div>
     </div>

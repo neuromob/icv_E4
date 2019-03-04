@@ -22,11 +22,10 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
 
 <body>
   <ul class="topNav">
-    <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $user->getNom() ."</p>"; ?></li>
+    <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $user->getNom()."</p>"; ?></li>
     <li><a href="../php/logout.php">Déconnexion</a></li>
-    <li><input type="text" placeholder="Trouver un trajet"></li>
   </ul>
-  
+    
   
   <div class="leftMenu">
       <div class="hamburger active">
@@ -45,13 +44,13 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <span>Liste des trajets</span>
         </a>
       </li>
-      <li>
+      <li class="active">
         <a href="newTrajet.php">
           <i class="fa fa-map-pin" aria-hidden="true"></i>
           <span>Proposer un trajet</span>
         </a>
       </li>
-      <li class="active">
+      <li>
         <a href="trajets.php">
           <i class="fa fa-car" aria-hidden="true"></i>
           <span>Trajets publiés</span>
@@ -74,37 +73,25 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
         </li>
     </ul>
   </div>
-
   <div class="main">
-    <div class="box shadow">
-      <div class="header-box">
-        <h1 class="title">Trajets publiés</h1>
-      </div>
-      <div class="content-box">
-        <div class="btn-group">
-          <button type="button" data-section="section1" class="button-content button-active">Trajets à venir</button>
-          <button type="button" data-section="section2" class="button-content">Trajets passés</button>
-          <button type="button" data-section="section3" class="button-content">Trajets archivés</button>
+      <div class="box shadow">
+        <div class="header-box">
+          <h1 class="title">Publier une annonce</h1>
         </div>
-        <div class="content-section default-content" id="section1">
-          <p>Vous n'avez aucun trajet prévu. </p>
-          <p>Pour proposer un trajet, cliquez sur :</p>
-          <button type="button" onclick="window.location.href='newTrajet.php'" class="btn button-valide">Proposer un trajet</button>
+        <div class="content-box">
+          <fieldset class="fieldset-block-itineraire">
+            <div class="header-fieldset">
+              <h2>Récapitulatif</h2>
+            </div>
+            <div id="recap">
+              
+            </div>
+          </fieldset>
         </div>
-        <div class="content-section" id="section2">
-          <p>Vous n'avez pas de trajet passé.</p>
-        </div>
-        <div class="content-section" id="section3">
-          <p>Retrouvez ici les anciens trajets que nous avons archivés.</p>
-        </div>
+        <button type="button" onclick="window.location.href='newTrajet.php'" class="btn button-valide">Précédent</button>
+        <button type="button" style="float:right" onclick="window.location.href='newTrajet.2.php'" class="btn button-valide">Suivant</button>
       </div>
     </div>
-    <!--./box-->
-  </div>
-  <!--./main-->
-  
-  
-
     <script  src="../js/index.js"></script>
 
 

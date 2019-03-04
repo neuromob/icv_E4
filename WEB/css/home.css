@@ -464,7 +464,6 @@ body.marginLeft .bvn_Message{
 	margin: -17px -17px 17px -17px;
 	padding: 0 0 0 17px;
 	border-bottom: 1px solid #ddd;
-	font-size: 20px;
 	background-color: #fff;
 }
 .header-fieldset h2 {
@@ -479,7 +478,32 @@ body.marginLeft .bvn_Message{
 	text-decoration: underline;
 	text-underline-position: under;
 }
+#newtrajet-fieldset {
+	display: grid;
+	grid-template-columns: 1fr max-content;
+}
+#newtrajet-fieldset label {
+	margin-right: 15px;
+}
+#heure-newtrajet-aller {
+	margin-top: 5px;
+}
+#date-horaire {
+	margin-bottom: 15px;
+}
+.grid-horaire{
+	display: grid;
+	grid-template-columns: 320px min-content min-content min-content;
+	grid-gap: 50px;
+	padding: 5px;
+}
+.grid-horaire input[type="date"] {
+	width: 300px;
+}
 
+.grid-horaire > select[type="text"] {
+	width: auto;
+}
 /*FIN box itinéraire*/
 
 /* Switch Slide

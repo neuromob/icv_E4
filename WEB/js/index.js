@@ -8,6 +8,13 @@ $(document).ready(function(){
 
 $(function() {
   
+  $('#cb-aller-retour').click(function() {
+    if($('#cb-aller-retour').is(':checked')==true){
+      $('#heure-newtrajet-retour').show();
+    } else {
+      $('#heure-newtrajet-retour').hide();
+    }
+  });
   $("#select-inscription").change(function() {
     var valueOfSelect = $(this).val();
     if (valueOfSelect == "inscription-oui") {
