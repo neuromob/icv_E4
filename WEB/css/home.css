@@ -494,9 +494,13 @@ body.marginLeft .bvn_Message{
 #heure-newtrajet-aller {
 	margin-top: 5px;
 }
-
-#date_precise {
+#semaine_alternance{
 	display: none;
+}
+#heure-newtrajet-retour{
+	display: none;
+}
+#date_precise {
 	border: solid 1px #ddd;
 	padding: 18px;
 	margin: 10px 0 15px;

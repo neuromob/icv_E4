@@ -19,19 +19,19 @@ class User {
     private $currentUserCouleur;
 
     public function __construct($result){
-        $this->currentUserId = $result["id"];
-        $this->currentUserNom = $result["nom"];
-        $this->currentUserPrenom = $result["prenom"];
-        $this->currentUserEmail = $result["email"];
-        $this->currentUserMotDePasse = $result["motDePasse"];
-        $this->currentUserNumRue = $result["numeroRue"];
-        $this->currentUserNomRue = $result["nomRue"];
-        $this->currentUserVille = $result["ville"];
-        $this->currentUserCodePostal = $result["codePostal"];
-        $this->currentUserMarque = $result["marque"];
-        $this->currentUserModele = $result["modele"];
-        $this->currentUserNbPlace = $result["place"];
-        $this->currentUserCouleur = $result["couleur"];        
+        $this->currentUserId = (int) $result["id"];
+        $this->currentUserNom = (string) $result["nom"];
+        $this->currentUserPrenom = (string) $result["prenom"];
+        $this->currentUserEmail = (string) $result["email"];
+        $this->currentUserMotDePasse = (string) $result["motDePasse"];
+        $this->currentUserNumRue = (int) $result["numeroRue"];
+        $this->currentUserNomRue = (string) $result["nomRue"];
+        $this->currentUserVille = (string) $result["ville"];
+        $this->currentUserCodePostal = (int) $result["codePostal"];
+        $this->currentUserMarque = (string) $result["marque"];
+        $this->currentUserModele = (string) $result["modele"];
+        $this->currentUserNbPlace = (int) $result["place"];
+        $this->currentUserCouleur = (string) $result["couleur"];        
     }
     public function log_User_Out() {
         if(isset($_SESSION['status'])) {

@@ -138,7 +138,7 @@ if(isset($_POST) && !empty($_POST["email"])){
           <tr><th>Nombre de place</th><td><input type='text' name='nbPLace' style='width:100%' value='". $user->getNbPLace() ."'required/></td></tr>
           <tr><th>Couleur véhicule</th><td><input type='text' name='couleur' style='width:100%' value='". $user->getCouleur() ."'required/></td></tr>";
           echo "</table>";
-          echo "<button type='submit' value='OK'> Valider</button>";
+          echo "<button type='submit' value='OK' style='margin: 15px 5px 15px'> Valider</button>";
           echo "</form>";
         }
         

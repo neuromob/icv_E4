@@ -8,8 +8,8 @@ if(!isset($_SESSION))
 
 $dbh = new DBHandler();
 $user = unserialize((base64_decode($_SESSION['userObject'])));
-
-$listTrip = $dbh->getListTrip();
+$idUser = $user->getId();
+$listTrip = $dbh->getListTrip($idUser);
 
 ?>
 <!DOCTYPE html>
@@ -95,7 +95,7 @@ $listTrip = $dbh->getListTrip();
               echo "<p class='p-info-profil'><img class='img-icon-home-profil' src='https://img.icons8.com/android/24/000000/home.png'> ". $user->getVille() ."</p>";
             ?>
           </div>
-          <label>S'inscrire :</label>
+          <label>Voulez-vous participez au système de co-voiturage ?</label>
           <div class="button-input">
             <select type="text" id="select-inscription" name="type-inscription" class="input-box" required>
               <option value="inscription-oui">Oui</option>
@@ -115,6 +115,7 @@ $listTrip = $dbh->getListTrip();
         </div>
         
         <div class="list-group">
+        <p class="description-help" style="text-align:center;margin:5px">Une liste de trajets des covoitureurs autour de chez vous est généré selon votre profil!</p>
         <?php
         for($i=0;$i<count($listTrip);$i++) {
           echo "<button class='collapse'>". $listTrip[$i]['villeDepart'] . " &#x2794; ". $listTrip[$i]['villeArrivee'] ."<br>".$listTrip[$i]["heureDepart"]." &#x2794; ". $listTrip[$i]["heureArrivee"] ."</button>";

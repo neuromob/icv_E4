@@ -87,7 +87,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <h1 class="title">Publier une annonce</h1>
         </div>
         <div class="content-box">
-          <form action="newTrajet.1.php" method="post">
+          <form action="recap_newTrajet.php" method="post">
             <fieldset class="fieldset-block-itineraire">
               <div class="header-fieldset">
                   <h2>Itinéraire</h2>
@@ -129,12 +129,12 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               <fieldset class="fieldset-block-itineraire">
                 <div id="newtrajet-fieldset" class="header-fieldset">
                     <h2>Date et horaire</h2>
-                    <label for="cb-aller-retour"><input type="checkbox" id="cb-aller-retour" name="cb-aller-retour" checked/>Aller-retour</label>
+                    <label for="cb-aller-retour"><input type="checkbox" id="cb-aller-retour" name="cb-aller-retour"/>Aller-retour</label>
                 </div>
                 <div class="content-box">
                   <div class="btn-group">
-                    <button type="button" data-section="semaine_alternance" class="button-content button-active">Semaine alternance<input type="checkbox" class="checkbox-type-date" name="parSemaine" checked/></button>
-                    <button type="button" data-section="date_precise" class="button-content">Date précise<input type="checkbox" class="checkbox-type-date" name="parDate"/></button>
+                    <button type="button" data-section="date_precise" class="button-content button-active">Date précise<input type="checkbox" class="checkbox-type-date" name="parDate" checked/></button>
+                    <button type="button" data-section="semaine_alternance" class="button-content" style="cursor: no-drop" disabled>Semaine alternance<input type="checkbox" class="checkbox-type-date" name="parSemaine" disabled/></button>
                   </div>
                   <div class="content-section default-content" id="semaine_alternance">
                     <div id="date-horaire">
@@ -246,18 +246,18 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                       <label for="heure-depart">Date de l'aller :</label>
                       <div class="grid-horaire">
                         <input type="date" id="date-aller" name="jour-aller"
-                          min="<?php echo date('Y-m-d'); ?>" >
-                        <select type="text" name="heure-aller">
-                          <option value="0">00</option>
-                          <option value="1">01</option>
-                          <option value="2">02</option>
-                          <option value="3">03</option>
-                          <option value="4">04</option>
-                          <option value="5">05</option>
-                          <option value="6">06</option>
-                          <option value="7">07</option>
-                          <option value="8">08</option>
-                          <option value="9">09</option>
+                          min="<?php echo date('Y-m-d'); ?>" required>
+                        <select type="text" name="heure-aller" required>
+                          <option value="00">00</option>
+                          <option value="01">01</option>
+                          <option value="02">02</option>
+                          <option value="03">03</option>
+                          <option value="04">04</option>
+                          <option value="05">05</option>
+                          <option value="06">06</option>
+                          <option value="07">07</option>
+                          <option value="08">08</option>
+                          <option value="09">09</option>
                           <option value="10">10</option>
                           <option value="11">11</option>
                           <option value="12">12</option>
@@ -274,15 +274,53 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                           <option value="23">23</option>
                         </select>
                         <p>h</p>
-                        <select type="text" name="minute-aller">
-                          <option value="0">00</option>
-                          <option value="1">10</option>
-                          <option value="2">20</option>
-                          <option value="3">30</option>
-                          <option value="4">40</option>
-                          <option value="5">50</option>
+                        <select type="text" name="minute-aller" required>
+                          <option value="00">00</option>
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
+                          <option value="50">50</option>
                         </select>
                       </div>
+                      <div class="grid-horaire">
+                        <label for="heure-arrivee">Heure d'arrivée : </label>
+                        <select type="text" name="heure-arrivee" required>
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                          </select>
+                          <p>h</p>
+                          <select type="text" name="minute-arrivee" required>
+                            <option value="00">00</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                          </select>
+                        </div>
                     </div>
                     <div id="heure-newtrajet-retour">
                       <label for="heure-depart">Date du retour :</label>
@@ -290,16 +328,16 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                         <input type="date" id="date-aller" name="trip-retour"
                           min="<?php echo date('Y-m-d'); ?>" >
                         <select type="text" name="heure-retour">
-                          <option value="0">00</option>
-                          <option value="1">01</option>
-                          <option value="2">02</option>
-                          <option value="3">03</option>
-                          <option value="4">04</option>
-                          <option value="5">05</option>
-                          <option value="6">06</option>
-                          <option value="7">07</option>
-                          <option value="8">08</option>
-                          <option value="9">09</option>
+                          <option value="00">00</option>
+                          <option value="01">01</option>
+                          <option value="02">02</option>
+                          <option value="03">03</option>
+                          <option value="04">04</option>
+                          <option value="05">05</option>
+                          <option value="06">06</option>
+                          <option value="07">07</option>
+                          <option value="08">08</option>
+                          <option value="09">09</option>
                           <option value="10">10</option>
                           <option value="11">11</option>
                           <option value="12">12</option>
@@ -317,12 +355,12 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                         </select>
                         <p>h</p>
                         <select type="text" name="minute-retour">
-                          <option value="0">00</option>
-                          <option value="1">10</option>
-                          <option value="2">20</option>
-                          <option value="3">30</option>
-                          <option value="4">40</option>
-                          <option value="5">50</option>
+                          <option value="00">00</option>
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
+                          <option value="50">50</option>
                         </select>
                       </div>
                     </div>
