@@ -6,6 +6,7 @@ $(document).ready(function(){
 
 $(function() {
   
+  
   $('#cb-aller-retour').click(function() {
     if($('#cb-aller-retour').is(':checked')==true){
       $('#heure-newtrajet-retour').show();
@@ -23,11 +24,29 @@ $(function() {
       $("#btn-complete-profil").hide();
     }
   });
+  $("#type-inscription").change(function() {
+    var valueOfSelect = $(this).val();
+    console.log(valueOfSelect);
+    if (valueOfSelect == "propose") {
+      $("#type-inscription-recherche").hide();
+      $("#type-inscription-propose").show();
+    } else {
+      $("#type-inscription-recherche").show();
+      $("#type-inscription-propose").hide();
+    }
+  });
   $(".button-content").on("click", function() {
     //hide all sections
     $(".content-section").hide();
     //show the section depending on which button was clicked
     $("#" + $(this).attr("data-section")).show();
+    if($("#" + $(this).attr("data-section")).attr('id') == 'trip-publied'){
+      $("#title-trip").text("Trajets publiés");
+    } else if ($("#" + $(this).attr("data-section")).attr('id') == 'trip-reserved') {
+      $("#title-trip").text("Trajets reservés");
+    } else {
+      $("#title-trip").text("Trajets archivés");
+    }
 
     $(".button-content").removeClass("button-active");
     $(this).addClass("button-active");
@@ -50,6 +69,7 @@ $(function() {
   });
  
 });
+
 
 var coll = document.getElementsByClassName("collapse");
 var i;

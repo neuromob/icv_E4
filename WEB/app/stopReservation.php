@@ -21,7 +21,18 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
             height: 350px;
             margin-top: 10px;
         }
-        
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        th, td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {background-color:#f5f5f5;}
         </style>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/home.css">
@@ -87,32 +98,60 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
   <div class="main">
       <div class="box shadow">
         <div class="header-box">
-          <h1 class="title">Publier une annonce</h1>
+          <h1 class="title">Réserver une annoncce</h1>
         </div>
         <div class="content-box">
           <fieldset class="fieldset-block-itineraire">
             <div class="header-fieldset">
-              <h2>Récapitulatif</h2>
+              <h2>Voyage</h2>
             </div>
-            <div id="recap">
-              <?php 
-                if(!isset($_SESSION["infoTrip"])) {
-                  echo "Nous avons recontré une erreur. Veuillez recréez votre trajet en clic ci-dessous";
+              <?php
+              $idTrip = $_POST["idTrip"];
+              $idConducteur = $_POST["idConducteur"];
+              $tripInfo = $dbh->getTripInfoById($idTrip);
+              if(isset($_GET["valideReservation"])){
+                if(empty($_GET["valideReservation"]) OR empty($_GET["tripToDelete"])) {
+                  echo "Nous avons recontré une erreur lors de la réservation du trajet. Vous allez être redirigez automatiquement ou cliquez ci-dessous.";
                   echo "<br>";
-                  echo "<button type=\"button\" onclick=\"window.location.href='newTrajet.php'\" class=\"btn button-valide\">Créer un trajet</button>";
+                  echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retour à l'accueil</button>";
                 } else {
-                  $tripInfo = $_SESSION["infoTrip"];
                   echo "<h1>Félicitation !</h1>";
-                  echo "<p>Votre annonce pour le trajet <span style='font-weight:bold'>". $tripInfo['lieu1'] ." &#x2794; ". $tripInfo['lieu2'] ."</span> à bien été validé<p>";
+                  echo "<p>Vous avez bien été retiré du trajet, vous pouvez à tout moment le réserver depuis la page d'accueil.<br>
+                  Vous allez être redirigez automatiquement<p>";
                   echo "<br><br>";
-                  $dbh->createTrip($tripInfo);
-                  unset($_SESSION['infoTrip']);
+                  $dbh->deleteReservation($user->getId(),intval($_GET["tripToDelete"]), intval($_GET["valideReservation"]));
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retourner à l'accueil</button>";
                 }
+                
+              } else {
+                echo "<h2>Souhaitez-vous annuler la réservation du trajet ci-dessous ?</h2>";
+                echo "<table>
+                <tr>
+                  <th>Créateur du trajet</th>
+                  <th>Lieu départ</th>
+                  <th>Lieu arrivée</th>
+                  <th>Heure départ</th>
+                  <th>Heure arrivée</th>
+                  <th>Date</th>
+                </tr>
+                <tr>
+                  <td>".$tripInfo[0]['nom']." ".$tripInfo[0]['prenom']."</td>
+                  <td>".$tripInfo[0]['villeDepart']."</td>
+                  <td>".$tripInfo[0]['villeArrivee']."</td>
+                  <td>".$tripInfo[0]['heureDepart']."</td>
+                  <td>".$tripInfo[0]['heureArrivee']."</td>
+                  <td>".$tripInfo[0]['dateParcours']."</td>
+                </tr></table>";
+                
+                echo "<button style='margin-top:2em;float:left' type='button' onclick=\"window.location.href='trajets.php'\" class='btn button-valide'>Précédent</button>";
+                echo "<button style='margin-top:2em;float:right' type=\"button\" onclick=\"window.location.href='stopReservation.php?valideReservation=".$idConducteur."&tripToDelete=".$idTrip."'\" class=\"btn button-valide\">Valider la réservation</button>";
+                
+              }
               ?>
-            </div>
           </fieldset>
         </div>
+        
+        
       </div>
     </div>
     <script  src="../js/index.js"></script>

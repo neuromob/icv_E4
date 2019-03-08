@@ -10,7 +10,7 @@ $dbh = new DBHandler();
 $user = unserialize((base64_decode($_SESSION['userObject'])));
 $idUser = $user->getId();
 $listTrip = $dbh->getListTrip($idUser);
-
+$role = $dbh->getRole($idUser);
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -31,7 +31,7 @@ $listTrip = $dbh->getListTrip($idUser);
     <ul class="topNav">
       <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:70px'>Bonjour ". $user->getNom() ."</p>"; ?></li>
       <li><a href="../php/logout.php">Déconnexion</a></li>
-      <li><input type="text" placeholder="Trouver un nouveau trajet"></li>
+      <li><input type="text" class="disable" placeholder="Trouver un nouveau trajet" disable></li>
       
       
     </ul>
@@ -55,14 +55,14 @@ $listTrip = $dbh->getListTrip($idUser);
         </li>
         <li>
           <a href="newTrajet.php">
-            <i class="fa fa-map-pin" aria-hidden="true"></i>
+            <i class="fa fa-plus" aria-hidden="true"></i>
             <span>Proposer un trajet</span>
           </a>
         </li>
         <li>
           <a href="trajets.php">
-            <i class="fa fa-car" aria-hidden="true"></i>
-            <span>Trajets publiés</span>
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>Trajets et réservations</span>
           </a>
         </li>
         <li>
@@ -93,6 +93,7 @@ $listTrip = $dbh->getListTrip($idUser);
               echo "<p class='p-info-profil'><img class='img-icon-profil' src='https://img.icons8.com/android/24/000000/user.png'> ". $user->getNom() ." ".$user->getPrenom()."</p>";
               echo "<p class='p-info-profil'><img class='img-icon-profil' src='https://img.icons8.com/android/24/000000/secured-letter.png'> ". $user->getEmail() ."</p>";
               echo "<p class='p-info-profil'><img class='img-icon-home-profil' src='https://img.icons8.com/android/24/000000/home.png'> ". $user->getVille() ."</p>";
+              echo "<p class='p-info-profil'><img class='img-icon-home-profil' src='https://img.icons8.com/android/24/000000/mental-state.png'> ". $role[0]["nom"] ."</p>";
             ?>
           </div>
           <label>Voulez-vous participez au système de co-voiturage ?</label>
@@ -109,7 +110,7 @@ $listTrip = $dbh->getListTrip($idUser);
          
         </div>
       </div>
-      <div class="box shadow">
+      <div id="listeTrajets" class="box shadow">
         <div class="header-box">
           <h1 class="title">Liste des trajets disponibles</h1>
         </div>
@@ -117,10 +118,20 @@ $listTrip = $dbh->getListTrip($idUser);
         <div class="list-group">
         <p class="description-help" style="text-align:center;margin:5px">Une liste de trajets des covoitureurs autour de chez vous est généré selon votre profil!</p>
         <?php
+        //var_dump($listTrip);
         for($i=0;$i<count($listTrip);$i++) {
-          echo "<button class='collapse'>". $listTrip[$i]['villeDepart'] . " &#x2794; ". $listTrip[$i]['villeArrivee'] ."<br>".$listTrip[$i]["heureDepart"]." &#x2794; ". $listTrip[$i]["heureArrivee"] ."</button>";
+          $newDate = date("d-m-Y", strtotime($listTrip[$i]["dateParcours"]));
+          echo "<button type='button' class='collapse'>
+                  <p class='creator-trip'>"
+                  . $listTrip[$i]["nom"]." ".$listTrip[$i]["prenom"].
+                  "</p>"
+                  . $listTrip[$i]['villeDepart'] . " &#x2794; ". $listTrip[$i]['villeArrivee'] .
+                  "<br>"
+                  .$listTrip[$i]["heureDepart"]." &#x2794; ". $listTrip[$i]["heureArrivee"] .
+                  "<p class='date-trip'>". $newDate ."</p>
+                </button>";
           echo "<div class='content'><ul>";
-          echo "<li>Nom de l'élève : ". $listTrip[$i]["nom"]." ".$listTrip[$i]["prenom"]."</li>";
+          echo "<li name='nom' value=".$listTrip[$i]["nom"].">Nom de l'élève : ". $listTrip[$i]["nom"]." ".$listTrip[$i]["prenom"]."</li>";
           echo "<li>Date : ". $listTrip[$i]["dateParcours"] ."</li>";
           echo "<li>Heure de départ : ". $listTrip[$i]["heureDepart"] ."</li>";
           echo "<li>Heure d'arrivée : ". $listTrip[$i]["heureArrivee"] ."</li>";
@@ -129,7 +140,12 @@ $listTrip = $dbh->getListTrip($idUser);
           echo "<li>Couleur : ". $listTrip[$i]["couleur"] ."</li>";
           echo "<li>Nombre de place : ". $listTrip[$i]["place"] ."</li>";
           echo "<li>Nombre de place restante : ". $listTrip[$i]["placeDisponible"] ."</li>";
-          echo "</ul></div>";
+          echo "</ul>";
+
+          echo "<form method='post' action='reserve.php'><input name='tripToReserve' value=".$listTrip[$i]["idTrajet"]." hidden/>
+          <button type='submit' class='btn button-valide'>Réserver</button>
+          
+          </form></div>";
           
         }
         

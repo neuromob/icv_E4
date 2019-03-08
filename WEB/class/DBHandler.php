@@ -137,15 +137,14 @@
 			
 			$result = null;
 			
-			$sql = "SELECT T.id, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart, La.lieu as villeArrivee FROM Trajet T
-					INNER JOIN Lieu Ld ON T.lieuDepart = Ld.id
-					INNER JOIN Lieu La ON T.lieuArrivee = La.id
-                    LEFT OUTER JOIN Reservation R ON R.trajet = T.id
-					WHERE T.status = 'ACTIF'
-                    AND T.placeDisponible > (SELECT COUNT(*) FROM Reservation R WHERE R.trajet = T.id AND R.status = 'ACTIF')	
-                    AND T.idConducteur NOT LIKE :idUser
-                    AND R.idUtilisateur NOT LIKE :idUser
-					ORDER BY T.id ASC"; 
+			$sql = "SELECT T.id as idTrajet, T.idConducteur, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart, La.lieu as villeArrivee FROM Trajet T
+						INNER JOIN Lieu Ld ON T.lieuDepart = Ld.id
+						INNER JOIN Lieu La ON T.lieuArrivee = La.id
+						WHERE T.status = 'ACTIF'
+						AND T.placeDisponible > (SELECT COUNT(*) FROM Reservation R WHERE R.trajet = T.id AND R.status = 'ACTIF')    
+						AND T.idConducteur NOT LIKE 1
+						AND NOT EXISTS (SELECT * FROM Reservation R WHERE R.trajet = T.id AND R.idUtilisateur LIKE 1 AND R.status LIKE 'ACTIF')
+						ORDER BY T.id ASC"; 
 			
 			$stmt = $this->conn->prepare($sql);
 			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);

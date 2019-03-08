@@ -20,6 +20,18 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
             height: 350px;
             margin-top: 10px;
         }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        th, td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {background-color:#f5f5f5;}
         </style>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/home.css">
@@ -55,14 +67,14 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       </li>
       <li class="active">
         <a href="newTrajet.php">
-          <i class="fa fa-map-pin" aria-hidden="true"></i>
+          <i class="fa fa-plus" aria-hidden="true"></i>
           <span>Proposer un trajet</span>
         </a>
       </li>
       <li>
         <a href="trajets.php">
-          <i class="fa fa-car" aria-hidden="true"></i>
-          <span>Trajets publiés</span>
+          <i class="fa fa-book" aria-hidden="true"></i>
+          <span>Trajets et réservations</span>
         </a>
       </li>
       <li>
@@ -97,7 +109,6 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               // echo '<pre>';
               // print_r($_POST);
               // echo '</pre>';
-              echo gettype($_POST["jour-aller"]);
               $dataUserTrip = array(
                 'idUser' => $user->getId(),
                 'placeDisponible' => intval($_POST["nbPlaces"]),
@@ -107,16 +118,16 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                 "lieu1" => "",
                 "lieu2" => ""
               );
-              echo "<br>";
+              //echo "<br>";
               if(isset($_POST["lieuDepart_predefini"])){
-                echo "Lieu départ : ". $_POST["lieuDepart_predefini"];
+                $lieuDepart = $_POST["lieuDepart_predefini"];
                 $dataUserTrip['lieu1'] =  $_POST["lieuDepart_predefini"];
               } else {
-                echo "Lieu départ : ". $_POST["lieuDepart_map"];
+                //echo "Lieu départ : ". $_POST["lieuDepart_map"];
                 $dataUserTrip['lieu1'] =  $_POST["lieuDepart_map"];
               }
               
-              echo "<br>";
+              //echo "<br>";
               if(isset($_POST["parSemaine"])){
                 echo "Période : Par semaines";
                 echo "<br>";
@@ -142,19 +153,19 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                   echo "Heure retour : ".$_POST["semaine-heure-retour"]." h ".$_POST["semaine-minute-retour"]."";
                 }
               } else {
-                echo "Période : Par dates";
-                echo "<br>";
-                echo "Date aller : ".$_POST["jour-aller"];
-                echo "<br>";
+                //echo "Période : Par dates";
+                //echo "<br>";
+                //echo "Date aller : ".$_POST["jour-aller"];
+                //echo "<br>";
                 $heureDepart = $_POST["heure-aller"] . ":" . $_POST["minute-aller"] . ":00";
-                gettype($heureDepart);
+                //gettype($heureDepart);
                 $dataUserTrip['heureDepart'] =  $heureDepart;
-                echo "Heure départ : " . $heureDepart;
-                echo "<br>";
+                //echo "Heure départ : " . $heureDepart;
+                //echo "<br>";
                 $heureArrivee = $_POST["heure-arrivee"] . ":" . $_POST["minute-arrivee"] . ":00";
                 $dataUserTrip['heureArrivee'] =  $heureArrivee;
-                echo "Heure arrivée : " . $heureArrivee;
-                echo "<br>";
+                //echo "Heure arrivée : " . $heureArrivee;
+                //echo "<br>";
                 if($_POST["cb-aller-retour"] == "on") {
                   echo "Date retour : ".$_POST["trip-retour"];
                   echo "<br>";
@@ -162,11 +173,11 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                 }
 
               }
-              echo "<br>";
-              echo "Lieu arrivée : ". $_POST["lieuArrivee"];
+              //echo "<br>";
+              //echo "Lieu arrivée : ". $_POST["lieuArrivee"];
               $dataUserTrip['lieu2'] =  $_POST["lieuArrivee"];
               
-              echo "<br>";
+              /*echo "<br>";
               if($_POST["cb-aller-retour"] == "on"){
                 echo "Aller-retour.";
               } else {
@@ -176,9 +187,27 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               echo "Véhicule : ". $_POST["vehicule"];
               echo "<br>";
               echo "Nombre de places proposés : ". $_POST["nbPlaces"];
-              echo "<br>";
-              
-              
+              echo "<br>";*/
+
+              echo "<table>
+                <tr>
+                  <th>Lieu départ</th>
+                  <th>Lieu arrivée</th>
+                  <th>Heure départ</th>
+                  <th>Heure arrivée</th>
+                  <th>Date</th>
+                  <th>Véhicule</th>
+                  <th>Place disponible</th>
+                </tr>
+                <tr>
+                  <td>".$dataUserTrip['lieu1']."</td>
+                  <td>".$dataUserTrip['lieu2']."</td>
+                  <td>".$dataUserTrip['heureDepart']."</td>
+                  <td>".$dataUserTrip['heureArrivee']."</td>
+                  <td>".$dataUserTrip['dateParcours']."</td>
+                  <td>".$_POST["vehicule"]."</td>
+                  <td>".$dataUserTrip['placeDisponible']."</td>
+                </tr></table>";
               $_SESSION["infoTrip"] = $dataUserTrip;
               ?>
               <button type="button" onclick="window.location.href='validation_newTrajet.php'" style="float:right" class="btn button-valide">Valider le trajet</button>

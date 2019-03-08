@@ -54,14 +54,14 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       </li>
       <li class="active">
         <a href="newTrajet.php">
-          <i class="fa fa-map-pin" aria-hidden="true"></i>
+          <i class="fa fa-plus" aria-hidden="true"></i>
           <span>Proposer un trajet</span>
         </a>
       </li>
       <li>
         <a href="trajets.php">
-          <i class="fa fa-car" aria-hidden="true"></i>
-          <span>Trajets publiés</span>
+          <i class="fa fa-book" aria-hidden="true"></i>
+          <span>Trajets et réservations</span>
         </a>
       </li>
       <li>
@@ -129,12 +129,12 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               <fieldset class="fieldset-block-itineraire">
                 <div id="newtrajet-fieldset" class="header-fieldset">
                     <h2>Date et horaire</h2>
-                    <label for="cb-aller-retour"><input type="checkbox" id="cb-aller-retour" name="cb-aller-retour"/>Aller-retour</label>
+                    <label class="disable" for="cb-aller-retour"><input type="checkbox" id="cb-aller-retour" class="disable" name="cb-aller-retour" disabled/>Aller-retour</label>
                 </div>
                 <div class="content-box">
                   <div class="btn-group">
                     <button type="button" data-section="date_precise" class="button-content button-active">Date précise<input type="checkbox" class="checkbox-type-date" name="parDate" checked/></button>
-                    <button type="button" data-section="semaine_alternance" class="button-content" style="cursor: no-drop" disabled>Semaine alternance<input type="checkbox" class="checkbox-type-date" name="parSemaine" disabled/></button>
+                    <button type="button" data-section="semaine_alternance" class="disable" class="button-content" disabled>Semaine alternance<input type="checkbox" class="checkbox-type-date" name="parSemaine" disabled/></button>
                   </div>
                   <div class="content-section default-content" id="semaine_alternance">
                     <div id="date-horaire">
@@ -385,7 +385,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                     ?>
                   </select>
                   <label>Nombre de places proposées : </label>
-                  <input type="number" max="5" min="1" value="3" name="nbPlaces" required/>
+                  <input type="number" max="<?php echo htmlentities($user->getNbPLace()); ?>" min="1" value="<?php echo htmlentities($user->getNbPLace()); ?>" name="nbPlaces" required/>
                 </div>
               </fieldset>
             <button type="submit" style="width:100%" class="btn button-valide">Suivant</button>

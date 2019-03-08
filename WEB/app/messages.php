@@ -47,14 +47,14 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       </li>
       <li>
         <a href="newTrajet.php">
-          <i class="fa fa-map-pin" aria-hidden="true"></i>
+          <i class="fa fa-plus" aria-hidden="true"></i>
           <span>Proposer un trajet</span>
         </a>
       </li>
       <li>
         <a href="trajets.php">
-          <i class="fa fa-car" aria-hidden="true"></i>
-          <span>Trajets publiés</span>
+          <i class="fa fa-book" aria-hidden="true"></i>
+          <span>Trajets et réservations</span>
         </a>
       </li>
       <li>

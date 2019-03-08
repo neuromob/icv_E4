@@ -7,6 +7,11 @@ body{
 	transition: .5s cubic-bezier(.8, .5, .2, 1.4);
 }
 /*Components*/
+.disable {
+	cursor: no-drop !important;
+	color: #ddd !important;
+}
+
 .btn {
 	-webkit-appearance: none;
 	border: 0px;
@@ -89,6 +94,30 @@ input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus,
 	display: inline;
 	margin-left: 10px;
 }
+#icon-contact-profil {
+	vertical-align: bottom;
+	margin-right: 5px;
+	width: 24px;
+}
+.creator-trip {
+	position: absolute;
+	float:left;
+	top: -5px;
+	font-weight: bold;
+}
+.date-trip {
+	position: absolute;
+	float:right;
+	right: 10px;
+	top: 25px;
+	font-weight: bold;
+}
+#icon-contact-profil. {
+	background-color: #ddd;
+	padding: -7px;
+	border-radius: 13px;
+}
+
 #ajouter-itineraire {
 	background: url("https://img.icons8.com/office/40/000000/plus-2-math.png");
 	width: 40px;
@@ -376,14 +405,16 @@ body.marginLeft .bvn_Message{
 	margin-left: 15px;
 	width	: 100%;
 }
-
-#section2, #section3{
+#type-inscription-propose {
+	display: none;
+}
+#trip-reserved, #trip-archived{
   display: none;
 }
 /*Info profil accueil*/
 .grid-info{
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	margin-bottom: 5px;
 	width: 100%;
 }
@@ -402,6 +433,7 @@ body.marginLeft .bvn_Message{
 }
 
 /*FIN Info profil accueil*/
+
 .addresse-marker{
 	width:98%;
 }
@@ -448,6 +480,37 @@ body.marginLeft .bvn_Message{
 	background-color: #45ca51;
     border-color: #45ca51;
     border-bottom-color: #35bc41;
+}
+
+.button-annuler {
+	color: #FFFFFF;
+	background-color: #d84136;
+	cursor: pointer;
+	background: #dc3545;
+	border: 1px solid #F44336;
+	border-bottom: 2px solid #882c25;
+	border-radius: 3px;
+}
+
+.button-annuler:hover{
+	background-color: #f1283b;
+	border-color: #b31a28;
+	border-bottom-color: #FF5722;
+}
+.button-modify {
+	color: #FFFFFF;
+	background-color: #ffc107;
+	cursor: pointer;
+	background: #ffa700;
+	border: 1px solid #ffa700;
+	border-bottom: 2px solid #882c25;
+	border-radius: 3px;
+}
+
+.button-modify:hover{
+	background-color: #ffc107;
+	border-color: #fda600;
+	border-bottom-color: #ffa700;
 }
 
 .button-active{
@@ -663,6 +726,7 @@ li.active a span{
 	color: black;
 }
 .list-group .collapse{
+	position: relative;
 	border: solid 1px black;
 	width: 100%;
 	margin-top: -1px;
@@ -686,6 +750,11 @@ li.active a span{
 	padding: 12px;
 	color: white;
 	
+}
+.list-group .active p #creator-trip {
+	background-color: #ddd;
+    padding: -7px;
+    border-radius: 13px;
 }
 .content {
 	padding: 0 18px;
