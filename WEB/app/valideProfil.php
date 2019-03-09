@@ -106,43 +106,64 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               <h2>Vos préférences</h2>
             </div>
               <?php
-              var_dump($_POST);
-              $tripInfo = $dbh->getTripInfoById($idTrip);
-              if(isset($_GET["tripToDelete"])){
-                if(empty($_GET["tripToDelete"])) {
+              $typeInscription = $_POST["type-inscription"];
+              if($_POST["lieuDepartMap"]){
+                $lieuDepart = $_POST["lieuDepartMap"];
+              } else {
+                $lieuDepart = $_POST["lieuDepart_predefini"];
+              }
+              $lieuArrivee = $_POST["lieuArrivee"];
+              $heureDepart = $_POST["heure-depart-cp-profile"].":".$_POST["minute-depart-cp-profile"].":00";
+              $heureArrivee = $_POST["heure-arrivee-cp-profile"].":".$_POST["minute-arrivee-cp-profile"].":00";
+              if(isset($_POST["type-inscription"])){
+                if(empty($_POST["type-inscription"])) {
                   echo "Nous avons recontré une erreur lors de la réservation du trajet. Vous allez être redirigez automatiquement ou cliquez ci-dessous.";
                   echo "<br>";
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retour à l'accueil</button>";
                 } else {
                   echo "<h1>Félicitation !</h1>";
-                  echo "<p>Vous avez bien été retiré du trajet, vous pouvez à tout moment le réserver depuis la page d'accueil.</p>";
-                  echo "<p>Vous allez être redirigez automatiquement<p>";
-                  echo "<br><br>";
+                  echo "<p>Vos préférences ont bien été mis à jour, vous pouvez à tout moment les modifier depuis la page d'accueil.</p>";
+                  echo "<table>
+                  <tr>
+                    <th>Type d'inscription</th>
+                    <th>Lieu départ</th>
+                    <th>Lieu arrivée</th>
+                    <th>Heure départ</th>
+                    <th>Heure arrivée</th>
+                  </tr>
+                  <tr>
+                    <td>".$typeInscription."</td>
+                    <td>".$lieuDepart."</td>
+                    <td>".$lieuArrivee."</td>
+                    <td>".$heureDepart."</td>
+                    <td>".$heureArrivee."</td>
+                  </tr></table>";
+                  $dataProfile = array("role"=>$typeInscription,"lieuDepart"=>$lieuDepart,"lieuArrivee"=>$lieuArrivee);
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retourner à l'accueil</button>";
-                  //$dbh->deleteTrip($user->getId(),intval($_GET["tripToDelete"]));
+                  $dbh->completeProfile($dataProfile, $user->getId());
 
                 }
                 
               } else {
-                echo "<h2>Souhaitez-vous annuler le trajet ci-dessous ?</h2>";
+                echo "Nous avons recontré une erreur lors de la réservation du trajet. Vous allez être redirigez automatiquement ou cliquez ci-dessous.";
+                  echo "<br>";
+                  echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retour à l'accueil</button>";
                 echo "<table>
                 <tr>
+                  <th>Type d'inscription</th>
                   <th>Lieu départ</th>
                   <th>Lieu arrivée</th>
                   <th>Heure départ</th>
                   <th>Heure arrivée</th>
-                  <th>Date</th>
                 </tr>
                 <tr>
-                  <td>".$tripInfo[0]['villeDepart']."</td>
-                  <td>".$tripInfo[0]['villeArrivee']."</td>
-                  <td>".$tripInfo[0]['heureDepart']."</td>
-                  <td>".$tripInfo[0]['heureArrivee']."</td>
-                  <td>".$tripInfo[0]['dateParcours']."</td>
+                  <td>".$typeInscription."</td>
+                  <td>".$lieuDepart."</td>
+                  <td>".$lieuArrivee."</td>
+                  <td>".$heureDepart."</td>
+                  <td>".$heureArrivee."</td>
                 </tr></table>";
-                echo "<button style='margin-top:2em;float:left' type='button' onclick=\"window.location.href='completeProfile.php'\" class='btn button-valide'>Précédent</button>";
-                echo "<button style='margin-top:2em;float:right' type=\"button\" onclick=\"window.location.href='valideProfil.php?tripToDelete=".$idTrip."'\" class=\"btn button-valide\">Supprimer le trajet</button>";
-                
+                echo "<button style='margin-top:2em;float:left' type='button' onclick=\"window.location.href='completeProfile.php'\" class='btn button-valide'>Précédent</button>";                
               }
               ?>
           </fieldset>

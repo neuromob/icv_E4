@@ -56,7 +56,7 @@ class DBHandler {
     public function refreshUser($userId) {
         return new User($this->getAllInfo($userId));
     }
-
+	// update user from parametre
     public function update_User($newUserData, $id, $oldPassword){
 		$this->getConnection();
         $sql = "UPDATE Utilisateur 
@@ -83,18 +83,66 @@ class DBHandler {
         $this->updateCar($newUserData, $id);
         $this->updateAdress($newUserData, $id);
         return true;
-    }
-    
+	}
+	
+	public function completeProfile($data, $idUser) {
+		$this->getConnection();
+					
+		$result = null;
+		$role = $data["role"];
+		$lieuDepart = $data["lieuDepart"];
+		$lieuArrivee = $data["lieuArrivee"];
+
+		$lieu1 = $this->placeIsCreate($lieuDepart);
+		$lieu2 = $this->placeIsCreate($lieuArrivee);
+
+		if($lieu1 == false){
+			$idLieuDepart = $this->createPlace($lieuDepart);
+			$idLieuDepart = intval($idLieuDepart);
+		} else {
+			$idLieuDepart = intval($lieu1["id"]);
+		}
+		if($lieu2 == false){
+			$idLieuArrivee = $this->createPlace($lieuArrivee);
+			$idLieuArrivee = intval($idLieuDepart);
+		} else {
+			$idLieuArrivee = intval($lieu2["id"]);
+		}
+		
+		$sql = "UPDATE `Utilisateur` U SET `role` = 
+		(SELECT id FROM Role WHERE nom = :role), 
+		`lieu_Depart` = :lieuDepart, `lieu_Arrivee` = :lieuArrivee
+		 WHERE U.`id` = :idUser;"; 
+		
+		
+		
+		try{
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':role', $role, PDO::PARAM_STR);
+			$stmt->bindParam(':lieuDepart', $idLieuDepart, PDO::PARAM_STR);
+			$stmt->bindParam(':lieuArrivee', $idLieuArrivee, PDO::PARAM_STR);
+			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
+			$stmt->execute();
+		}
+		catch(SQLException $e) {
+			error_log("SQL ERROR : ".$e->getMessage());
+			return false;
+		}
+
+		$this->closeConnection();
+		
+		return true;
+		
+	}
+
     // Fo,ction de récupération des information du véhicule de l'user s'il en a un
-		public function getVehicle($data){
+		public function getVehicle($idUser){
 			$this->getConnection();
 			error_log("db->getVehicle: start ! ");
 			
-			$idUser = $data['idUser'];
-			
 			$result = null;
 			
-			$sql = "SELECT V.id, V.marque, V.modele, V.place, V.couleur FROM `Voiture` V
+			$sql = "SELECT V.id, V.marque, V.modele, V.couleur, U.nom, U.prenom FROM `Voiture` V
 			INNER JOIN `Utilisateur` U ON U.voiture = V.id
 			WHERE U.id = :idUser;"; 
 			
@@ -104,7 +152,7 @@ class DBHandler {
 			
 			if($stmt->rowCount() > 0){
 				
-				$result = $stmt->fetchObject();
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);
 				
 			}
 			else{
@@ -117,7 +165,31 @@ class DBHandler {
 			
 			return $result;
 			
-		}	
+		}
+		public function getPlaceDispo($idTrip){
+			$this->getConnection();
+			error_log("db->getVehicle: getPlaceDispo ! ");
+			
+			$sql="SELECT count(*) as placeDisponible 
+			FROM Reservation 
+			WHERE (SELECT status FROM Trajet WHERE id = :idTrip) = 'ACTIF' AND trajet = :idTrip AND status = 'ACTIF' LIMIT 1";
+
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':idTrip', $idTrip, PDO::PARAM_INT);
+			$stmt->execute();
+
+			if($stmt->rowCount() > 0) {
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			} else {
+				$result = "NULL";
+			}
+
+			$this->closeConnection();
+
+			return $result;
+			
+			
+		}
     // Fonction de modification d'information véhicule depuis les paramètres
 		public function updateCar($data, $idUser){
 			$this->getConnection();
@@ -174,15 +246,28 @@ class DBHandler {
     
     public function getAllInfo($id) {
 		$this->getConnection();
-        $sql = "SELECT Utilisateur.id,Utilisateur.nom,Utilisateur.prenom,Utilisateur.email,Utilisateur.motDePasse,Adresse.numeroRue,Adresse.nomRue,Adresse.codePostal,Adresse.ville,Voiture.marque,Voiture.modele,Voiture.place,Voiture.couleur FROM Utilisateur
+        $sql = "SELECT Utilisateur.id,Utilisateur.nom,Utilisateur.prenom,Utilisateur.email,Utilisateur.motDePasse,Adresse.numeroRue,Adresse.nomRue,Adresse.codePostal,Adresse.ville,Voiture.marque,Voiture.modele,Voiture.place,Voiture.couleur, R.nom as role, Ld.lieu as lieuDepart, La.lieu as lieuArrivee FROM Utilisateur
                 INNER JOIN Adresse ON Utilisateur.adresse = Adresse.id
                 INNER JOIN Voiture ON Utilisateur.voiture = Voiture.id
-                WHERE Utilisateur.id = ?";
+				INNER JOIN Lieu Ld ON Utilisateur.lieu_Depart = Ld.id
+				INNER JOIN Lieu La ON Utilisateur.lieu_Arrivee = La.id
+				INNER JOIN Role R ON Utilisateur.role = R.id
+                WHERE Utilisateur.id = :idUser";
         $stmt = $this->conn->prepare($sql);
-        $stmt -> bindParam(1, $id);
-        $stmt -> execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $userData;
+        $stmt -> bindParam(":idUser", $id);
+		$stmt -> execute();
+		if($stmt->rowCount() > 0){
+				
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			
+		}
+		else{
+			
+			$result['response'] = "KO";
+			
+		}
+        
+        return $result;
     }
 
     public function get_DB(){
@@ -201,17 +286,16 @@ class DBHandler {
 	// Récupération de la liste des trajets disponible que l'user n'a pas crée et n'a pas déjà réservé
     public function getListTrip($idUser){
         $this->getConnection();
-        error_log("db->getListTrip: start ! ");
-       $sql = "SELECT T.id as idTrajet, T.idConducteur, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart, La.lieu as villeArrivee, V.marque as marque, V.modele as modele, V.place as place, V.couleur as couleur, U.nom as nom, U.prenom as prenom FROM Trajet T
+		error_log("db->getListTrip: start ! ");
+		$result['response'] = "OK";
+       $sql = "SELECT T.id as idTrajet, T.idConducteur, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart, La.lieu as villeArrivee FROM Trajet T
 				INNER JOIN Lieu Ld ON T.lieuDepart = Ld.id
 				INNER JOIN Lieu La ON T.lieuArrivee = La.id
-				INNER JOIN Utilisateur U ON T.idConducteur = U.id
-				INNER JOIN Voiture V ON U.id = V.id
 				WHERE T.status = 'ACTIF'
 				AND T.placeDisponible > (SELECT COUNT(*) FROM Reservation R WHERE R.trajet = T.id AND R.status = 'ACTIF')    
 				AND T.idConducteur NOT LIKE :idUser
 				AND NOT EXISTS (SELECT * FROM Reservation R WHERE R.trajet = T.id AND R.idUtilisateur LIKE :idUser AND R.status LIKE 'ACTIF')
-				ORDER BY T.id ASC"; 
+				ORDER BY T.dateParcours ASC"; 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
         $stmt->execute();
@@ -221,7 +305,7 @@ class DBHandler {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
         } else {
-			return "error with : ".$sql;
+			$result['response'] = "KO";
 		}
         
         $this->closeConnection();
@@ -253,23 +337,6 @@ class DBHandler {
         $this->closeConnection();
 	}
 
-	public function getRole($id){
-		$this->getConnection();
-		$sql = "SELECT R.nom FROM Role R INNER JOIN Utilisateur U ON U.role = R.id  WHERE U.id = :idUtilisateur LIMIT 1";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bindParam(':idUtilisateur', $id, PDO::PARAM_INT);
-		$stmt->execute();
-
-		if($stmt->rowCount() > 0){
-            
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-        }
-        
-        $this->closeConnection();
-        
-		
-	}
     // Fonction de réservation de trajet
 		public function reservation($idUser,$idTrip){
 			$this->getConnection();
@@ -309,16 +376,6 @@ class DBHandler {
 						$result['response'] = "KO";
 					}
 					
-					$sql3 = "UPDATE Trajet SET placeDisponible = placeDisponible - 1 WHERE id = :idTrip;";
-					try{
-						$stmt3 = $this->conn->prepare($sql3);
-						$stmt3->bindParam(':idTrip', $idTrip, PDO::PARAM_INT);
-						$stmt3->execute();
-					}
-					catch(SQLException $e) {				
-						error_log("SQL ERROR : ".$e->getMessage());		
-						$result['response'] = "KO";
-					}
 				}
 				else{
 					
@@ -560,20 +617,19 @@ class DBHandler {
 		/*
 		* Fonction de suppression de reservation
 		* Elle met a jour aussi le nombre de place disponible pour le voyage s'il n'a pas été supprimé
+		* Return nombre de place dispo 
 		*/
-		public function deleteReservation($idUser, $idTrip, $idConducteur){
+		public function deleteReservation($idUser, $idTrip){
 			$this->getConnection();			
 			$result['response'] = 'OK';
 			
-			$sql = "UPDATE `Reservation` SET `status` = 'STOP' WHERE trajet = :idTrip AND idUtilisateur = :idUser;
-			UPDATE Trajet SET placeDisponible = placeDisponible + 1 WHERE id = :idTrip AND idConducteur = :idConducteur";
+			$sql = "UPDATE `Reservation` SET `status` = 'STOP' WHERE trajet = :idTrip AND idUtilisateur = :idUser;";
 			
 			try{
 				
 				$stmt = $this->conn->prepare($sql);
-				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
 				$stmt->bindParam(':idTrip', $idTrip, PDO::PARAM_INT);
-				$stmt->bindParam(':idConducteur', $idConducteur, PDO::PARAM_INT);
+				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
 				$stmt->execute();
 			}
 			catch(SQLException $e){

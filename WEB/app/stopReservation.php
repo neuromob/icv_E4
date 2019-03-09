@@ -109,17 +109,18 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
               $idTrip = $_POST["idTrip"];
               $idConducteur = $_POST["idConducteur"];
               $tripInfo = $dbh->getTripInfoById($idTrip);
+              var_dump($tripInfo);
               if(isset($_GET["valideReservation"])){
                 if(empty($_GET["valideReservation"]) OR empty($_GET["tripToDelete"])) {
                   echo "Nous avons recontré une erreur lors de la réservation du trajet. Vous allez être redirigez automatiquement ou cliquez ci-dessous.";
                   echo "<br>";
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retour à l'accueil</button>";
                 } else {
+                  $dbh->deleteReservation($user->getId(),intval($_GET["tripToDelete"]));
                   echo "<h1>Félicitation !</h1>";
                   echo "<p>Vous avez bien été retiré du trajet, vous pouvez à tout moment le réserver depuis la page d'accueil.<br>
                   Vous allez être redirigez automatiquement<p>";
                   echo "<br><br>";
-                  $dbh->deleteReservation($user->getId(),intval($_GET["tripToDelete"]), intval($_GET["valideReservation"]));
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retourner à l'accueil</button>";
                 }
                 

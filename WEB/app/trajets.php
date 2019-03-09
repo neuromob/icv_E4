@@ -21,12 +21,17 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
     table {
       border-collapse: collapse;
       width: 100%;
+      table-layout:auto;
     }
 
     th, td {
       padding: 8px;
       text-align: left;
       border-bottom: 1px solid #ddd;
+    }
+    td {
+      margin-left: 10px;
+      padding-left: 1em;
     }
 
     tr:hover {background-color:#f5f5f5;}
@@ -96,7 +101,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
       </div>
       <div class="content-box">
         <div class="btn-group">
-          <button type="button" data-section="trip-publied" class="button-content button-active">Trajets à venir</button>
+          <button type="button" data-section="trip-publied" class="button-content button-active">Trajets publiés</button>
           <button type="button" data-section="trip-reserved" class="button-content">Trajets reservés</button>
           <button type="button" data-section="trip-archived" class="button-content">Trajets archivés</button>
         </div>
@@ -104,7 +109,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <?php
           $listOfCreatedTrip = $dbh->getMyListOfCreatedTrips($user->getId());
           $lengthCreatedTrip = count($listOfCreatedTrip);
-          
+              echo $placeDisponible["placeDisponible"];
           if($lengthCreatedTrip >= 1){
             if($_GET["modifyMode"] == 1){
               echo "<table>
@@ -122,6 +127,7 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
             }else {
               echo "<table>
               <tr>
+                <th>id</th>
                 <th>Date</th>
                 <th>Heure départ</th>
                 <th>Heure arrivée</th>
@@ -131,17 +137,31 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                 <th>Status</th>
                 <th>Action</th>
               </tr>";
-              for($i=0;$i<$lengthCreatedTrip;$i++) {
+              for($i=0;$i<$lengthCreatedTrip;$i++) { 
+                /* $listOfCreatedTrip[$i]["placeDisponible"] = colonne placeDisponible (table 'Trajet') : Place proposé lors de la création d'un trajet
+                  * $nbPersonneInscrit["placeDisponible"] = nombre de colonnne trajet (table 'Reservation') présente selon un id de trajet donné (ici boucle
+                  sur toute les jeux de résultats de listOfCreatedTrip).
+                  * Soustraction du nombre de place disponible (place proposé) moins le nombre de personnes étant inscrit au trajet pour
+                  * connaitre le nombre de place restant.
+                  */
+                  $nbPersonneInscrit = $dbh->getPlaceDispo($listOfCreatedTrip[$i]["id"]);
+                  $placeDisponible = 0;
+                  $nbInscrit = intval($nbPersonneInscrit["placeDisponible"]);
+                  $nbTotal = intval($listOfCreatedTrip[$i]["placeDisponible"]);
+                  $placeDisponible = $nbTotal - $nbInscrit ;
+
                 echo "<tr>
+                <td>".$listOfCreatedTrip[$i]["id"]."</td>
                 <td>".$listOfCreatedTrip[$i]["dateParcours"]."</td>
                 <td>".$listOfCreatedTrip[$i]["heureDepart"]."</td>
                 <td>".$listOfCreatedTrip[$i]["heureArrivee"]."</td>
                 <td>".$listOfCreatedTrip[$i]["villeDepart"]."</td>
                 <td>".$listOfCreatedTrip[$i]["villeArrivee"]."</td>
-                <td>".$listOfCreatedTrip[$i]["placeDisponible"]."</td>
+                <td style='text-align:center'>". $placeDisponible ." / ". $listOfCreatedTrip[$i]["placeDisponible"] ."</td>
                 <td>".$listOfCreatedTrip[$i]["status"]."</td>
                 <td>
-                <form action='stopTrajet.php' method='post'><input name='idPersonnalTrip' value=". $listOfCreatedTrip[$i]['id'] ." hidden/><button type='button' onclick=\"window.location.href='trajets.php?modifyMode=1'\" style='padding: 3px 5px 5px;height: 25px' type='button' class='btn button-modify disable' disabled>Modifier</button>
+                <form action='stopTrajet.php' method='post'><input name='idPersonnalTrip' value=". $listOfCreatedTrip[$i]['id'] ." hidden/>
+                <button type='button' onclick=\"window.location.href='trajets.php?modifyMode=1'\" style='padding: 3px 5px 5px;height: 25px' type='button' class='btn button-modify disable' disabled>Modifier</button>
                 <button type='submit' style='padding: 3px 5px 5px;height: 25px' type='button' class='btn button-annuler'>Annuler</button></form></td>
                 </tr>";
               }

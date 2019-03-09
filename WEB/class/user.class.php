@@ -17,6 +17,9 @@ class User {
     private $currentUserModele;
     private $currentUserNbPlace;
     private $currentUserCouleur;
+    private $currentRole;
+    private $currentLieuDepart;
+    private $currentLieuArrivee;
 
     public function __construct($result){
         $this->currentUserId = (int) $result["id"];
@@ -32,6 +35,9 @@ class User {
         $this->currentUserModele = (string) $result["modele"];
         $this->currentUserNbPlace = (int) $result["place"];
         $this->currentUserCouleur = (string) $result["couleur"];        
+        $this->currentRole = (string) $result["role"];        
+        $this->currentLieuDepart = (string) $result["lieuDepart"];        
+        $this->currentLieuArrivee = (string) $result["lieuArrivee"];        
     }
     public function log_User_Out() {
         if(isset($_SESSION['status'])) {
@@ -93,5 +99,14 @@ class User {
     }
     public function getCouleur() {
         return $this->currentUserCouleur;
+    }
+    public function getRole() {
+        return $this->currentRole;
+    }
+    public function getLieuDepart() {
+        return $this->currentLieuDepart;
+    }
+    public function getLieuArrivee() {
+        return $this->currentLieuArrivee;
     }
 }

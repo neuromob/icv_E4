@@ -108,9 +108,9 @@ $listTrip = $dbh->getListTrip();
                     <label for="type-inscription">Type d'inscription : </label>
                     <select type="text" id="type-inscription" name="type-inscription" class="input-box" required>
                         <option value="">--Veuillez compléter votre choix--</option>
-                        <option value="recherche">Je recherche</option>
-                        <option value="propose">Je propose</option>
-                        <option value="both">Les deux</option>
+                        <option value="Passager">Je recherche</option>
+                        <option value="Conducteur">Je propose</option>
+                        <option value="conducteurPass">Les deux</option>
                     </select>
                 </div>
                 <div id="type-inscription-propose">
@@ -137,8 +137,8 @@ $listTrip = $dbh->getListTrip();
                                 <input type="checkbox" id="predefini_checkbox"/>
                             <select type="text" name="lieuDepart_predefini" class="input-box" id="lieuDepart_predefini" disabled>
                                 <option value="default">--Veuillez choisir un lieu prédéfini--</option>
-                                <option value="avignon">Site d'Avignon</option>
-                                <option value="pertuis">Site de Pertuis</option>
+                                <option value="Site d'Avignon">Site d'Avignon</option>
+                                <option value="Site de Pertuis">Site de Pertuis</option>
                             </select>
                             </div>
                             <div class="grid-horaire">

@@ -112,7 +112,7 @@ input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus,
 	top: 25px;
 	font-weight: bold;
 }
-#icon-contact-profil. {
+#icon-contact-profil {
 	background-color: #ddd;
 	padding: -7px;
 	border-radius: 13px;
@@ -415,8 +415,14 @@ body.marginLeft .bvn_Message{
 .grid-info{
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	margin-bottom: 5px;
+	margin-bottom: 1em;
 	width: 100%;
+}
+.grid-profile-passager{
+	display: grid;
+	grid-template-columns: 1fr min-content 1fr;
+	border: solid 1px #153439;
+	margin: 1em 0 1em;
 }
 .p-info-profil {
 	text-align: center;

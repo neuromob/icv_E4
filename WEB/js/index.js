@@ -20,8 +20,10 @@ $(function() {
     var valueOfSelect = $(this).val();
     if (valueOfSelect == "inscription-oui") {
       $("#btn-complete-profil").show();
+      $(".grid-profile-passager").show();
     } else {
       $("#btn-complete-profil").hide();
+      $(".grid-profile-passager").hide();
     }
   });
   $("#type-inscription").change(function() {

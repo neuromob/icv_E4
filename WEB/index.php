@@ -44,6 +44,7 @@ if(isset($_POST['connexion'])) {
             $userVerified = $dbh->verify_User_and_Pass($Email,$MotDePasse);
             if(isset($userVerified)) {
               echo "<div id='success_MSG'>Vous êtes à présent connecté !</div>";
+              var_dump($userVerified);
               $user = new User($userVerified);
               $user_serlizer = base64_encode(serialize($user));
               $_SESSION["userObject"] = $user_serlizer;
