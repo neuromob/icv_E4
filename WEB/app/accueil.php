@@ -83,10 +83,15 @@ $listTrip = $dbh->getListTrip();
         </li>
       </ul>
     </div>
+    
     <div class="main">
-      <div class="box shadow">
+      <div id="profil" class="box shadow">
         <div class="header-box">
           <h1>Profil</h1>
+          <label class="switch">
+            <input type="checkbox" onclick="show_checked()" name="profile" checked>
+            <span class="slider round"></span>
+          </label>
         </div>
         <div class="content-box">
           <div id="lieu_Depart">
@@ -118,7 +123,16 @@ $listTrip = $dbh->getListTrip();
           </div>
         </div>
       </div>
-      <div class="box shadow">
+      <script>
+      function show_checked(){
+        if($('input[name=profile]').is(':checked')==true){
+          $('#profil').removeClass("unactive");
+        } else {
+          $('#profil').addClass("unactive");
+        }
+      }
+    </script>
+      <div class="box shadow" style="margin-bottom: 5em;">
         <div class="header-box">
           <h1>Liste des trajets disponibles</h1>
         </div>
