@@ -5,9 +5,8 @@ body {
 }
 .main{
     margin-top: 1em;
-    margin-left: auto;
-    margin-right: 15px;
-    width: 96%;
+    margin-left: 60px;
+    width: 95%;
 }
 .marginLeft{
     margin-left: 250px;
@@ -40,27 +39,31 @@ body {
     background-image: -webkit-linear-gradient(top, #ececec 2%, #ececec 98%);
     background-image: linear-gradient(to bottom,#ececec 2%, #ececec 98%);
 } */
-
 table {
-    width:100%;
-}
-table, th, td {
-    border: 1px solid black;
     border-collapse: collapse;
+    width: 100%;
+    table-layout:auto;
     margin-top: 2em;
-}
-th, td {
-    padding: 11px;
+  }
+
+  th, td {
+    padding: 8px;
     text-align: left;
-}
+    border-bottom: 1px solid #ddd;
+  }
+  td {
+    margin-left: 10px;
+    padding-left: 1em;
+  }
+
+  tr:hover {background-color:#f5f5f5;}
+
+
 th{
     width: 150px;
 }
-table tr:nth-child(even) {
-    background-color: #f5f5f5;
-}
-table tr:nth-child(odd) {
-    background-color: #fff;
+.my-profil{
+    margin-top: 1em;
 }
 .my-profil a {
     padding: 7px !important;

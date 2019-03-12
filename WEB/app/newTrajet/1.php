@@ -1,28 +1,38 @@
+<?php
+include "../php/sessionIsStarted.php";
+include '../class/user.class.php';
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
+$user = unserialize((base64_decode($_SESSION['userObject'])));
+?>
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="fr" >
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width" />
   <title>ICV | Accueil</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/home.css">
+  <link rel="stylesheet" href="../../css/home.css">
 
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 
 <body>
   <ul class="topNav">
-    <li><a href="../php/logout.php">Déconnexion</a></li>
+    <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $user->getNom()."</p>"; ?></li>
+    <li><a href="../../php/logout.php">Déconnexion</a></li>
   </ul>
     
+  
   <div class="leftMenu">
       <div class="hamburger active">
           <span></span>
           <span></span>
           <span></span>
         </div>
-    
     
     <ul class="leftMenuList">
       <div class="header">
@@ -34,21 +44,20 @@
           <span>Liste des trajets</span>
         </a>
       </li>
-      
-      <li>
-        <a href="trajets.html">
-          <i class="fa fa-car" aria-hidden="true"></i>
-          <span>Mes trajets</span>
-        </a>
-      </li>
       <li class="active">
-        <a href="newTrajet.html">
+        <a href="newTrajet.php">
           <i class="fa fa-map-pin" aria-hidden="true"></i>
-          <span>Créer un nouveau trajet</span>
+          <span>Proposer un trajet</span>
         </a>
       </li>
       <li>
-        <a href="parametres.html">
+        <a href="trajets.php">
+          <i class="fa fa-car" aria-hidden="true"></i>
+          <span>Trajets publiés</span>
+        </a>
+      </li>
+      <li>
+        <a href="parametres.php">
           <i class="fa fa-wrench" aria-hidden="true"></i>
           <span>Paramètres</span>
         </a>
@@ -56,7 +65,7 @@
       <hr>
       <i id="message-leftMenu" style="color: gray">Messages</i>
       <li>
-        <a href="messages.html">
+        <a href="messages.php">
           <i class="fa fa-envelope" aria-hidden="true"></i>
           <span>Mes messages</span>
         </a>
@@ -64,8 +73,18 @@
         </li>
     </ul>
   </div>
-  
-  
+  <div class="main">
+      <div class="box shadow">
+        <div class="header-box">
+          <h1 class="title">Publier une annonce</h1>
+        </div>
+        <div class="content-box">
+        
+        </div>
+        <button type="button" onclick="window.location.href='../newTrajet.php'" class="btn button-info">Précédent</button>
+        <button type="button" onclick="window.location.href='2.php'" class="btn button-valide">Suivant</button>
+      </div>
+    </div>
 
     <script  src="../js/index.js"></script>
 

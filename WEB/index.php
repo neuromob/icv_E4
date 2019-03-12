@@ -15,7 +15,7 @@ echo "<html>
   <link rel='stylesheet' type='text/css' media='screen' href='css/style.css' />
   <script src='main.js'></script>
 
-  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
 </head>
 <body class='main'>
   <form class='login' method='POST'>
@@ -40,11 +40,11 @@ if(isset($_POST['connexion'])) {
         } else {
             $Email = htmlentities($_POST['email'], ENT_QUOTES, "ISO-8859-1"); 
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
-            echo sha1("in".$randomSalt);
             $dbh = new DBHandler();
             $userVerified = $dbh->verify_User_and_Pass($Email,$MotDePasse);
             if(isset($userVerified)) {
               echo "<div id='success_MSG'>Vous êtes à présent connecté !</div>";
+              var_dump($userVerified);
               $user = new User($userVerified);
               $user_serlizer = base64_encode(serialize($user));
               $_SESSION["userObject"] = $user_serlizer;
