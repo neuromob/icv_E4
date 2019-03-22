@@ -70,12 +70,12 @@ namespace ICV_Admin
         {
             MySqlConnection connection = null;
             string connectionString = null;
-            List<User> tempList = new List<User>();
 
             string salt = "dzjnaihbafgireger%fzfzea$-eza19$*";
 
             connectionString = "SERVER=localhost;PORT=3306;DATABASE=covoiturage;UID=root;PWD=;";
             connection = new MySqlConnection(connectionString);
+
             try
             {
                 connection.Open();
@@ -89,17 +89,16 @@ namespace ICV_Admin
                     password = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
 
                 }
-                MySqlCommand cmd = new MySqlCommand("SELECT * from utilisateur WHERE email='" + textBoxLogin.Text + "' AND motDePasse='" + password + "'", connection);
+                MySqlCommand cmd = new MySqlCommand("SELECT * from utilisateur WHERE email='" + textBoxLogin.Text + "' AND motDePasse='" + password + "' LIMIT 1", connection);
 
                 MySqlDataReader reader = cmd.ExecuteReader();
 
-                string login = null;
 
+                // Création de l'objet U de la classe User avec le résultat de la requête et sauvegarde de l'objet dans la classe Main.cs : CurrentUser
                 while (reader.Read())
                 {
                     User U = new User { ID = (int)reader["id"], Nom = (string)reader["nom"], Prenom = (string)reader["prenom"], Email = (string)reader["email"], Adresse = (int)reader["adresse"], Voiture = (int)reader["voiture"], Role = (string)reader["role"], Filiere = (int)reader["filiere"], LieuDepart = (int)reader["lieu_Depart"], LieuArrivee = (int)reader["lieu_Arrivee"], Status = (int)reader["status"] };
                     Main.CurrentUser = U;
-                    tempList.Add(U);
                 }
                 connection.Close();
 
