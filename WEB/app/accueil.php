@@ -134,6 +134,8 @@ $listTrip = $dbh->getListTrip($idUser);
         } else {
           for($i=0;$i<count($listTrip);$i++) {
             $placeDisponible = 0;
+            $infoDistance = $dbh->getDistanceBetweenPoint($listTrip[$i]['villeDepart'],$listTrip[$i]['villeArrivee']);
+            $infoDistance = json_decode($infoDistance, true);
             $newDate = date("d-m-Y", strtotime($listTrip[$i]["dateParcours"]));
             $infoConducteur = $dbh->getVehicle($listTrip[$i]["idConducteur"]);
             $idTrajet = $listTrip[$i]["idTrajet"];
@@ -141,7 +143,7 @@ $listTrip = $dbh->getListTrip($idUser);
             
             $nbInscrit = intval($nbPersonneInscrit["placeDisponible"]);
             $nbTotal = intval($listTrip[$i]["placeDisponible"]);
-            $placeDisponible = $nbTotal - $nbInscrit ;
+            $placeDisponible = $nbTotal - $nbInscrit;
 
             echo "<button type='button' class='collapse'>
                     <p class='creator-trip'>"
@@ -150,6 +152,8 @@ $listTrip = $dbh->getListTrip($idUser);
                     . $listTrip[$i]['villeDepart'] . " &#x2794; ". $listTrip[$i]['villeArrivee'] .
                     "<br>"
                     .$listTrip[$i]["heureDepart"]." &#x2794; ". $listTrip[$i]["heureArrivee"] .
+                    "<br>"
+                    .$infoDistance["rows"][0]["elements"][0]["distance"]["text"].
                     "<p class='date-trip'>". $newDate ."</p>
                   </button>";
             echo "<div class='content'><ul>";

@@ -12,30 +12,37 @@ echo "<html>
   <title>ICV | Login</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel='stylesheet' type='text/css' media='screen' href='css/style.css' />
-  <script src='main.js'></script>
-
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+   <script type='text/javascript' src='js/jquery-3.3.1.min.js'></script>
 </head>
 <body class='main'>
-  <form class='login' method='POST'>
+  <form class='login' id='loginForm' method='POST'>
     <input type='text' class='input-box' name='email' placeholder='Entrez votre e-mail' /> 
     <input type='password' class='input-box' name='motdepasse' placeholder='Entrez votre mot de passe'/>
     <div class='cb_RememberMe'>
       <input type='checkbox' id='remember' name='remember'/>
       <label for='remember'>Se souvenir de moi.</label>
     </div>
-    <button type='submit' class='btn btn-block' name='connexion' value='Connexion'>Se connecter</button>
+    <button type='submit' id='btnConnexion' class='btn btn-block' name='connexion' value='Connexion'>Se connecter</button>
   </form>
+  <script>
+    
+  $(document).ready(function(){
+    $('#errorModal').hide();
+  });
+    $('#btnConnexion').on('click', function(){
+      $('#errorModal').css('display', 'block');
+    })
+  </script>
 </body>
 </html>";
 
 if(isset($_POST['connexion'])) {
     
     if(empty($_POST['email'])) {
-        echo "<div id='error_Mail_MSG'>Le champ E-mail est vide.</div>";
+      $message = "<div id='error_Mail_MSG'>Le champ E-mail est vide.</div>";
     } else {
         if(empty($_POST['motdepasse'])) {
-            echo "<div id='error_Mdp_MSG'>Le champ Mot de passe est vide.</div>";
+          $message = "<div id='error_Mdp_MSG'>Le champ Mot de passe est vide.</div>";
         } else {
             $Email = htmlentities($_POST['email'], ENT_QUOTES, "ISO-8859-1"); 
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
@@ -52,7 +59,7 @@ if(isset($_POST['connexion'])) {
               header('Location: app/accueil.php');
           } else {
               $_SESSION["authentified"] = null;
-              echo "<div id='error_MSG'>Le pseudo ou le mot de passe est incorrect, le compte n'a pas été trouvé.</div>";
+              $message = "<div id='error_MSG'>Le pseudo ou le mot de passe est incorrect, le compte n'a pas été trouvé.</div>";
           }
             
             //$result = $user->login($Email,$MotDePasse);
@@ -68,6 +75,16 @@ if(isset($_POST['connexion'])) {
         }
     }
 }   
+
+echo "<div id='errorModal' class='modal'>
+
+<!-- Modal content -->
+<div class='modal-content'>
+  <span class='close'>&times;</span>
+  ".$message ."
+  </div>
+
+</div>";
 
 
 ?>

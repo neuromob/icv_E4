@@ -307,11 +307,20 @@ class DBHandler {
         } else {
 			$result['response'] = "KO";
 		}
-        
-        $this->closeConnection();
+		
+		$this->closeConnection();
+		//var_dump($result);
         
         return $result;
         
+	}
+
+	public function getDistanceBetweenPoint($ville1, $ville2) {
+		$pattern = "/(\s|,)+/";
+		$ville1 = preg_replace($pattern, "+", $ville1);
+		$ville2 = preg_replace($pattern, "+", $ville2);
+		$distance = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$ville1."&destinations=".$ville2."&mode=bicycling&language=fr-FR&key=AIzaSyB4wS9TPSIExN2MI6WvJMk8-o6CqXEeTC4");
+		return $distance;
 	}
 
 	public function getTripInfoById($id) {
@@ -399,16 +408,26 @@ class DBHandler {
 			$placeDisponible = $data['placeDisponible'];
 			$dateParcours = $data['dateParcours'];
 			$heureDepart = $data['heureDepart'];
-            $heureArrivee = $data['heureArrivee'];
+			$heureArrivee = $data['heureArrivee'];
+			var_dump($data);
             $status = 'ACTIF';
 			
             $lieu1 = $this->placeIsCreate($data['lieu1']);
-            $lieu2 = $this->placeIsCreate($data['lieu2']);
-            
+			$lieu2 = $this->placeIsCreate($data['lieu2']);
+			var_dump($data);
+			$latitude = $data['latitude'];
+			$longitude = $data['longitude'];
 
 		    // Appel de la fonction création de lieu pour l'ajouter au prochain trajet
             if($lieu1 == false){
-                $idLieuDepart = $this->createPlace($data['lieu1']);
+				if($data['lieu1']== "Site de Pertuis"){
+					$latitude = "43.678268";
+					$longitude = "5.501765";
+				} else {
+					$latitude = "43.916650";
+					$longitude = "4.884497";
+				}
+                $idLieuDepart = $this->createPlace($data['lieu1'],$latitude,$longitude);
                 $idLieuDepart = intval($idLieuDepart);
             } else {
                 $idLieuDepart = $lieu1["id"];
@@ -416,7 +435,14 @@ class DBHandler {
             }
 
             if($lieu2 == false){
-                $idLieuArrivee = $this->createPlace($data['lieu2']);
+				if($data['lieu2'] == "Site de Pertuis"){
+					$latitude = "43.678268";
+					$longitude = "5.501765";
+				} else {
+					$latitude = "43.916650";
+					$longitude = "4.884497";
+				}
+                $idLieuArrivee = $this->createPlace($data['lieu2'],$latitude,$longitude);
                 $idLieuArrivee = intval($idLieuArrivee);
             } else {
                 $idLieuArrivee = $lieu2["id"];
@@ -480,16 +506,18 @@ class DBHandler {
 		* pratique mais dangereux dans le cas où 2 personnes en même temps font un insert ou un updateCar
 		* mais à petite echelle ce risque est faible
 		*/
-		public function createPlace($lieu){
+		public function createPlace($lieu, $latitude, $longitude){
 			
 			error_log("db->createPlace: start ! ");
 			
-			$sql = "INSERT INTO `Lieu` (lieu) VALUES (:lieu);";
+			$sql = "INSERT INTO `Lieu` (lieu, latitude, longitude) VALUES (:lieu, :latitude, :longitude);";
 			
 			try{
 				
 				$stmt = $this->conn->prepare($sql);
 				$stmt->bindParam(':lieu', $lieu, PDO::PARAM_STR);
+				$stmt->bindParam(':latitude', $latitude, PDO::PARAM_STR);
+				$stmt->bindParam(':longitude', $longitude, PDO::PARAM_STR);
 				$stmt->execute();
 				$idPlace = $this->conn->lastInsertId();
 			}

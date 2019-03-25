@@ -105,9 +105,9 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                   echo "<h1>Félicitation !</h1>";
                   echo "<p>Votre annonce pour le trajet <span style='font-weight:bold'>". $tripInfo['lieu1'] ." &#x2794; ". $tripInfo['lieu2'] ."</span> à bien été validé<p>";
                   echo "<br><br>";
-                  $dbh->createTrip($tripInfo);
                   unset($_SESSION['infoTrip']);
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retourner à l'accueil</button>";
+                  $dbh->createTrip($tripInfo);
                 }
               ?>
             </div>

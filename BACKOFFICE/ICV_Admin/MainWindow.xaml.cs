@@ -73,7 +73,7 @@ namespace ICV_Admin
 
             string salt = "dzjnaihbafgireger%fzfzea$-eza19$*";
 
-            connectionString = "SERVER=localhost;PORT=3306;DATABASE=covoiturage;UID=root;PWD=;";
+            connectionString = "SERVER=192.168.5.65;PORT=3306;DATABASE=covoiturage_final;UID=admin;PWD=toor;";
             connection = new MySqlConnection(connectionString);
 
             try
@@ -89,7 +89,7 @@ namespace ICV_Admin
                     password = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
 
                 }
-                MySqlCommand cmd = new MySqlCommand("SELECT * from utilisateur WHERE email='" + textBoxLogin.Text + "' AND motDePasse='" + password + "' LIMIT 1", connection);
+                MySqlCommand cmd = new MySqlCommand("SELECT * from Utilisateur WHERE email='" + textBoxLogin.Text + "' AND motDePasse='" + password + "' LIMIT 1", connection);
 
                 MySqlDataReader reader = cmd.ExecuteReader();
 

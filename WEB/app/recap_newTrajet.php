@@ -106,9 +106,9 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
             </div>
             <form action="validation_newTrajet.php" id="recap">
               <?php 
-              // echo '<pre>';
-              // print_r($_POST);
-              // echo '</pre>';
+              echo '<pre>';
+              print_r($_POST);
+              echo '</pre>';
               $dataUserTrip = array(
                 'idUser' => $user->getId(),
                 'placeDisponible' => intval($_POST["nbPlaces"]),
@@ -116,7 +116,9 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                 'heureDepart' => "",
                 'heureArrivee' => "",
                 "lieu1" => "",
-                "lieu2" => ""
+                "lieu2" => "",
+                "latitude" => $_POST["latitude"],
+                "longitude" => $_POST["longitude"]
               );
               //echo "<br>";
               if(isset($_POST["lieuDepart_predefini"])){

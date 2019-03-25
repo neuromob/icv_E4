@@ -33,7 +33,6 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
     <li style="float:left"><?php echo "<p class='bvn_Message' style='margin-left:5em'>Bonjour ". $user->getNom()."</p>"; ?></li>
     <li><a href="../php/logout.php">Déconnexion</a></li>
   </ul>
-    
   
   <div class="leftMenu">
       <div class="hamburger active">
@@ -104,6 +103,8 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                     <p class="description-help">Rechercher votre addresse de départ dans la barre ci-dessous ou sélectionner un lieu prédéfini.</p>
                     <div class="button-input">
                         <input type="textbox" name="lieuDepart_map" id="adresse-marker">
+                        <input type="textbox" name='latitude' id="adresse-latitude">
+                        <input type="textbox" name='longitude' id="adresse-longitude">
                         <button type="button" class="btn button-valide" onclick="convertAddress()">Confirmer</button>
                     </div>
                     <div class="lieu-depart-cfa">
