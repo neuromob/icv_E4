@@ -5,7 +5,6 @@ session_start();
 include 'class/user.class.php';
 //84cdd49ab734b3c3935d3d60dc3364526444a976
 $randomSalt = "dzjnaihbafgireger%fzfzea$-eza19$*";
-
 echo "<html>
 <head>
   <meta charset='utf-8' />
