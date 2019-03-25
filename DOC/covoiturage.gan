@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Covoiturage" company="" webLink="http://namestep.fr/ " view-date="2019-01-13" view-index="0" gantt-divider-location="598" resource-divider-location="300" version="2.8.8" locale="fr">
+<?xml version="1.0" encoding="UTF-8"?><project name="Covoiturage" company="" webLink="http://namestep.fr/ " view-date="2019-02-04" view-index="0" gantt-divider-location="881" resource-divider-location="300" version="2.8.10" locale="fr_FR">
     <description/>
     <view zooming-state="default:4" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="312" order="0"/>
-        <field id="tpd4" name="Date de début" width="150" order="1"/>
-        <field id="tpd5" name="Date de fin" width="132" order="2"/>
-        <option id="color.recent">
-            <![CDATA[#ff3300 #ffff00 #006666 #3333ff #66ff33 #cc00cc #9966ff #ff6600 #33ff33 #ffff33]]>
-        </option>
+        <field id="tpd3" name="Nom" width="406" order="0"/>
+        <field id="tpd4" name="Date de début" width="244" order="1"/>
+        <field id="tpd5" name="Date de fin" width="227" order="2"/>
+        <option id="color.recent"><![CDATA[#ff3300 #ffff00 #006666 #3333ff #66ff33 #cc00cc #9966ff #ff6600 #33ff33 #ffff33]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Nom" width="210" order="0"/>
@@ -44,39 +42,46 @@
         <task id="3" name="Création et importation de la base de donnée" color="#ff66cc" meeting="false" start="2019-01-16" duration="1" complete="0" thirdDate="2019-01-16" thirdDate-constraint="0" expand="true">
             <depend id="37" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="37" name="Création VM DEBIAN BDD" color="#9966ff" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-16" thirdDate-constraint="0" expand="true">
-            <task id="57" name="Mise en place de l'apache2" color="#cc00cc" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-17" thirdDate-constraint="0" expand="true"/>
-            <task id="59" name="Mise en place de MariaDB" color="#66ff33" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-17" thirdDate-constraint="0" expand="true"/>
-            <task id="61" name="Mise en place de SSH" color="#3333ff" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-17" thirdDate-constraint="0" expand="true">
+        <task id="37" name="Création VM Debian 9" color="#9966ff" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-16" thirdDate-constraint="0" expand="true">
+            <task id="57" name="Installation et configuration d'apache2" color="#cc00cc" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-17" thirdDate-constraint="0" expand="true"/>
+            <task id="128" name="Installation et configuration PHP" meeting="false" start="2019-01-17" duration="1" complete="0" expand="true"/>
+            <task id="59" name="Installation et configuration de MySQL-Server" color="#66ff33" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-17" thirdDate-constraint="0" expand="true"/>
+            <task id="61" name="Installation et configuration de SSH" color="#3333ff" meeting="false" start="2019-01-17" duration="1" complete="0" thirdDate="2019-01-17" thirdDate-constraint="0" expand="true">
                 <depend id="17" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="17" name="Faire des Interfaces web" color="#33ff33" meeting="false" start="2019-01-18" duration="4" complete="0" thirdDate="2019-01-28" thirdDate-constraint="0" expand="true">
-            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        <task id="17" name="Création de l'interface" color="#33ff33" meeting="false" start="2019-01-18" duration="5" complete="0" thirdDate="2019-01-28" thirdDate-constraint="0" expand="true">
+            <task id="134" name="Barre de navigation gauche" color="#8cb6ce" meeting="false" start="2019-01-18" duration="2" complete="0" thirdDate="2019-01-18" thirdDate-constraint="0" expand="true">
+                <depend id="142" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="142" name="Création des différentes pages" color="#8cb6ce" meeting="false" start="2019-01-22" duration="2" complete="0" thirdDate="2019-01-07" thirdDate-constraint="0" expand="true">
+                <depend id="143" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="143" name="Bouton de déconnexion" color="#8cb6ce" meeting="false" start="2019-01-24" duration="1" complete="0" thirdDate="2019-01-24" thirdDate-constraint="0" expand="true">
+                <depend id="84" type="2" difference="0" hardness="Strong"/>
+            </task>
         </task>
-        <task id="5" name="Intégrer l'API" color="#ff3333" meeting="false" start="2019-01-24" duration="10" complete="0" thirdDate="2019-01-29" thirdDate-constraint="0" priority="2" expand="true">
-            <depend id="84" type="2" difference="0" hardness="Strong"/>
-        </task>
-        <task id="84" name="Création fichier log d'erreur" color="#8cb6ce" meeting="false" start="2019-02-07" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
+        <task id="84" name="Création fichier log d'erreur" color="#8cb6ce" meeting="false" start="2019-01-25" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
             <depend id="89" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="89" name="Page login" color="#8cb6ce" meeting="false" start="2019-02-08" duration="6" complete="0" thirdDate="2019-02-08" thirdDate-constraint="0" expand="true">
+        <task id="89" name="Page login" color="#8cb6ce" meeting="false" start="2019-02-08" duration="7" complete="0" thirdDate="2019-02-08" thirdDate-constraint="0" expand="true">
             <depend id="118" type="2" difference="0" hardness="Strong"/>
-            <task id="22" name="Connexion à la base de donnée" color="#8cb6ce" meeting="false" start="2019-02-08" duration="2" complete="0" thirdDate="2019-02-08" thirdDate-constraint="0" expand="true"/>
-            <task id="93" name="Fonction de test si identiant entrés sont dans la BDD" color="#8cb6ce" meeting="false" start="2019-02-12" duration="2" complete="0" thirdDate="2019-02-11" thirdDate-constraint="0" expand="true"/>
-            <task id="95" name="Cryptage mdp en sha1" color="#8cb6ce" meeting="false" start="2019-02-13" duration="2" complete="0" thirdDate="2019-02-12" thirdDate-constraint="0" expand="true"/>
-            <task id="97" name="Design page" color="#8cb6ce" meeting="false" start="2019-02-14" duration="2" complete="0" thirdDate="2019-02-13" thirdDate-constraint="0" expand="true"/>
+            <task id="97" name="Design page" color="#8cb6ce" meeting="false" start="2019-02-08" duration="2" complete="0" thirdDate="2019-02-13" thirdDate-constraint="0" expand="true"/>
+            <task id="22" name="Connexion à la base de donnée" color="#8cb6ce" meeting="false" start="2019-02-11" duration="2" complete="0" thirdDate="2019-02-08" thirdDate-constraint="0" expand="true"/>
+            <task id="95" name="Cryptage mot de passe en sha1" color="#8cb6ce" meeting="false" start="2019-02-13" duration="2" complete="0" thirdDate="2019-02-12" thirdDate-constraint="0" expand="true"/>
+            <task id="93" name="Méthode de connexion : comparaison mot de passe cryptés" color="#8cb6ce" meeting="false" start="2019-02-15" duration="2" complete="0" thirdDate="2019-02-11" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="118" name="Accueil" color="#8cb6ce" meeting="false" start="2019-02-18" duration="4" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
+        <task id="118" name="Accueil" color="#8cb6ce" meeting="false" start="2019-02-19" duration="3" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
             <depend id="113" type="2" difference="0" hardness="Strong"/>
-            <task id="104" name="Design de la barre de navigation de gauche" color="#8cb6ce" meeting="false" start="2019-02-18" duration="2" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
+            <task id="104" name="Design de la barre de navigation de gauche" color="#8cb6ce" meeting="false" start="2019-02-19" duration="2" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
             <task id="109" name="Affichage de la liste des trajets disponibles" color="#8cb6ce" meeting="false" start="2019-02-19" duration="2" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
             <task id="111" name="Création de la partie de complétition d'un profil" color="#8cb6ce" meeting="false" start="2019-02-20" duration="2" complete="0" thirdDate="2019-02-19" thirdDate-constraint="0" expand="true"/>
         </task>
         <task id="113" name="DBHandler" color="#8cb6ce" meeting="false" start="2019-02-22" duration="1" complete="0" thirdDate="2019-02-19" thirdDate-constraint="0" expand="true">
             <depend id="115" type="2" difference="0" hardness="Strong"/>
+            <task id="160" name="Création des requête pour chaque méthodes" meeting="false" start="2019-02-22" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="115" name="Class user" color="#8cb6ce" meeting="false" start="2019-02-25" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
+        <task id="115" name="Création des requête pour chaque méthodes" color="#8cb6ce" meeting="false" start="2019-02-25" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
             <depend id="117" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="117" name="Paramètre" color="#8cb6ce" meeting="false" start="2019-02-26" duration="2" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
@@ -84,7 +89,9 @@
             <task id="120" name="Tableau des informations professionnelles" color="#8cb6ce" meeting="false" start="2019-02-26" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true"/>
             <task id="122" name="Bouton de modification du tableau" color="#8cb6ce" meeting="false" start="2019-02-27" duration="1" complete="0" thirdDate="2019-02-26" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="124" name="Revenir accueil" color="#8cb6ce" meeting="false" start="2019-02-28" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
+        <task id="124" name="Création trajet" color="#8cb6ce" meeting="false" start="2019-02-28" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true">
+            <task id="157" name="Méchanisme de remplissage formulaire" meeting="false" start="2019-02-28" duration="1" complete="0" expand="true"/>
+            <task id="158" name="Script js pour sélectionner lieu sur map ou par champs" meeting="false" start="2019-02-28" duration="1" complete="0" expand="true"/>
             <task id="126" name="API google map Javascipt" color="#8cb6ce" meeting="false" start="2019-02-28" duration="1" complete="0" thirdDate="2019-01-14" thirdDate-constraint="0" expand="true"/>
         </task>
     </tasks>
