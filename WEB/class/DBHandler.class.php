@@ -1,12 +1,11 @@
 <?php
 class DBHandler {
-    
     protected $randomSalt = 'dzjnaihbafgireger%fzfzea$-eza19$*';
 
     /* CFA
     private $serverName = '192.168.5.60';*/
     /* HOME */
-    private $host = '192.168.5.65';
+    private $host = '192.168.5.62';
     private $database = 'covoiturage_final';
     private $login = 'admin';
     private $password = 'toor';
@@ -44,14 +43,22 @@ class DBHandler {
         $rows = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if($rows['email'] == $user){
-            $idVerified = $rows["id"];
-            $userData = $this->getAllInfo($idVerified);
-            return $userData;
+			$idVerified = intval($rows["id"]);
+			$userData = $this->getAllInfo($idVerified);
+			$sql
+			return $userData;
         }
         else {
-            return null;
+			tentative1();
+			return null;
+			
         }
-    }
+	}
+	
+	public function verify_Status_Of_User($idUser) {
+		$this->getConnection();
+		$stmt = $this->conn->prepare("SELECT S.status INNER JOIN Utilisateur U ON U.status = S.id WHERE NOW() > S.dateStatus");
+	}
 
     public function refreshUser($userId) {
         return new User($this->getAllInfo($userId));
@@ -59,14 +66,24 @@ class DBHandler {
 	// update user from parametre
     public function update_User($newUserData, $id, $oldPassword){
 		$this->getConnection();
+		$stringAdresse = $newUserData['adresseParam'];
+		$adresse = $this->placeIsCreate($stringAdresse);
+		if($adresse == false){
+			$idAdresse = $this->createPlace($stringAdresse, $newUserData['latitude'], $newUserData['longitude']);
+			$idAdresse = intval($idAdresse);
+		} else {
+			$idAdresse = intval($adresse["id"]);
+		}
+			
+
         $sql = "UPDATE Utilisateur 
-                SET nom = ?, prenom = ?, email = ?, motDePasse = ?
+                SET nom = ?, prenom = ?,adresse = ?, motDePasse = ?
                 WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         
         $stmt -> bindParam(1, $newUserData["nom"], PDO::PARAM_STR);
-        $stmt -> bindParam(2, $newUserData["prenom"], PDO::PARAM_STR);
-        $stmt -> bindParam(3, $newUserData["email"], PDO::PARAM_STR);
+		$stmt -> bindParam(2, $newUserData["prenom"], PDO::PARAM_STR);
+		$stmt -> bindParam(3, $idAdresse, PDO::PARAM_INT);
         if(empty($newUserData["mdp"])){
             $stmt -> bindParam(4, $oldPassword, PDO::PARAM_STR);
         } else {
@@ -79,8 +96,8 @@ class DBHandler {
             }
         }
         $stmt -> bindParam(5, $id, PDO::PARAM_INT);
-        $stmt -> execute();
-        $this->updateCar($newUserData, $id);
+		$stmt -> execute();
+		$this->updateCar($newUserData, $id);
         $this->updateAdress($newUserData, $id);
         return true;
 	}
@@ -220,20 +237,23 @@ class DBHandler {
 		// Fonction de modification des coordonnées depuis les paramètres
 		public function updateAdress($data, $idUser){
 			$this->getConnection();
-			$nomRue = $data['nomRue'];
-			$numeroRue = $data['numRue'];
-			$ville = $data['ville'];
-			$codePostal = $data['codePostal'];
+			$adresse = "";
+			$stringAdresse = $data['adresseParam'];
+			$adresse = $this->placeIsCreate($stringAdresse);
+			var_dump($data);
+			if($adresse == false){
+				$idAdresse = $this->createPlace($stringAdresse, $data['latitude'], $data['longitude']);
+				$idAdresse = intval($idAdresse);
+			} else {
+				$idAdresse = intval($adresse["id"]);
+			}
 			
-			$sql = "UPDATE `Adresse` A INNER JOIN `Utilisateur` U ON A.id = U.adresse SET A.numeroRue = :numeroRue, A.nomRue = :nomRue, A.ville = :ville, A.codePostal = :codePostal WHERE U.id = :idUser;";
+			$sql = "UPDATE `Utilisateur` U INNER JOIN `Lieu` L ON L.id = U.adresse SET U.adresse = :idAdresse  WHERE U.id = :idUser;";
 
 			try{
 				$stmt = $this->conn->prepare($sql);
+				$stmt->bindParam(':idAdresse', $idAdresse, PDO::PARAM_INT);
 				$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);
-				$stmt->bindParam(':numeroRue', $numeroRue, PDO::PARAM_STR);
-				$stmt->bindParam(':nomRue', $nomRue, PDO::PARAM_STR);
-				$stmt->bindParam(':ville', $ville, PDO::PARAM_STR);
-				$stmt->bindParam(':codePostal', $codePostal, PDO::PARAM_STR);
 				$stmt->execute();
 			}
 			catch(SQLException $e) {
@@ -246,15 +266,22 @@ class DBHandler {
     
     public function getAllInfo($id) {
 		$this->getConnection();
-        $sql = "SELECT Utilisateur.id,Utilisateur.nom,Utilisateur.prenom,Utilisateur.email,Utilisateur.motDePasse,Adresse.numeroRue,Adresse.nomRue,Adresse.codePostal,Adresse.ville,Voiture.marque,Voiture.modele,Voiture.place,Voiture.couleur, R.nom as role, Ld.lieu as lieuDepart, La.lieu as lieuArrivee FROM Utilisateur
-                INNER JOIN Adresse ON Utilisateur.adresse = Adresse.id
+        /*$sql = "SELECT Utilisateur.id,Utilisateur.nom,Utilisateur.prenom,Utilisateur.email,Utilisateur.motDePasse,Lu.lieu as adresse, Lu.latitude as latitude, Lu.longitude as longitude ,Voiture.marque,Voiture.modele,Voiture.place,Voiture.couleur, R.nom as role, Ld.lieu as lieuDepart, La.lieu as lieuArrivee FROM Utilisateur
+                INNER JOIN Lieu Lu ON Utilisateur.adresse = Lu.id
                 INNER JOIN Voiture ON Utilisateur.voiture = Voiture.id
 				INNER JOIN Lieu Ld ON Utilisateur.lieu_Depart = Ld.id
 				INNER JOIN Lieu La ON Utilisateur.lieu_Arrivee = La.id
 				INNER JOIN Role R ON Utilisateur.role = R.id
-                WHERE Utilisateur.id = :idUser";
-        $stmt = $this->conn->prepare($sql);
-        $stmt -> bindParam(":idUser", $id);
+				WHERE Utilisateur.id = :idUser";*/
+		$sql = "SELECT Utilisateur.id,Utilisateur.nom,Utilisateur.prenom,Utilisateur.email,Utilisateur.motDePasse,Lu.id as idAdresse, Lu.lieu, Lu.latitude, Lu.longitude ,Voiture.marque,Voiture.modele,Voiture.place,Voiture.couleur, R.nom as role, Ld.lieu as lieuDepart, La.lieu as lieuArrivee FROM Utilisateur 
+					LEFT OUTER JOIN Lieu Lu ON Utilisateur.adresse = Lu.id 
+					LEFT OUTER JOIN Voiture ON Utilisateur.voiture = Voiture.id 
+					LEFT OUTER JOIN Lieu Ld ON Utilisateur.lieu_Depart = Ld.id 
+					LEFT OUTER JOIN Lieu La ON Utilisateur.lieu_Arrivee = La.id 
+					INNER JOIN Role R ON Utilisateur.role = R.id 
+					WHERE Utilisateur.id = :idUser";
+		$stmt = $this->conn->prepare($sql);
+		$stmt -> bindParam(":idUser", $id);
 		$stmt -> execute();
 		if($stmt->rowCount() > 0){
 				
@@ -288,7 +315,7 @@ class DBHandler {
         $this->getConnection();
 		error_log("db->getListTrip: start ! ");
 		$result['response'] = "OK";
-       $sql = "SELECT T.id as idTrajet, T.idConducteur, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart, La.lieu as villeArrivee FROM Trajet T
+       $sql = "SELECT T.id as idTrajet, T.idConducteur, T.dateParcours, T.heureDepart, T.heureArrivee, T.placeDisponible, Ld.lieu as villeDepart,Ld.latitude as latitudeDepart, Ld.longitude as longitudeDepart, La.lieu as villeArrivee FROM Trajet T
 				INNER JOIN Lieu Ld ON T.lieuDepart = Ld.id
 				INNER JOIN Lieu La ON T.lieuArrivee = La.id
 				WHERE T.status = 'ACTIF'
@@ -313,14 +340,6 @@ class DBHandler {
         
         return $result;
         
-	}
-
-	public function getDistanceBetweenPoint($ville1, $ville2) {
-		$pattern = "/(\s|,)+/";
-		$ville1 = preg_replace($pattern, "+", $ville1);
-		$ville2 = preg_replace($pattern, "+", $ville2);
-		$distance = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$ville1."&destinations=".$ville2."&mode=bicycling&language=fr-FR&key=AIzaSyB4wS9TPSIExN2MI6WvJMk8-o6CqXEeTC4");
-		return $distance;
 	}
 
 	public function getTripInfoById($id) {
@@ -409,12 +428,12 @@ class DBHandler {
 			$dateParcours = $data['dateParcours'];
 			$heureDepart = $data['heureDepart'];
 			$heureArrivee = $data['heureArrivee'];
-			var_dump($data);
+			//var_dump($data);
             $status = 'ACTIF';
 			
             $lieu1 = $this->placeIsCreate($data['lieu1']);
 			$lieu2 = $this->placeIsCreate($data['lieu2']);
-			var_dump($data);
+			//var_dump($data);
 			$latitude = $data['latitude'];
 			$longitude = $data['longitude'];
 
@@ -423,12 +442,13 @@ class DBHandler {
 				if($data['lieu1']== "Site de Pertuis"){
 					$latitude = "43.678268";
 					$longitude = "5.501765";
-				} else {
+				} else if ($data['lieu1']== "Site d'Avignon") {
 					$latitude = "43.916650";
 					$longitude = "4.884497";
+				} else {
+					$idLieuDepart = $this->createPlace($data['lieu1'],$latitude,$longitude);
+					$idLieuDepart = intval($idLieuDepart);
 				}
-                $idLieuDepart = $this->createPlace($data['lieu1'],$latitude,$longitude);
-                $idLieuDepart = intval($idLieuDepart);
             } else {
                 $idLieuDepart = $lieu1["id"];
                 $idLieuDepart = intval($idLieuDepart);
@@ -438,12 +458,13 @@ class DBHandler {
 				if($data['lieu2'] == "Site de Pertuis"){
 					$latitude = "43.678268";
 					$longitude = "5.501765";
-				} else {
+				}else if ($data['lieu1']== "Site d'Avignon") {
 					$latitude = "43.916650";
 					$longitude = "4.884497";
+				} else {
+					$idLieuArrivee = $this->createPlace($data['lieu2'],$latitude,$longitude);
+                	$idLieuArrivee = intval($idLieuArrivee);
 				}
-                $idLieuArrivee = $this->createPlace($data['lieu2'],$latitude,$longitude);
-                $idLieuArrivee = intval($idLieuArrivee);
             } else {
                 $idLieuArrivee = $lieu2["id"];
                 $idLieuArrivee = intval($idLieuArrivee);

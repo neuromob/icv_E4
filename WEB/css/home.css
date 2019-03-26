@@ -105,6 +105,11 @@ input[type="text"]:focus, input[type="textbox"]:focus, input[type="date"]:focus,
 	top: -5px;
 	font-weight: bold;
 }
+.info-distance {
+	font-size: 12px;
+	color :#777;
+	font-style: italic;
+}
 .date-trip {
 	position: absolute;
 	float:right;
