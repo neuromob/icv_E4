@@ -107,12 +107,20 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
             </div>
               <?php
               $typeInscription = $_POST["type-inscription"];
+              $lieuArrivee = $_POST["lieuArrivee"];
+              $dataProfile = array("role"=>$typeInscription, "lieuArrivee"=>$lieuArrivee);
               if($_POST["lieuDepartMap"]){
                 $lieuDepart = $_POST["lieuDepartMap"];
+                $latitude = $_POST["latitude"];
+                $longitude = $_POST["longitude"];
+                $dataProfile["lieuDepart"] = $lieuDepart;
+                $dataProfile["latitude"] = $latitude;
+                $dataProfile["longitude"] = $longitude;
               } else {
                 $lieuDepart = $_POST["lieuDepart_predefini"];
+                $dataProfile["lieuDepart"] = $lieuDepart;
               }
-              $lieuArrivee = $_POST["lieuArrivee"];
+              
               $heureDepart = $_POST["heure-depart-cp-profile"].":".$_POST["minute-depart-cp-profile"].":00";
               $heureArrivee = $_POST["heure-arrivee-cp-profile"].":".$_POST["minute-arrivee-cp-profile"].":00";
               if(isset($_POST["type-inscription"])){
@@ -138,7 +146,6 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                     <td>".$heureDepart."</td>
                     <td>".$heureArrivee."</td>
                   </tr></table>";
-                  $dataProfile = array("role"=>$typeInscription,"lieuDepart"=>$lieuDepart,"lieuArrivee"=>$lieuArrivee);
                   echo "<button type=\"button\" onclick=\"window.location.href='accueil.php'\" class=\"btn button-valide\">Retourner à l'accueil</button>";
                   $dbh->completeProfile($dataProfile, $user->getId());
 

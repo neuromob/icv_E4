@@ -23,7 +23,7 @@ body{
     padding: 10px;
      
 }
-
+input[disabled=disabled] {background: #ccc;}
 /*Modal*/
 .modal {
     position: fixed; /* Stay in place */

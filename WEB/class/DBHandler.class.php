@@ -32,7 +32,7 @@ class DBHandler {
 
         return $this->conn;
     }
-    public function verify_User_and_Pass($user, $pass) {
+    public function verify_User_and_Pass($user, $pass, $counter) {
 		$this->getConnection();
         $rows = array();
         $stmt = $this->conn->prepare("SELECT * FROM Utilisateur WHERE email = ? AND motDePasse = ?");
@@ -43,23 +43,30 @@ class DBHandler {
         $rows = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if($rows['email'] == $user){
+			
 			$idVerified = intval($rows["id"]);
 			$userData = $this->getAllInfo($idVerified);
-			$sql
-			return $userData;
+			$userData['response'] = 'OK';
+			if(!($this->CheckAccount($idVerified))){
+					   
+				$userData['response'] = 'KO_ban24';
+				
+			 }
         }
         else {
-			tentative1();
-			return null;
+			$userData['response'] = 'KO';
 			
-        }
+			if($counter >= 4){
+				
+				$this->SearchAccount($mail);
+				$userData['response'] = 'KO_ban24';
+				
+			}
+		}
+		$this->closeConnection();
+		return $userData;
 	}
 	
-	public function verify_Status_Of_User($idUser) {
-		$this->getConnection();
-		$stmt = $this->conn->prepare("SELECT S.status INNER JOIN Utilisateur U ON U.status = S.id WHERE NOW() > S.dateStatus");
-	}
-
     public function refreshUser($userId) {
         return new User($this->getAllInfo($userId));
     }
@@ -101,6 +108,150 @@ class DBHandler {
         $this->updateAdress($newUserData, $id);
         return true;
 	}
+
+	private function SearchAccount($mail){
+			
+		error_log("/SearchAccount: start !! ");
+		
+		$idUser = 0;
+		
+		try{
+			
+			$sql= "SELECT id FROM Utilisateur WHERE email = :mail"; 
+		
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':mail', $mail, PDO::PARAM_STR);  
+			$stmt->execute();
+			
+			while ($row = $stmt->fetchObject()) {
+			
+				$idUser = $row->id;
+				
+				if($idUser != 0 && !($this->isAlreadyBlocked($idUser))){
+				
+					$this->BlockAccount($idUser);
+					
+				}				 	
+			}
+		
+		}
+		catch(SQLException $e) {				
+			error_log("SQL ERROR : ".$e->getMessage());				
+		}
+		
+	}
+
+	private function CheckAccount($idUser){
+			
+		error_log("/CheckAccount: start !! ");
+		
+		$sql= "SELECT * FROM `Status` WHERE idUser = :idUser ORDER BY id DESC LIMIT 1 "; 
+		
+		try{
+			
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);  
+			$stmt->execute();
+			
+			while ($row = $stmt->fetchObject()) {
+				
+				$idUser = $row->id;
+				
+				if($row->status == "ACTIF"){
+				
+					return true;
+				
+				}
+				else{
+					
+					date_default_timezone_set('Europe/Paris');
+					$date = date('Y-m-d h:i:s', time());
+					$dateActuelle = new DateTime($date);
+					$dateBloquage = new DateTime($row->dateStatus);
+					
+					$dteDiff  = $dateBloquage->diff($dateActuelle);
+					
+					// différence en minute
+					// $dteDiff->i
+					if($dteDiff->h > 24){
+						
+						return true;
+						
+					}
+					else{
+						
+						return false;
+						
+					}					
+				}			 	
+			}
+		
+		}
+		catch(SQLException $e) {				
+			error_log("SQL ERROR : ".$e->getMessage());				
+		}
+	}
+
+	private function isAlreadyBlocked($idUser){
+			
+		error_log("/isAlreadyBlocked: start !! ");
+		
+		error_log("idUser: ". $idUser);
+
+		$sql= "SELECT status, dateStatus FROM `Status` WHERE idUser = :idUser ORDER BY dateStatus DESC LIMIT 1"; 
+		
+		try{
+			
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT); 
+			$stmt->execute();
+			
+			while ($row = $stmt->fetchObject()) {
+				
+				if($row->status == "ACTIF"){
+				
+					return false;
+				
+				}
+				else{
+					
+					return true;
+					
+				}			 	
+			}
+		
+		}
+		catch(SQLException $e) {				
+			error_log("SQL ERROR : ".$e->getMessage());		
+			return false;		
+		}
+		
+	}
+	private function BlockAccount($idUser){
+		
+		error_log("/BlockAccount: start !! ");
+		
+		date_default_timezone_set('Europe/Paris');
+		$date = date('Y-m-d h:i:s', time());
+		
+		error_log("idUser: ". $idUser);
+		error_log("date: ". $date);
+
+		$sql= "INSERT INTO Status (idUser, status, dateStatus) VALUES (:idUser, 'SUSPENDU', :date)"; 
+		
+		try{
+			
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);  
+			$stmt->bindParam(':date', $date, PDO::PARAM_STR);  
+			$stmt->execute();
+		
+		}
+		catch(SQLException $e) {				
+			error_log("SQL ERROR : ".$e->getMessage());				
+		}
+		
+	}
 	
 	public function completeProfile($data, $idUser) {
 		$this->getConnection();
@@ -109,17 +260,20 @@ class DBHandler {
 		$role = $data["role"];
 		$lieuDepart = $data["lieuDepart"];
 		$lieuArrivee = $data["lieuArrivee"];
-
 		$lieu1 = $this->placeIsCreate($lieuDepart);
 		$lieu2 = $this->placeIsCreate($lieuArrivee);
 
 		if($lieu1 == false){
-			$idLieuDepart = $this->createPlace($lieuDepart);
+			$latitude = $data["latitude"];
+			$longitude = $data["longitude"];
+			$idLieuDepart = $this->createPlace($lieuDepart, $latitude, $longitude);
 			$idLieuDepart = intval($idLieuDepart);
 		} else {
 			$idLieuDepart = intval($lieu1["id"]);
 		}
 		if($lieu2 == false){
+			$latitude = $data["latitude"];
+			$longitude = $data["longitude"];
 			$idLieuArrivee = $this->createPlace($lieuArrivee);
 			$idLieuArrivee = intval($idLieuDepart);
 		} else {

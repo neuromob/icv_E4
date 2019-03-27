@@ -145,7 +145,6 @@ if($_POST["rangeTrips"]){
           echo "<p style='text-align:center'>Aucun trajets n'est disponible pour vous. Veuillez patienter que des utilisateurs proposent de nouveaux trajets pour 
           rentrer en contact avec eux et réserver de nouveaux voyages !</p>";
         } else {
-          //echo distanceBetween(43.690407,5.500641,43.285102,5.371231);
           for($i=0;$i<count($listTrip);$i++) {
             $placeDisponible = 0;
             //$infoDistance = $dbh->getDistanceBetweenPoint($listTrip[$i]['villeDepart'],$listTrip[$i]['villeArrivee']);
