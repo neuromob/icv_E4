@@ -29,6 +29,18 @@ namespace ICV_Admin
         private void InitializeUser()
         {
             Username.Content = Main.CurrentUser.Nom;
+            
+        }
+
+        private void InitializeFiliere()
+        {
+            filiere_Listbox.Items.Add("TEST");
+
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

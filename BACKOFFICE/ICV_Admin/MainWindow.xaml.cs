@@ -73,7 +73,7 @@ namespace ICV_Admin
 
             string salt = "dzjnaihbafgireger%fzfzea$-eza19$*";
 
-            connectionString = "SERVER=192.168.5.65;PORT=3306;DATABASE=covoiturage_final;UID=admin;PWD=toor;";
+            connectionString = "SERVER=192.168.5.62;PORT=3306;DATABASE=covoiturage_final;UID=admin;PWD=toor;";
             connection = new MySqlConnection(connectionString);
 
             try
