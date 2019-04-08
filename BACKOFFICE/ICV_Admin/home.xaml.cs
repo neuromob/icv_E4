@@ -23,7 +23,7 @@ namespace ICV_Admin
         {
             InitializeComponent();
             InitializeUser();
-            
+            InitializeFiliere();
         }
 
         private void InitializeUser()
@@ -38,7 +38,7 @@ namespace ICV_Admin
 
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
