@@ -65,3 +65,8 @@ C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\ICV_Adm
 C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\ICV_Admin.csproj.CopyComplete
 C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\ICV_Admin.exe
 C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\ICV_Admin.pdb
+C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\PageFiliere.g.cs
+C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\PageFiliere.baml
+C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\App.baml
+C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\PageApprentis.g.cs
+C:\Users\vpoujade\Documents\GitHub\icv_E4\BACKOFFICE\ICV_Admin\obj\Debug\PageApprentis.baml
