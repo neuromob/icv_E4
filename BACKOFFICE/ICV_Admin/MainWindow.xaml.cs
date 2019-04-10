@@ -68,57 +68,33 @@ namespace ICV_Admin
 
         private void Login()
         {
-            MySqlConnection connection = null;
-            string connectionString = null;
-
-            string salt = "dzjnaihbafgireger%fzfzea$-eza19$*";
-
-            connectionString = "SERVER=192.168.5.62;PORT=3306;DATABASE=covoiturage_final;UID=admin;PWD=toor;";
-            connection = new MySqlConnection(connectionString);
-
             try
             {
-                connection.Open();
-                string password = textBoxPassword.Password.ToString() + salt;
+                DBHandler db = new DBHandler();
+                Boolean isConnected = db.TryLogin(textBoxLogin.Text, textBoxPassword.Password.ToString());
 
-                using (SHA1 sha1Hash = SHA1.Create())
+                if (isConnected)
                 {
-                    //From String to byte array
-                    byte[] sourceBytes = Encoding.UTF8.GetBytes(password);
-                    byte[] hashBytes = sha1Hash.ComputeHash(sourceBytes);
-                    password = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
+
+                    this.Hide();
+
+                    home accueil = new home();
+                    accueil.Show();
+                    this.Close();
 
                 }
-                MySqlCommand cmd = new MySqlCommand("SELECT * from Utilisateur WHERE email='" + textBoxLogin.Text + "' AND motDePasse='" + password + "' LIMIT 1", connection);
-
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-
-                // Création de l'objet U de la classe User avec le résultat de la requête et sauvegarde de l'objet dans la classe Main.cs : CurrentUser
-                while (reader.Read())
+                else
                 {
-                    User U = new User { ID = (int)reader["id"], Nom = (string)reader["nom"], Prenom = (string)reader["prenom"], Email = (string)reader["email"], Adresse = (int)reader["adresse"], Voiture = (int)reader["voiture"], Role = (string)reader["role"], Filiere = (int)reader["filiere"], LieuDepart = (int)reader["lieu_Depart"], LieuArrivee = (int)reader["lieu_Arrivee"], Status = (int)reader["status"] };
-                    Main.CurrentUser = U;
+
+                    MessageBox.Show("Identifiants incorrect !", "Erreur de connexion", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 }
-                connection.Close();
-
-                if (Main.CurrentUser == null)
-                {
-                    MessageBox.Show("Invalid username or password!", "Error login", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                this.Hide();
-
-                home accueil = new home();
-                accueil.Show();
-                this.Close();
 
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Can not open connection ! " + ex);
+                MessageBox.Show("Impossible d'établir une connexion ! " + ex);
             }
         }
     }

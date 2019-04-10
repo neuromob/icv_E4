@@ -19,5 +19,22 @@ namespace ICV_Admin
         public int LieuDepart{get; set;}
         public int LieuArrivee{get; set;}
         public int Status{get; set;}
+
+        public User(int ID, string Nom, string Prenom, string Email, int Adresse, int Voiture, string Role, int Filiere, int LieuDepart, int LieuArrivee, int Status)
+        {
+
+            this.ID = ID;
+            this.Nom = Nom;
+            this.Prenom = Prenom;
+            this.Email = Email;
+            this.Adresse = Adresse;
+            this.Voiture = Voiture;
+            this.Role = Role;
+            this.Filiere = Filiere;
+            this.LieuDepart = LieuDepart;
+            this.LieuArrivee = LieuArrivee;
+            this.Status = Status;
+
+        }
     }
 }
