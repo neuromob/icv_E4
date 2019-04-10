@@ -1,0 +1,48 @@
+﻿<Page x:Class="ICV_Admin.PageFiliere"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ICV_Admin"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="830"
+      Title="PageFiliere">
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#33000000" Margin="0,0,0,52">
+            <WrapPanel Name="panelCompetences" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                <Button Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                    <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="586"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="70"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="BTS SIO SLAM" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Stretch" FontSize="25"/>
+                        <Label Content="Nombre d'apprentis : 23" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Grid.Column="1" FontSize="10"/>
+                        <Button Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" Width="67" Grid.ColumnSpan="2">
+                            <Image Margin="0,0,0,0" Height="64" Source="Images/icons8-poubelle-64.png" HorizontalAlignment="Right" Stretch="Fill" Width="67"/>
+                        </Button>
+
+                    </Grid>
+                </Button>
+                <!--
+                <Button Height="200" Width="200" Margin="10,10,10,10" Click="ModuleAdd_Click" Background="Black" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Image Source="res/elke-karin-lugert-125493-unsplash.jpg" Stretch="UniformToFill" Margin="0,30,0,0"/>
+                        <Label Content="Titre" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="200" Height="30" Foreground="White" Background="#7F000000"/>
+                        <Label Content="Description" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="200" Height="75" Foreground="Black" Background="#59FFFFFF"/>
+                        <Button Content="←" Margin="0,0,0,0" Height="30" Width="30" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="#03707070" Background="#7FDDDDDD"/>
+                        <Button Content="→" Margin="0,0,0,0" Height="30" Width="30" HorizontalAlignment="Right" VerticalAlignment="Center" BorderBrush="#00707070" Background="#7FDDDDDD"/>
+
+                    </Grid>
+                </Button>
+                -->
+
+            </WrapPanel>
+        </ScrollViewer>
+        <Button Content="+" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontSize="36" />
+
+    </Grid>
+</Page>

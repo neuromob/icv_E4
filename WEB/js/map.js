@@ -29,6 +29,7 @@ function initMap() {
                 map: map,
                 draggable: true 
             });
+            
             //Listen les événements de glisser-déposer !
             google.maps.event.addListener(marker, 'dragend', function(event){
                 markerLocation();
@@ -72,6 +73,9 @@ function convertLngLat(markerLatitude, markerLongitude){
         var add=results[0].formatted_address;         // si adresse trouvée, passer à la fonction de traitement
         console.log("add : "+add);
         document.getElementById('adresse-marker').value = add;
+
+        document.getElementById("adresse-latitude").value = markerLatitude;
+        document.getElementById("adresse-longitude").value = markerLongitude;
         }
     });
 }
@@ -79,12 +83,13 @@ function convertLngLat(markerLatitude, markerLongitude){
 function convertAddress() {
     var geocoder;
     //var jqueryAddress = $("address").val();
-	var address = document.getElementById("adresse-marker").value;
+    var address = document.getElementById("adresse-marker").value;
 	geocoder = new google.maps.Geocoder();
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        console.log(results[0].geometry.location);
-        console.log(marker);
+        document.getElementById('adresse-marker').value = convertLngLat(results[0].geometry.location.lat(),results[0].geometry.location.lng());
+        document.getElementById("adresse-latitude").value = results[0].geometry.location.lat();
+        document.getElementById("adresse-longitude").value = results[0].geometry.location.lng();
         map.setCenter(results[0].geometry.location);
         map.setZoom(12);
         marker.setPosition(results[0].geometry.location);

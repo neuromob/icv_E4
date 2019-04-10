@@ -9,10 +9,10 @@ class User {
     private $currentUserPrenom;
     private $currentUserEmail;
     private $currentUserMotDePasse;
-    private $currentUserNumRue;
-    private $currentUserNomRue;
-    private $currentUserVille;
-    private $currentUserCodePostal;
+    private $currrentUserIdAdresse;
+    private $currentUserAdresse;
+    private $currentUserLongitude;
+    private $currentUserLatitude;
     private $currentUserMarque;
     private $currentUserModele;
     private $currentUserNbPlace;
@@ -27,17 +27,17 @@ class User {
         $this->currentUserPrenom = (string) $result["prenom"];
         $this->currentUserEmail = (string) $result["email"];
         $this->currentUserMotDePasse = (string) $result["motDePasse"];
-        $this->currentUserNumRue = (int) $result["numeroRue"];
-        $this->currentUserNomRue = (string) $result["nomRue"];
-        $this->currentUserVille = (string) $result["ville"];
-        $this->currentUserCodePostal = (int) $result["codePostal"];
+        $this->currrentUserIdAdresse = (string) $result["idAdresse"];
+        $this->currentUserAdresse = (string) $result["lieu"];
+        $this->currentUserLongitude = (string) $result["longitude"];
+        $this->currentUserLatitude = (string) $result["latitude"];
         $this->currentUserMarque = (string) $result["marque"];
         $this->currentUserModele = (string) $result["modele"];
         $this->currentUserNbPlace = (int) $result["place"];
         $this->currentUserCouleur = (string) $result["couleur"];        
         $this->currentRole = (string) $result["role"];        
         $this->currentLieuDepart = (string) $result["lieuDepart"];        
-        $this->currentLieuArrivee = (string) $result["lieuArrivee"];        
+        $this->currentLieuArrivee = (string) $result["lieuArrivee"];      
     }
     public function log_User_Out() {
         if(isset($_SESSION['status'])) {
@@ -58,7 +58,7 @@ class User {
         return $row;
     }
     public function getAllInfo(){
-        $allInfo = array($this->currentUserId,$this->currentUserNom,$this->currentUserPrenom,$this->currentUserEmail,$this->currentUserEmail,$this->currentUserMotDePasse,$this->currentUserNumRue,$this->currentUserNomRue,$this->currentUserVille,$this->currentUserCodePostal,$this->currentUserMarque,$this->currentUserModele,$this->currentUserNbPlace,$this->currentUserCouleur);
+        $allInfo = array($this->currentUserId,$this->currentUserNom,$this->currentUserPrenom,$this->currentUserEmail,$this->currentUserMotDePasse,$this->currentUserAdresse,$this->currentUserLongitude,$this->currentUserLatitude,$this->currentUserMarque,$this->currentUserModele,$this->currentUserNbPlace,$this->currentUserCouleur);
         return $allInfo;
     }
     public function getId() {
@@ -76,17 +76,17 @@ class User {
     public function getMDP() {
         return $this->currentUserMotDePasse;
     }
-    public function getVille() {
-        return $this->currentUserVille;
+    public function getIdAdresse(){
+        return $this->currrentUserIdAdresse;
     }
-    public function getNomRue() {
-        return $this->currentUserNomRue;
+    public function getAdresse() {
+        return $this->currentUserAdresse;
     }
-    public function getNumRue() {
-        return $this->currentUserNumRue;
+    public function getLongitude() {
+        return $this->currentUserLongitude;
     }
-    public function getCP() {
-        return $this->currentUserCodePostal;
+    public function getLatitude() {
+        return $this->currentUserLatitude;
     }
     public function getMarque() {
         return $this->currentUserMarque;

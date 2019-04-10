@@ -1,0 +1,29 @@
+﻿<Window x:Class="ICV_Admin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ICV_Admin"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="1100">
+    <Grid x:Name="GridWindow" Height="618" VerticalAlignment="Top" KeyDown="GridWindow_KeyDown">
+        <TextBox x:Name="textBoxLogin" TextWrapping="Wrap" Text="" Margin="605,198,115,0" FontSize="16" Height="36" VerticalAlignment="Top"/>
+        <Label Content="IDENTIFIANT" HorizontalAlignment="Left" Margin="377,198,0,0" VerticalAlignment="Top" Width="138" Height="36" FontSize="16"/>
+        <PasswordBox x:Name="textBoxPassword" Margin="608,274,112,0" FontSize="16" Password="" Height="34" VerticalAlignment="Top"/>
+        <Label Content="MOT DE PASSE" HorizontalAlignment="Left" Margin="380,274,0,0" VerticalAlignment="Top" Width="158" Height="34" FontSize="16"/>
+
+
+        <Button Content="SE CONNECTER" Margin="0,368,340,219" x:Name="ButtonLogin" Click="ButtonLogin_Click" HorizontalAlignment="Right" Width="144"/>
+        <Button Content="QUITTER" Margin="0,368,114,219" x:Name="ButtonQuit" Click="ButtonQuit_Click" HorizontalAlignment="Right" Width="146" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="0.003"/>
+                    <RotateTransform Angle="0.014"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Image Margin="104,184,752,219" Source="Images/covoit_logo.png" Stretch="Fill"/>
+    </Grid>
+</Window>

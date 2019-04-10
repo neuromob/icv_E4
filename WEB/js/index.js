@@ -5,8 +5,10 @@ $(document).ready(function(){
 
 
 $(function() {
-  
-  
+	$('.range').on('input', function() {
+		var $set = $(this).val();
+		$(this).next().text($set + " km");
+	});
   $('#cb-aller-retour').click(function() {
     if($('#cb-aller-retour').is(':checked')==true){
       $('#heure-newtrajet-retour').show();
@@ -104,6 +106,7 @@ document.querySelector(".hamburger").onclick = function () {
   
     
 }
+
 
 
 

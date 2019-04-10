@@ -116,7 +116,9 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
                 'heureDepart' => "",
                 'heureArrivee' => "",
                 "lieu1" => "",
-                "lieu2" => ""
+                "lieu2" => "",
+                "latitude" => $_POST["latitude"],
+                "longitude" => $_POST["longitude"]
               );
               //echo "<br>";
               if(isset($_POST["lieuDepart_predefini"])){

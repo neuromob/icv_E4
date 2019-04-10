@@ -130,6 +130,8 @@ $listTrip = $dbh->getListTrip();
                             <p class="description-help">Rechercher votre addresse dans la barre ci-dessous ou sélectionner un lieu prédéfini.</p>
                             <div class="button-input">
                                 <input type="textbox" name="lieuDepartMap" id="adresse-marker" required>
+                                <input type="textbox" name="latitude" id="latitude_profil">
+                                <input type="textbox" name="longitude" id="longitude_profil">
                                 <button type="button" class="btn button-valide" onclick="convertAddress()">Confirmer</button>
                             </div>
                             <div class="lieu-depart-cfa">
@@ -203,7 +205,7 @@ $listTrip = $dbh->getListTrip();
                                 </div>
                             </div>
                             
-                        <script type="text/javascript" src="../js/map.js"></script>
+                        <script type="text/javascript" src="../js/map_profil.js"></script>
                     </div>
                     <div id="lieu_Arrivee">
                         <h2 class="title-itineraire">Veuillez choisir un lieu d'arrivée</h2>

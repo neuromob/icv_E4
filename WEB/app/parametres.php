@@ -10,9 +10,8 @@ if(!isset($_SESSION))
   { 
       session_start();
   }
-if(isset($_POST) && !empty($_POST["email"])){
+if(isset($_POST) && !empty($_POST["nom"])){
   $newUserData = array();
-  
   foreach($_POST as $key => $value){
     $newUserData[$key] = $value;
   }
@@ -25,12 +24,20 @@ if(isset($_POST) && !empty($_POST["email"])){
   $user = $dbh->refreshUser($user->getId());
   $user_serlizer = base64_encode(serialize($user));
   $_SESSION['userObject'] = $user_serlizer;
+  
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en" >
 <head>
+<style type="text/css">
+        #mapParam {    
+            width: 92%;
+            height: 350px;
+            margin-top: 10px;
+        }
+        </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width" />
   <title>ICV | Accueil</title>
@@ -38,6 +45,8 @@ if(isset($_POST) && !empty($_POST["email"])){
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/parametre.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4wS9TPSIExN2MI6WvJMk8-o6CqXEeTC4&language=en&libraries=places"></script>
+  <script type="text/javascript" src="../js/map_parametre.js"></script>
 </head>
 
 <body>
@@ -99,52 +108,49 @@ if(isset($_POST) && !empty($_POST["email"])){
         <h1 class="title">Profil</h1>
       </div>
       <div class="my-profil">
-        <?php
-          if(!isset($_GET["modifyMode"])){
-            echo "<a type='button' href='parametres.php?modifyMode=1'>Saisir / Modifier informations</a>";
-            echo "<table>";
-            echo "<thead><tr><th colspan='2'>Mes informations personnelles</th></tr></thead>
-            <tr><th>Nom</th><td>". $user->getNom() ."</td></tr>
-            <tr><th>Prénom</th><td>". $user->getPrenom() ."</td></tr>
-            <tr><th>E-mail</th><td>". $user->getEmail() ."</td></tr>
+        <?php if(!isset($_GET["modifyMode"])) : ?>
+            <a type='button' href='parametres.php?modifyMode=1'>Saisir / Modifier informations</a>
+            <table>
+            <thead><tr><th colspan='2'>Mes informations personnelles</th></tr></thead>
+            <tr><th>Nom</th><td><?= $user->getNom() ?></td></tr>
+            <tr><th>Prénom</th><td><?= $user->getPrenom() ?></td></tr>
+            <tr><th>E-mail</th><td><?= $user->getEmail() ?></td></tr>
             <tr><th>Mot de passe</th><td>*************</td></tr>
-            <tr><th>Numéro</th><td>". $user->getNumRue() ."</td></tr>
-            <tr><th>Nom rue</th><td>". $user->getNomRue() ."</td></tr>
-            <tr><th>Ville</th><td>". $user->getVille() ."</td></tr>
-            <tr><th>Code postal</th><td>". $user->getCP() ."</td></tr>
-            <tr><th>Marque</th><td>". $user->getMarque() ."</td></tr>
-            <tr><th>Modèle</th><td>". $user->getModele() ."</td></tr>
-            <tr><th>Nombre de place</th><td>". $user->getNbPLace() ."</td></tr>
-            <tr><th>Couleur véhicule</th><td>". $user->getCouleur() ."</td></tr>";
-            
-            echo "</table>";
-          } else {
-            if(isset($_GET["oldPassIsIncorrect"])) {
-              echo "Votre ancien mot de passe est incorrect. Il doit être correct pour pouvoir modifier votre mot de passe sinon laissez les champs vides.";
-            }
-            echo "<a type='button' href='parametres.php?'>Annuler la modification</a>";
-            echo "<form method='POST' name='changeUserData' action='parametres.php?'>";
-            echo "<table>";
-            echo "<thead><tr><th colspan='2'>Mes informations personnelles</th></tr></thead>
-            <tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value='".$user->getNom()."'required/></td></tr>
-            <tr><th>Prénom</th><td><input type='text' name='prenom' style='width:100%' value='". $user->getPrenom() ."'required/></td></tr>
-            <tr><th>E-mail</th><td><input type='text' name='email' style='width:100%' value='". $user->getEmail() ."'required/></td></tr>
+            <tr><th>Adresse</th><td><?= $user->getAdresse() ?></td></tr>
+            <tr><th>Marque</th><td><?= $user->getMarque() ?></td></tr>
+            <tr><th>Modèle</th><td><?= $user->getModele() ?></td></tr>
+            <tr><th>Nombre de place</th><td><?= $user->getNbPLace() ?></td></tr>
+            <tr><th>Couleur véhicule</th><td><?= $user->getCouleur() ?></td></tr>
+            </table>          
+          <?php else : ?>
+            <?php if(isset($_GET["oldPassIsIncorrect"])) : ?>
+              Votre ancien mot de passe est incorrect. Il doit être correct pour pouvoir modifier votre mot de passe sinon laissez les champs vides.
+            <?php endif; ?>            
+            <a type='button' href='parametres.php?'>Annuler la modification</a>
+            <form method='POST' name='changeUserData' action='parametres.php?'>
+            <table>
+            <thead><tr><th colspan='2'>Mes informations personnelles</th></tr></thead>
+            <tr><th>Nom</th><td><input type='text' name='nom' style='width:100%' value="<?=$user->getNom()?>"required/></td></tr>
+            <tr><th>Prénom</th><td><input type='text' name='prenom' style='width:100%' value="<?= $user->getPrenom() ?>"required/></td></tr>
+            <tr><th>E-mail</th><td><?=$user->getEmail()?></td></tr>
             <tr><th>Ancien mot de passe</th><td><input type='text' name='oldMdp' style='width:100%' value=''/></td></tr>
             <tr><th>Mot de passe</th><td><input type='text' name='mdp' style='width:100%' value=''/></td></tr>
-            <tr><th>Numéro</th><td><input type='text' name='numRue' style='width:100%' value='". $user->getNumRue() ."'required/></td></tr>
-            <tr><th>Nom rue</th><td><input type='text' name='nomRue' style='width:100%' value='". $user->getNomRue() ."'required/></td></tr>
-            <tr><th>Ville</th><td><input type='text' name='ville' style='width:100%' value='". $user->getVille() ."'required/></td></tr>
-            <tr><th>Code postal</th><td><input type='text' name='codePostal' style='width:100%' value='". $user->getCP() ."'required/></td></tr>
-            <tr><th>Marque</th><td><input type='text' name='marque' style='width:100%' value='". $user->getMarque() ."'required/></td></tr>
-            <tr><th>Modèle</th><td><input type='text' name='modele' style='width:100%' value='". $user->getModele() ."'required/></td></tr>
-            <tr><th>Nombre de place</th><td><input type='text' name='nbPLace' style='width:100%' value='". $user->getNbPLace() ."'required/></td></tr>
-            <tr><th>Couleur véhicule</th><td><input type='text' name='couleur' style='width:100%' value='". $user->getCouleur() ."'required/></td></tr>";
-            echo "</table>";
-            echo "<button type='submit' value='OK' style='margin: 15px 5px 15px'> Valider</button>";
-            echo "</form>";
-          }
-          
-        ?>
+            <tr><th>Adresse</th><td><div class='button-input'>
+            <input type='textbox' name='adresseParam' id='adresseParam' value="<?= $user->getAdresse() ?>" required/>
+            <input type='textbox' name='latitude' id='latitudeParam' hidden>
+            <input type='textbox' name='longitude' id='longitudeParam' hidden>
+            <button type='button' class='btn button-valide' onclick='convertAddress()'>Confirmer</button>
+            </div>
+            <tr><th></th><td><div id='mapParam'></div></td></tr>
+            <input id='adresseParam-latitude' hidden><input id='adresseParam-longitude' hidden>
+            <tr><th>Marque</th><td><input type='text' name='marque' style='width:100%' value="<?= $user->getMarque() ?>"required/></td></tr>
+            <tr><th>Modèle</th><td><input type='text' name='modele' style='width:100%' value="<?= $user->getModele() ?>"required/></td></tr>
+            <tr><th>Nombre de place</th><td><input type='text' name='nbPLace' style='width:100%' value="<?= $user->getNbPLace() ?>"required/></td></tr>
+            <tr><th>Couleur véhicule</th><td><input type='text' name='couleur' style='width:100%' value="<?= $user->getCouleur() ?>"required/></td></tr>
+            </table>
+            <button type='submit' value='OK' style='margin: 15px 5px 15px'> Valider</button>
+            </form>            
+        <?php endif;?>                  
     </div>
   </div>
 
