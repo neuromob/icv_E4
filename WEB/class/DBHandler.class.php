@@ -7,11 +7,11 @@ class DBHandler {
     private $serverName = '192.168.5.60';*/
     /* HOME */
     private $host = 'localhost';
-    private $database = 'covoiturage_final';
+    private $database = 'covoiturage';
     private $login = 'admin';
     private $password = 'toor';
     private $port = '3306';
-    public $conn;
+    private $conn;
 
 
     public function __construct() {
@@ -32,7 +32,8 @@ class DBHandler {
         }
 
         return $this->conn;
-    }
+	}
+	
     public function verify_User_and_Pass($user, $pass) {
 		$this->getConnection();
         $rows = array();
