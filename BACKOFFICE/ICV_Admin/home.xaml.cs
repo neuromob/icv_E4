@@ -23,12 +23,51 @@ namespace ICV_Admin
         {
             InitializeComponent();
             InitializeUser();
-            
+            InitializeFiliere();
+            frame.NavigationService.Navigate(new PageFiliere());
+            ButtonFiliere.IsEnabled = false;
         }
 
         private void InitializeUser()
         {
-            Username.Content = Main.CurrentUser.Nom;
+            Username.Content = "Bienvenue " + Main.CurrentUser.Nom;
+            
+        }
+
+        private void InitializeFiliere()
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+   
+        private void AddEleve_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ButtonFiliere.IsEnabled = false;
+            ButtonApprentis.IsEnabled = true;
+            frame.NavigationService.Navigate(new PageFiliere());
+            return;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            ButtonApprentis.IsEnabled = false;
+            ButtonFiliere.IsEnabled = true;
+            frame.NavigationService.Navigate(new PageApprentis());
+            return;
         }
     }
 }

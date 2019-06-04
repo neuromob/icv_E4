@@ -24,6 +24,6 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Image Margin="104,184,752,219" Source="covoit_logo.png" Stretch="Fill"/>
+        <Image Margin="104,184,752,219" Source="Images/covoit_logo.png" Stretch="Fill"/>
     </Grid>
 </Window>

@@ -8,9 +8,9 @@ class DBHandler {
     private $host = 'localhost';
     private $database = 'covoiturage_e4';
     private $login = 'root';
-    private $password = '';
+	private $password = '';
     private $port = '3306';
-    public $conn;
+    private $conn;
 
 
     public function __construct() {

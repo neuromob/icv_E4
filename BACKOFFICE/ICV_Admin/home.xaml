@@ -6,8 +6,36 @@
         xmlns:local="clr-namespace:ICV_Admin"
         mc:Ignorable="d"
         Title="home" Height="650" Width="1200">
-    <Grid>
-        <Label x:Name="Username" Content="" HorizontalAlignment="Left" Height="155" Margin="33,10,0,0" VerticalAlignment="Top" Width="478" FontSize="72"/>
+    <Page>
+        <Page.Content>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="353*"/>
+                    <ColumnDefinition Width="839*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="Username" VerticalContentAlignment="Center" HorizontalAlignment="Right" Height="41" Margin="0,178,16,0" VerticalAlignment="Top" Width="327" FontSize="18"/>
+                <StackPanel Margin="10,0,0,10" HorizontalAlignment="Left" Width="327" VerticalAlignment="Bottom" Height="346">
+                    <Button Content="Accueil" Margin="0,0,0,8" Height="110" Click="Button_Click" Background="White"/>
+                    <Button Content="Admin" Margin="0,0,0,8" Height="110" Click="Button_Click_1" Background="White"/>
+                    <Button Content="Base de donnée" Margin="0,0,0,0" Height="110" Background="White"/>
+                </StackPanel>
+                <Frame x:Name="frame" Margin="0,95,10,15" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="820" NavigationUIVisibility="Hidden" />
+                <Image Margin="90,24,0,0" Source="covoit_logo.png" Stretch="Fill" Height="149" VerticalAlignment="Top" HorizontalAlignment="Left" Width="169"/>
+                <DockPanel HorizontalAlignment="Right" Height="50" Margin="0,24,10,0" VerticalAlignment="Top" Width="830" Grid.ColumnSpan="2">
+                    <Button Name="ButtonFiliere"  HorizontalAlignment="Stretch" Content="Filière" Width="415" Click="Button_Click_2" >
+                        <Button.Background>
+                            <SolidColorBrush Color="{DynamicResource ActiveButton}"/>
+                        </Button.Background>
+                    </Button>
+                    <Button Name="ButtonApprentis" HorizontalAlignment="Stretch" Content="Apprentis" Click="Button_Click_3">
+                        <Button.Background>
+                            <SolidColorBrush Color="{DynamicResource ActiveButton}"/>
+                        </Button.Background>
+                    </Button>
+                </DockPanel>
+                <Border BorderBrush="Black" BorderThickness="1" Margin="0,90,10,10" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="830"/>
 
-    </Grid>
+            </Grid>
+        </Page.Content>
+    </Page>
 </Window>

@@ -1,0 +1,15 @@
+﻿<Page x:Class="ICV_Admin.PageApprentis"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ICV_Admin"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageApprentis">
+
+    <Grid>
+        <Label Content="Apprentis" HorizontalAlignment="Left" Height="117" Margin="22,30,0,0" VerticalAlignment="Top" Width="435" Background="#FF8F2424" FontSize="48"/>
+
+    </Grid>
+</Page>

@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:ICV_Admin"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <Color x:Key="ActiveButton">#FF3DA886</Color>
+
     </Application.Resources>
 </Application>
