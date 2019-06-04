@@ -3,14 +3,14 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 session_start(); 
 include 'class/user.class.php';
-//84cdd49ab734b3c3935d3d60dc3364526444a976
-$randomSalt = "dzjnaihbafgireger%fzfzea$-eza19$*";
 $message = "";
+echo "session : " . $_SESSION["tentative"];
 if(isset($_SESSION["tentative"])){
   $nbEssaiRestant = 4 - $_SESSION["tentative"];
 } else {
   $nbEssaiRestant = 4;
   $_SESSION["tentative"] = 0;
+  echo "session : " . $_SESSION["tentative"];
 }
 
   if(isset($_POST['connexion'])) {
@@ -23,7 +23,7 @@ if(isset($_SESSION["tentative"])){
             $Email = htmlentities($_POST['email'], ENT_QUOTES, "ISO-8859-1"); 
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
             $dbh = new DBHandler();
-            $userVerified = $dbh->verify_User_and_Pass($Email,$MotDePasse, $_SESSION["tentative"]);
+            $userVerified = $dbh->loginUser($Email,$MotDePasse, $_SESSION["tentative"]);
             var_dump($userVerified);
             if($userVerified["response"] == "OK") {
               echo "<div id='success_MSG'>Vous êtes à présent connecté !</div>";
@@ -32,15 +32,17 @@ if(isset($_SESSION["tentative"])){
               $_SESSION["userObject"] = $user_serlizer;
               $_SESSION["authentified"] = true;
               
-              //header('Location: app/accueil.php');
-          } else if ($userVerified["response"] == "KO_ban24"){
-            echo "<div id='error_MSG'>Vous avez dépasé le nombre de tentatives maximales. Votre compté est bloqué pendants 24h.</div>";
-          } else { 
-              $_SESSION["authentified"] = null;
-              $message = "<div id='error_MSG'>Le pseudo ou le mot de passe est incorrect, le compte n'a pas été trouvé.</div>"; 
-              $_SESSION["tentative"] = $_SESSION["tentative"] + 1;
-              header('Location: index.php');
-          }
+              header('Location: app/accueil.php');
+            } else if ($userVerified["response"] == "KO_ban24"){
+              echo "<div id='error_MSG'>Vous avez dépasé le nombre de tentatives maximales. Votre compté est bloqué pendants 24h.</div>";
+            } else if ($userVerified["response"] == "KO") { 
+                echo "tentative : " .$_SESSION["tentative"];
+                $message = "<div id='error_MSG'>Le pseudo ou le mot de passe est incorrect, le compte n'a pas été trouvé.</div>"; 
+                $_SESSION["tentative"] = $_SESSION["tentative"] + 1;
+                //header('Location: index.php');
+            } else {
+              echo "Erreur système";
+            }
             
             //$result = $user->login($Email,$MotDePasse);
             // if(is_array($result)){

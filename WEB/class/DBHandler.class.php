@@ -5,10 +5,10 @@ class DBHandler {
     /* CFA
     private $serverName = '192.168.5.60';*/
     /* HOME */
-    private $host = '192.168.5.62';
-    private $database = 'covoiturage_final';
-    private $login = 'admin';
-    private $password = 'toor';
+    private $host = 'localhost';
+    private $database = 'covoiturage_e4';
+    private $login = 'root';
+    private $password = '';
     private $port = '3306';
     public $conn;
 
@@ -31,7 +31,68 @@ class DBHandler {
         }
 
         return $this->conn;
-    }
+	}
+	
+	// Fonction login
+	public function loginUser($mail, $password, $count){
+			
+		error_log("/loginUser: start !! ");
+	
+		error_log('mail: '.$mail);
+		error_log('password: '.$password);
+		error_log('count: '.$count);
+		//$count = 4;
+		$response['response'] = 'OK';
+		
+		$sql= "SELECT id, nom, prenom, email FROM Utilisateur WHERE email LIKE :mail AND motDePasse LIKE :password;"; 
+		
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bindParam(':mail', $mail, PDO::PARAM_STR); 
+		$password = sha1($password.$this->randomSalt);
+		$stmt->bindParam(':password', $password, PDO::PARAM_STR); 
+		$stmt->execute();
+		
+		$response = array();
+		
+		error_log('test result: ' . $stmt->rowCount());
+		
+		if($stmt->rowCount() == 1){
+			
+			$response['response'] = 'OK';
+			
+			while ($row = $stmt->fetchObject()) {
+			
+			   $response['id'] = $row->id;
+			   $response['nom'] = $row->nom;
+			   $response['prenom'] = $row->prenom;
+			   $response['email'] = $row->email;
+			   if(!($this->CheckAccount($row->id))){
+				   
+				   $response['response'] = 'KO_ban24';
+				   
+				}
+				 
+			}
+			
+		}
+		else{		
+		
+			$response['response'] = 'KO';
+			
+			if($count >= 4){
+				
+				$this->SearchAccount($mail);
+				$response['response'] = 'KO_ban24';
+				
+			}
+			
+		}
+		
+		$this->closeConnection();
+		return $response;
+		
+	}
+
     public function verify_User_and_Pass($user, $pass, $counter) {
 		$this->getConnection();
         $rows = array();
@@ -153,45 +214,82 @@ class DBHandler {
 			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);  
 			$stmt->execute();
 			
-			while ($row = $stmt->fetchObject()) {
+			if($stmt->rowCount() == 0){
 				
-				$idUser = $row->id;
+				return unBlockAccount();
 				
-				if($row->status == "ACTIF"){
+			}
+			else{
 				
-					return true;
-				
-				}
-				else{
+				while ($row = $stmt->fetchObject()) {
 					
-					date_default_timezone_set('Europe/Paris');
-					$date = date('Y-m-d h:i:s', time());
-					$dateActuelle = new DateTime($date);
-					$dateBloquage = new DateTime($row->dateStatus);
+					$idUser = $row->id;
 					
-					$dteDiff  = $dateBloquage->diff($dateActuelle);
+					if($row->status == "ACTIF"){
 					
-					// différence en minute
-					// $dteDiff->i
-					if($dteDiff->h > 24){
-						
 						return true;
-						
+					
 					}
 					else{
 						
-						return false;
+						date_default_timezone_set('Europe/Paris');
+						$date = date('Y-m-d h:i:s', time());
+						$dateActuelle = new DateTime($date);
+						$dateBloquage = new DateTime($row->dateStatus);
 						
-					}					
-				}			 	
-			}
-		
+						$dteDiff  = $dateBloquage->diff($dateActuelle);
+						
+						// différence en minute
+						// $dteDiff->i
+						if($dteDiff->h > 24){
+							
+							return true;
+							
+						}
+						else{
+							
+							return false;
+							
+						}					
+					}			 	
+				}
+			}					
 		}
 		catch(SQLException $e) {				
 			error_log("SQL ERROR : ".$e->getMessage());				
 		}
 	}
 
+	private function unBlockAccount($idUser){
+			
+		error_log("/unBlockAccount: start !! ");
+		
+		date_default_timezone_set('Europe/Paris');
+		$date = date('Y-m-d h:i:s', time());
+		
+		error_log("idUser: ". $idUser);
+		error_log("date: ". $date);
+
+		$sql= "INSERT INTO Status (idUser, status, dateStatus) VALUES (:idUser, 'ACTIF', :date)"; 
+		
+		try{
+			
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':idUser', $idUser, PDO::PARAM_INT);  
+			$stmt->bindParam(':date', $date, PDO::PARAM_STR);  
+			$stmt->execute();
+			
+			return true;
+		
+		}
+		catch(SQLException $e) {				
+			error_log("SQL ERROR : ".$e->getMessage());	
+
+			return false;				
+		}
+		
+	}
+	
 	private function isAlreadyBlocked($idUser){
 			
 		error_log("/isAlreadyBlocked: start !! ");
