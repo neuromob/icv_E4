@@ -8,14 +8,13 @@ if(!isset($_SESSION))
     } 
 
 $dbh = new DBHandler();
-$dbh->maFonction();
 $user = unserialize((base64_decode($_SESSION['userObject'])));
 $user = $dbh->refreshUser($user->getId());
 $user_serlizer = base64_encode(serialize($user));
 $_SESSION['userObject'] = $user_serlizer;
 $idUser = $user->getId();
 $listTrip = $dbh->getListTrip($idUser);
-if($_POST["rangeTrips"]){
+if(isset($_POST["rangeTrips"])){
   $rangeTrip = $_POST["rangeTrips"];
 } else {
   $rangeTrip = 50;

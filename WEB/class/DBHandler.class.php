@@ -8,9 +8,9 @@ class DBHandler {
     private $host = 'localhost';
     private $database = 'covoiturage_e4';
     private $login = 'root';
-	private $password = '';
+    private $password = '';
     private $port = '3306';
-    private $conn;
+    public $conn;
 
 
     public function __construct() {
@@ -612,7 +612,9 @@ class DBHandler {
             
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-        }
+        } else {
+			return false;
+		}
         
         $this->closeConnection();
 	}
@@ -1075,5 +1077,54 @@ class DBHandler {
 			
 			return $result;			
 			
+		}
+
+		public function getQuestionRep($mail)
+		{
+			error_log("db->getQuestionRep: start ! ");
+			
+			$result = null;
+			
+			$sql = "SELECT Q.question as question, UQ.reponse as reponse FROM `Question` Q INNER JOIN UtilisateurQuestion UQ ON UQ.idQuestion = Q.idQuestion INNER JOIN Utilisateur U ON U.id = UQ.idUser WHERE U.email = :mail";
+			
+			try{
+				$stmt = $this->conn->prepare($sql);
+				$stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
+				$stmt->execute();
+			}
+			catch(SQLException $e) {				
+				error_log("SQL ERROR : ".$e->getMessage());				
+			}
+			
+			if($stmt->rowCount() > 0){				
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);			
+			}
+			else {			
+				$result['response'] = "KO";				
+			}				
+			
+			$this->closeConnection();
+			
+			return $result;		
+		}
+
+		public function GetUniqueKey ($length) {
+			$possible = "0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRESTUVWXYZ_"; 
+			 if ($length == "" OR !is_numeric($length)){
+			  $length = 8; 
+			 }
+		
+			 srand(srand());
+		
+			 $i = 0; 
+			 $password = "";    
+			 while ($i < $length) { 
+			  $char = substr($possible, rand(0, strlen($possible)-1), 1);
+			  if (!strstr($password, $char)) { 
+			   $password .= $char;
+			   $i++;
+			   }
+			  }
+			 return $password;
 		}
 } 

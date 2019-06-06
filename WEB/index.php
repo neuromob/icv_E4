@@ -4,7 +4,6 @@ ini_set('display_errors',1);
 session_start(); 
 include 'class/user.class.php';
 $message = "";
-echo "session : " . $_SESSION["tentative"];
 if(isset($_SESSION["tentative"])){
   $nbEssaiRestant = 4 - $_SESSION["tentative"];
 } else {
@@ -13,33 +12,7 @@ if(isset($_SESSION["tentative"])){
   echo "session : " . $_SESSION["tentative"];
 }
 
-echo "<html>
-<head>
-  <meta charset='utf-8' />
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>ICV | Login</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='css/style.css' />
-  <script src='main.js'></script>
-
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
-</head>
-<body class='main'>
-  <form class='login' method='POST'>
-    <input type='text' class='input-box' name='email' placeholder='Entrez votre e-mail' /> 
-    <input type='password' class='input-box' name='motdepasse' placeholder='Entrez votre mot de passe'/>
-    <div class='cb_RememberMe'>
-      <input type='checkbox' id='remember' name='remember'/>
-      <label for='remember'>Se souvenir de moi.</label>
-    </div>
-    <button type='submit' class='btn btn-block' name='connexion' value='Connexion'>Se connecter</button>
-  </form>
-</body>
-</html>";
-
-
-if(isset($_POST['connexion'])) {
-    
+  if(isset($_POST['connexion'])) {
     if(empty($_POST['email'])) {
       $message = "<div id='error_Mail_MSG'>Le champ E-mail est vide.</div>";
     } else {
@@ -50,7 +23,6 @@ if(isset($_POST['connexion'])) {
             $MotDePasse = htmlentities($_POST['motdepasse'], ENT_QUOTES, "ISO-8859-1");
             $dbh = new DBHandler();
             $userVerified = $dbh->loginUser($Email,$MotDePasse, $_SESSION["tentative"]);
-            var_dump($userVerified);
             if($userVerified["response"] == "OK") {
               echo "<div id='success_MSG'>Vous êtes à présent connecté !</div>";
               $user = new User($userVerified);
@@ -104,7 +76,7 @@ echo "<html>
   <form class='login' id='loginForm' method='POST'>
     <input type='text' id='email' class='input-box' name='email' placeholder='Entrez votre e-mail' /> 
     <input type='password' id='motdepasse' class='input-box' name='motdepasse' placeholder='Entrez votre mot de passe'/>
-    <a href='php/sendResetPass.php'>Mot de passe oublié.</a>
+    <a href='php/passwordReset.php'>Mot de passe oublié.</a>
     <button type='submit' id='btnConnexion' class='btn btn-block' name='connexion' value='Connexion'>Se connecter</button>
     <p style='font-size:13px;font-style:italic;color:grey;text-align:right;margin: -9px 0 -11px;'>Il vous reste : ". $nbEssaiRestant ." essaies</p>
   </form>

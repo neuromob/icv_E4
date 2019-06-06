@@ -109,7 +109,6 @@ $user = unserialize((base64_decode($_SESSION['userObject'])));
           <?php
           $listOfCreatedTrip = $dbh->getMyListOfCreatedTrips($user->getId());
           $lengthCreatedTrip = count($listOfCreatedTrip);
-              echo $placeDisponible["placeDisponible"];
           if($lengthCreatedTrip >= 1){
             if($_GET["modifyMode"] == 1){
               echo "<table>
